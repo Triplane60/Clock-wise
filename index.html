@@ -2,35 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Clock-wise | Premium Watches</title>
+    <title>Clock-wise | Luxury Store</title>
 </head>
 <body>
-    <header>
-        <h1>CLOCK-WISE</h1>
-        <p>Timeless Elegance on Your Wrist</p>
+
+    <header class="main-header">
+        <div class="logo">CLOCK-WISE</div>
+        <div class="search-container">
+            <input type="text" placeholder="Search for premium timepieces...">
+            <button class="search-btn">🔍</button>
+        </div>
+        <div class="user-icons">
+            <span>🛒 Cart</span>
+            <span>👤 Login</span>
+        </div>
     </header>
 
-    <main class="product-grid">
-        <div class="watch-card">
-    <img src="https://via.placeholder.com/200" alt="Midnight Diver">
-    <h3>Midnight Diver</h3>
-    <p>$150.00</p>
-    <button onclick="addToCart('Midnight Diver')">Add to Cart</button>
-</div>
+    <nav class="category-bar">
+        <button class="nav-item active" onclick="filterCategory('all')">All Watches</button>
+        <button class="nav-item" onclick="filterCategory('men')">Men</button>
+        <button class="nav-item" onclick="filterCategory('women')">Women</button>
+        <button class="nav-item" onclick="filterCategory('kids')">Kids</button>
+        <button class="nav-item" onclick="filterCategory('limited')">Limited Edition</button>
+    </nav>
 
-<div class="watch-card">
-    <img src="https://via.placeholder.com/200" alt="Silver Classic">
-    <h3>Silver Classic</h3>
-    <p>$120.00</p>
-    <button onclick="addToCart('Silver Classic')">Add to Cart</button>
-</div>
-        <div class="watch-card">
-            <img src="https://via.placeholder.com/200" alt="Classic Gold">
-            <h3>The Golden Era</h3>
-            <p>$199.00</p>
-            <button onclick="addToCart('Golden Era')">Add to Cart</button>
+    <main class="content-area">
+    <div class="product-grid" id="watchContainer">
+        <div class="watch-card men">
+            <div class="image-placeholder">🌊</div>
+            <h3>Midnight Diver</h3>
+            <p class="category-tag">Men's Collection</p>
+            <button class="add-btn">View Details</button>
         </div>
+
+        <div class="watch-card men">
+            <div class="image-placeholder">⛰️</div>
+            <h3>Alpine Explorer</h3>
+            <p class="category-tag">Men's Collection</p>
+            <button class="add-btn">View Details</button>
+        </div>
+
+        <div class="watch-card women">
+            <div class="image-placeholder">💎</div>
+            <h3>Silver Classic</h3>
+            <p class="category-tag">Women's Collection</p>
+            <button class="add-btn">View Details</button>
+        </div>
+
+        <div class="watch-card women">
+            <div class="image-placeholder">🌸</div>
+            <h3>Rose Gold Petit</h3>
+            <p class="category-tag">Women's Collection</p>
+            <button class="add-btn">View Details</button>
+        </div>
+
+        <div class="watch-card limited">
+            <div class="image-placeholder">✨</div>
+            <h3>The Golden Era</h3>
+            <p class="category-tag">Limited Edition</p>
+            <button class="add-btn">View Details</button>
+        </div>
+    </div>
     </main>
 
     <script src="script.js"></script>
