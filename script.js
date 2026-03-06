@@ -1,0 +1,1 @@
+console.log("Clock-wise JS is linked!");
