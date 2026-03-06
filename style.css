@@ -1,6 +1,29 @@
 body {
-    background-color: #1e1e1e;
-    color: white;
+    background-color: #0f0f0f;
+    color: #d4af37; /* Luxury Gold color */
+    font-family: 'Georgia', serif;
     text-align: center;
-    font-family: sans-serif;
+}
+
+.product-grid {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.watch-card {
+    border: 1px solid #d4af37;
+    padding: 15px;
+    width: 250px;
+    background: #1a1a1a;
+    border-radius: 8px;
+}
+
+button {
+    background-color: #d4af37;
+    color: black;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
 }

@@ -1,11 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <title>Clock-wise | Premium Watches</title>
 </head>
 <body>
-    <h1>Clock-wise Timer</h1>
-    <div id="display">00:00</div>
+    <header>
+        <h1>CLOCK-WISE</h1>
+        <p>Timeless Elegance on Your Wrist</p>
+    </header>
+
+    <main class="product-grid">
+        <div class="watch-card">
+    <img src="https://via.placeholder.com/200" alt="Midnight Diver">
+    <h3>Midnight Diver</h3>
+    <p>$150.00</p>
+    <button onclick="addToCart('Midnight Diver')">Add to Cart</button>
+</div>
+
+<div class="watch-card">
+    <img src="https://via.placeholder.com/200" alt="Silver Classic">
+    <h3>Silver Classic</h3>
+    <p>$120.00</p>
+    <button onclick="addToCart('Silver Classic')">Add to Cart</button>
+</div>
+        <div class="watch-card">
+            <img src="https://via.placeholder.com/200" alt="Classic Gold">
+            <h3>The Golden Era</h3>
+            <p>$199.00</p>
+            <button onclick="addToCart('Golden Era')">Add to Cart</button>
+        </div>
+    </main>
+
     <script src="script.js"></script>
 </body>
 </html>
