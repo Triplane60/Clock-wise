@@ -168,9 +168,9 @@ body {
 }
 
 .toast {
-    visibility: hidden;
+    visibility: hidden; 
     min-width: 250px;
-    background-color: #4b0082; 
+    background-color: #4a148c; 
     color: #fff;
     text-align: center;
     border-radius: 8px;
@@ -180,13 +180,18 @@ body {
     left: 50%;
     bottom: 30px;
     transform: translateX(-50%);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: visibility 0.3s, opacity 0.5s;
+    opacity: 0;
 }
 
 .toast.show {
     visibility: visible;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    opacity: 1;
+    animation: fadein 0.5s;
 }
 
-@keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-@keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+@keyframes fadein {
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
+}
