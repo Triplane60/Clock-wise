@@ -195,19 +195,3 @@ body {
     from { bottom: 0; opacity: 0; }
     to { bottom: 30px; opacity: 1; }
 }
-
-.details-link {
-    background: none;
-    border: none;
-    color: #7e57c2;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 0.85em;
-    margin-bottom: 10px;
-    display: block;
-    width: 100%;
-}
-
-.details-link:hover {
-    color: #4a148c;
-}

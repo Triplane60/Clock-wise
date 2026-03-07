@@ -156,6 +156,7 @@ function showNotification(message) {
         toast.classList.remove("show");
     }, 3000);
 }
+<<<<<<< HEAD
 
 const productInfo = {
     "Midnight Diver": {
