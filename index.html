@@ -16,7 +16,7 @@
         </div>
         <div class="cart-icon" onclick="openCart()" style="cursor: pointer;">
             🛒 <span id="cart-count">0</span>
-            <span>👤 Login</span>
+            <span style="margin-left: 15px;">👤 Login</span>
         </div>
     </header>
 
@@ -72,18 +72,19 @@
         </div>
     </main>
 
-   <div id="cart-modal" class="modal">
+    <div id="cart-modal" class="modal"> 
         <div class="modal-content">
             <span class="close-btn" onclick="closeCart()">&times;</span>
             <h2>Your Cart 🛒</h2>
             <div id="cart-items-list">
-                <p>Your cart is empty!</p>
-            </div>
-            <hr>
-            <p class="total-text">Total: ₱<span id="cart-total-price">0.00</span></p>
-            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+                </div>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="font-size: 1.2rem; font-weight: bold;">Total: ₱<span id="cart-total-price">0.00</span></p>
+            <button class="add-btn" onclick="alert('Proceeding to checkout!')">Checkout</button>
         </div>
     </div>
+
+    <div id="toast-notification" class="toast">Item added to cart!</div>
 
     <script src="script.js"></script>
 </body>
