@@ -9,7 +9,8 @@ def show_inventory():
     print("--- CLOCK-WISE INVENTORY ---")
     for watch in watches:
         status = "In Stock" if watch["stock"] > 0 else "Out of Stock"
-        print(f"Watch: {watch['name']} | Price: ${watch['price']} | {status} ({watch['stock']})")
+        # Inside your show_inventory function
+    print(f"Watch: {watch['name']} | Price: ₱{watch['price']} | {status} ({watch['stock']})")
 
 # Run the function
 show_inventory()

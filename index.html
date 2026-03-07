@@ -14,8 +14,8 @@
             <input type="text" placeholder="Search for premium timepieces...">
             <button class="search-btn">🔍</button>
         </div>
-        <div class="user-icons">
-            <span>🛒 Cart</span>
+        <div class="cart-icon" onclick="openCart()" style="cursor: pointer;">
+            🛒 <span id="cart-count">0</span>
             <span>👤 Login</span>
         </div>
     </header>
@@ -29,44 +29,63 @@
     </nav>
 
     <main class="content-area">
-    <div class="product-grid" id="watchContainer">
-        <div class="watch-card men">
-            <div class="image-placeholder">🌊</div>
-            <h3>Midnight Diver</h3>
-            <p class="category-tag">Men's Collection</p>
-            <button class="add-btn">View Details</button>
-        </div>
+        <div class="product-grid" id="watchContainer">
+            <div class="watch-card men">
+                <div class="image-placeholder">🌊</div>
+                <h3>Midnight Diver</h3>
+                <p class="category-tag">Men's Collection</p>
+                <p class="price">₱150.00</p>
+                <button class="add-btn" onclick="addToCart('Midnight Diver', 150.00)">Add to Cart</button>
+            </div>
 
-        <div class="watch-card men">
-            <div class="image-placeholder">⛰️</div>
-            <h3>Alpine Explorer</h3>
-            <p class="category-tag">Men's Collection</p>
-            <button class="add-btn">View Details</button>
-        </div>
+            <div class="watch-card men">
+                <div class="image-placeholder">⛰️</div>
+                <h3>Alpine Explorer</h3>
+                <p class="category-tag">Men's Collection</p>
+                <p class="price">₱180.00</p>
+                <button class="add-btn" onclick="addToCart('Alpine Explorer', 180.00)">Add to Cart</button>
+            </div>
 
-        <div class="watch-card women">
-            <div class="image-placeholder">💎</div>
-            <h3>Silver Classic</h3>
-            <p class="category-tag">Women's Collection</p>
-            <button class="add-btn">View Details</button>
-        </div>
+            <div class="watch-card women">
+                <div class="image-placeholder">💎</div>
+                <h3>Silver Classic</h3>
+                <p class="category-tag">Women's Collection</p>
+                <p class="price">₱120.00</p>
+                <button class="add-btn" onclick="addToCart('Silver Classic', 120.00)">Add to Cart</button>
+            </div>
 
-        <div class="watch-card women">
-            <div class="image-placeholder">🌸</div>
-            <h3>Rose Gold Petit</h3>
-            <p class="category-tag">Women's Collection</p>
-            <button class="add-btn">View Details</button>
-        </div>
+            <div class="watch-card women">
+                <div class="image-placeholder">🌸</div>
+                <h3>Rose Gold Petit</h3>
+                <p class="category-tag">Women's Collection</p>
+                <p class="price">₱140.00</p>
+                <button class="add-btn" onclick="addToCart('Rose Gold Petit', 140.00)">Add to Cart</button>
+            </div>
 
-        <div class="watch-card limited">
-            <div class="image-placeholder">✨</div>
-            <h3>The Golden Era</h3>
-            <p class="category-tag">Limited Edition</p>
-            <button class="add-btn">View Details</button>
+            <div class="watch-card limited">
+                <div class="image-placeholder">✨</div>
+                <h3>The Golden Era</h3>
+                <p class="category-tag">Limited Edition</p>
+                <p class="price">₱199.00</p>
+                <button class="add-btn" onclick="addToCart('The Golden Era', 199.00)">Add to Cart</button>
+            </div>
         </div>
-    </div>
     </main>
 
+   <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeCart()">&times;</span>
+            <h2>Your Cart 🛒</h2>
+            <div id="cart-items-list">
+                <p>Your cart is empty!</p>
+            </div>
+            <hr>
+            <p class="total-text">Total: ₱<span id="cart-total-price">0.00</span></p>
+            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="toast">Product added to cart! ✅</div>
     <script src="script.js"></script>
 </body>
 </html>
