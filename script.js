@@ -218,3 +218,61 @@ function getPrice(name) {
     if (name === "The Golden Era") return 199.0;
     return 0;
 }
+
+const watchData = {
+    "Midnight Diver": {
+        desc: "A rugged masterpiece for deep-sea exploration.",
+        specs: "Waterproof: 200m | Strap: Rubber",
+        icon: "🌊",
+        price: 150.00,
+        stock: 12 
+    },
+    "Alpine Explorer": {
+        desc: "Built for those who reach the highest peaks.",
+        specs: "Altimeter | Strap: Leather",
+        icon: "⛰️",
+        price: 180.00,
+        stock: 5
+    },
+    "Silver Classic": {
+        desc: "Timeless elegance for every occasion. A sleek silver finish that matches any outfit.",
+        specs: "Strap: Genuine Leather | Movement: Quartz | Case: 38mm",
+        icon: "💎",
+        price: 120.00,
+        stock: 8
+    },
+    "Rose Gold Petit": {
+        desc: "A delicate touch of luxury. Designed for smaller wrists with a stunning rose gold hue.",
+        specs: "Strap: Mesh Gold | Movement: Japanese Quartz | Case: 32mm",
+        icon: "🌸",
+        price: 140.00,
+        stock: 2
+    },
+    "The Golden Era": {
+        desc: "A rare collector's piece. Limited to only 100 units worldwide with 18k gold accents.",
+        specs: "Gold Plating: 18k | Movement: Swiss Automatic | Case: 41mm",
+        icon: "✨",
+        price: 199.00,
+        stock: 2
+    },
+};
+
+function openDetails(name) {
+    const info = watchData[name];
+    const container = document.getElementById("details-content");
+
+    let stockColor = info.stock > 5 ? "green" : "red";
+    let stockStatus = info.stock > 0 ? `${info.stock} units available` : "Out of Stock";
+
+    container.innerHTML = `
+        <div style="font-size: 5rem;">${info.icon}</div>
+        <div>
+            <h2>${name}</h2>
+            <p>${info.desc}</p>
+            <p style="color: ${stockColor}; font-weight: bold; margin-top: 5px;">Inventory: ${stockStatus}</p>
+            <p style="color: #7e57c2; font-weight: bold;">${info.specs}</p>
+        </div>
+    `;
+
+    document.getElementById("details-modal").style.display = "block";
+}
