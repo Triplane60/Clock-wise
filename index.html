@@ -9,14 +9,16 @@
 <body>
 
     <header class="main-header">
-        <div class="logo">CLOCK-WISE</div>
+        <div class="logo">
+            <img src="logo.png" alt="Clock-wise Logo" class="nav-logo">
+        </div>
         <div class="search-container">
-            <input type="text" placeholder="Search for premium timepieces...">
+            <input type="text" id="searchInput" placeholder="Search for premium timepieces...">
             <button class="search-btn">🔍</button>
         </div>
-        <div class="cart-icon" onclick="openCart()" style="cursor: pointer;">
-            🛒 <span id="cart-count">0</span>
-            <span style="margin-left: 15px;">👤 Login</span>
+        <div class="cart-icon" style="cursor: pointer;">
+            <span onclick="openCart()">🛒 <span id="cart-count">0</span></span>
+            <span id="user-display" onclick="openLoginModal()" style="margin-left: 15px;">👤 Login</span>
         </div>
     </header>
 
@@ -28,6 +30,27 @@
         <button class="nav-item" onclick="filterCategory('limited')">Limited Edition</button>
     </nav>
 
+    <div class="hero-banner">
+        <div class="slides-container" id="slides">
+            <div class="slide" style="background: linear-gradient(45deg, #1a1a2e, #4a0072);">
+                <div class="slide-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px;">New Arrival: Lunar Eclipse 🌙</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;">Forged from genuine meteorite fragments.</p>
+                    <button class="add-btn" style="width: 200px; margin: 0 auto; background-color: #ffffff; color: #4a0072;" onclick="openDetails('Lunar Eclipse')">Shop Now</button>
+                </div>
+            </div>
+            <div class="slide" style="background: linear-gradient(45deg, #2e004f, #000000);">
+                <div class="slide-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px;">The Spring Sale ✨</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;">Up to 30% off on selected luxury pieces.</p>
+                    <button class="add-btn" style="width: 200px; margin: 0 auto; background-color: #ffffff; color: #2e004f;" onclick="filterCategory('women')">View Deals</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="content-area">
+
     <main class="content-area">
         <div class="product-grid" id="watchContainer">
             <div class="watch-card men">
@@ -35,10 +58,8 @@
                 <h3>Midnight Diver</h3>
                 <p class="category-tag">Men's Collection</p>
                 <p class="price">₱150.00</p>
-    
-                <button class="details-btn" onclick="openDetails('Midnight Diver')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
-    
-                <button class="add-btn" onclick="addToCart('Midnight Diver', 150.00)">Add to Cart</button>
+                <button class="details-btn" onclick="openDetails('Midnight Diver')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Midnight Diver')">Add to Cart</button>
             </div>
 
             <div class="watch-card men">
@@ -46,11 +67,26 @@
                 <h3>Alpine Explorer</h3>
                 <p class="category-tag">Men's Collection</p>
                 <p class="price">₱180.00</p>
+                <button class="details-btn" onclick="openDetails('Alpine Explorer')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Alpine Explorer')">Add to Cart</button>
+            </div>
 
-                <button class="details-btn" onclick="openDetails('Alpine Explorer')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
-    
+            <div class="watch-card men">
+                <div class="image-placeholder">🌑</div>
+                <h3>Titan Stealth</h3>
+                <p class="category-tag">Men's Collection</p>
+                <p class="price">₱210.00</p>
+                <button class="details-btn" onclick="openDetails('Titan Stealth')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Titan Stealth')">Add to Cart</button>
+            </div>
 
-                <button class="add-btn" onclick="addToCart('Alpine Explorer', 180.00)">Add to Cart</button>
+            <div class="watch-card women">
+                <div class="image-placeholder">✨</div>
+                <h3>Starlight Pearl</h3>
+                <p class="category-tag">Women's Collection</p>
+                <p class="price">₱165.00</p>
+                <button class="details-btn" onclick="openDetails('Starlight Pearl')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Starlight Pearl')">Add to Cart</button>
             </div>
 
             <div class="watch-card women">
@@ -58,10 +94,8 @@
                 <h3>Silver Classic</h3>
                 <p class="category-tag">Women's Collection</p>
                 <p class="price">₱120.00</p>
-
-                <button class="details-btn" onclick="openDetails('Silver Classic')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
-    
-                <button class="add-btn" onclick="addToCart('Silver Classic', 120.00)">Add to Cart</button>
+                <button class="details-btn" onclick="openDetails('Silver Classic')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Silver Classic')">Add to Cart</button>
             </div>
 
             <div class="watch-card women">
@@ -69,46 +103,132 @@
                 <h3>Rose Gold Petit</h3>
                 <p class="category-tag">Women's Collection</p>
                 <p class="price">₱140.00</p>
+                <button class="details-btn" onclick="openDetails('Rose Gold Petit')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Rose Gold Petit')">Add to Cart</button>
+            </div>
 
-                <button class="details-btn" onclick="openDetails('Rose Gold Petit')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
-    
-                <button class="add-btn" onclick="addToCart('Rose Gold Petit', 140.00)">Add to Cart</button>
+            <div class="watch-card kids">
+                <div class="image-placeholder">🚀</div>
+                <h3>Sky Rocket</h3>
+                <p class="category-tag">Kid's Collection</p>
+                <p class="price">₱45.00</p>
+                <button class="details-btn" onclick="openDetails('Sky Rocket')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Sky Rocket')">Add to Cart</button>
+            </div>
+
+            <div class="watch-card kids">
+                <div class="image-placeholder">🦖</div>
+                <h3>Dino Track</h3>
+                <p class="category-tag">Kid's Collection</p>
+                <p class="price">₱40.00</p>
+                <button class="details-btn" onclick="openDetails('Dino Track')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Dino Track')">Add to Cart</button>
+            </div>
+           
+            <div class="watch-card kids">
+                <div class="image-placeholder">🌈</div>
+                <h3>Neon Pulse</h3>
+                <p class="category-tag">Kid's Collection</p>
+                <p class="price">₱55.00</p>
+                <button class="details-btn" onclick="openDetails('Neon Pulse')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Neon Pulse')">Add to Cart</button>
             </div>
 
             <div class="watch-card limited">
-                <div class="image-placeholder">✨</div>
+                <div class="image-placeholder">👑</div>
                 <h3>The Golden Era</h3>
                 <p class="category-tag">Limited Edition</p>
                 <p class="price">₱199.00</p>
+                <button class="details-btn" onclick="openDetails('The Golden Era')">View Details</button>
+                <button class="add-btn" onclick="addToCart('The Golden Era')">Add to Cart</button>
+            </div>
 
-                <button class="details-btn" onclick="openDetails('The Golden Era')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
-    
-                <button class="add-btn" onclick="addToCart('The Golden Era', 199.00)">Add to Cart</button>
+            <div class="watch-card limited">
+                <div class="image-placeholder">🌙</div>
+                <h3>Lunar Eclipse</h3>
+                <p class="category-tag">Limited Edition</p>
+                <p class="price">₱250.00</p>
+                <button class="details-btn" onclick="openDetails('Lunar Eclipse')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Lunar Eclipse')">Add to Cart</button>
+            </div>
+
+            <div class="watch-card limited">
+                <div class="image-placeholder">📜</div>
+                <h3>Heritage 1920</h3>
+                <p class="category-tag">Limited Edition</p>
+                <p class="price">₱225.00</p>
+                <button class="details-btn" onclick="openDetails('Heritage 1920')">View Details</button>
+                <button class="add-btn" onclick="addToCart('Heritage 1920')">Add to Cart</button>
             </div>
         </div>
     </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3 style="letter-spacing: 2px;">CLOCK-WISE</h3>
+                <p>Where time meets style. Your premium destination for exclusive and luxury timepieces.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <a href="#" onclick="filterCategory('men')">Men's Collection</a>
+                <a href="#" onclick="filterCategory('women')">Women's Collection</a>
+                <a href="#" onclick="filterCategory('limited')">Limited Edition</a>
+            </div>
+            <div class="footer-column">
+                <h3>Customer Care</h3>
+                <a href="#">Support Policy</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms and Conditions</a>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>Email: support@clockwise.com</p>
+                <p>Phone: +63 912 345 6789</p>
+                <p>Maragondon, Cavite, PH</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Clock-wise Luxury Store. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <div id="cart-modal" class="modal"> 
         <div class="modal-content">
             <span class="close-btn" onclick="closeCart()">&times;</span>
             <h2>Your Cart 🛒</h2>
-            <div id="cart-items-list">
-                </div>
-            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <div id="cart-items-list"></div>
+            <hr style="border: 0; border-top: 1px solid #303056; margin: 20px 0;">
             <p style="font-size: 1.2rem; font-weight: bold;">Total: ₱<span id="cart-total-price">0.00</span></p>
-            <button class="add-btn" onclick="alert('Proceeding to checkout!')">Checkout</button>
+            <button class="add-btn" style="background-color: #4caf50;" onclick="alert('Proceeding to checkout!')">Checkout</button>
         </div>
     </div>
 
     <div id="details-modal" class="modal">
         <div class="modal-content" style="max-width: 600px;">
             <span class="close-btn" onclick="closeDetails()">&times;</span>
-            <div id="details-content" style="display: flex; gap: 20px; align-items: center; text-align: left;">
-                </div>
+            <div id="details-content" style="display: flex; gap: 20px; align-items: center; text-align: left;"></div>
         </div>
     </div>
 
-    <div id="toast-notification" class="toast">Item added to cart!</div>
+    <div id="login-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-btn" onclick="closeLogin()">&times;</span>
+            <h2 id="login-title">Welcome Back</h2>
+            <p id="login-subtitle">Please login to start shopping</p>
+            <form id="auth-form" onsubmit="handleAuth(event)" style="margin-top: 20px;">
+                <input type="text" id="auth-username" placeholder="Username" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                <input type="password" id="auth-password" placeholder="Password" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                <button type="submit" id="auth-submit-btn" class="add-btn" style="width: 100%;">Login</button>
+            </form>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                <span id="toggle-text">Don't have an account?</span> 
+                <a href="#" onclick="toggleAuthMode()" id="toggle-link" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Register here</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="toast"></div>
 
     <script src="script.js"></script>
 </body>
