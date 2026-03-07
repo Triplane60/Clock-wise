@@ -35,6 +35,9 @@
                 <h3>Midnight Diver</h3>
                 <p class="category-tag">Men's Collection</p>
                 <p class="price">₱150.00</p>
+    
+                <button class="details-btn" onclick="openDetails('Midnight Diver')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
+    
                 <button class="add-btn" onclick="addToCart('Midnight Diver', 150.00)">Add to Cart</button>
             </div>
 
@@ -43,6 +46,10 @@
                 <h3>Alpine Explorer</h3>
                 <p class="category-tag">Men's Collection</p>
                 <p class="price">₱180.00</p>
+
+                <button class="details-btn" onclick="openDetails('Alpine Explorer')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
+    
+
                 <button class="add-btn" onclick="addToCart('Alpine Explorer', 180.00)">Add to Cart</button>
             </div>
 
@@ -51,6 +58,9 @@
                 <h3>Silver Classic</h3>
                 <p class="category-tag">Women's Collection</p>
                 <p class="price">₱120.00</p>
+
+                <button class="details-btn" onclick="openDetails('Silver Classic')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
+    
                 <button class="add-btn" onclick="addToCart('Silver Classic', 120.00)">Add to Cart</button>
             </div>
 
@@ -59,6 +69,9 @@
                 <h3>Rose Gold Petit</h3>
                 <p class="category-tag">Women's Collection</p>
                 <p class="price">₱140.00</p>
+
+                <button class="details-btn" onclick="openDetails('Rose Gold Petit')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
+    
                 <button class="add-btn" onclick="addToCart('Rose Gold Petit', 140.00)">Add to Cart</button>
             </div>
 
@@ -67,6 +80,9 @@
                 <h3>The Golden Era</h3>
                 <p class="category-tag">Limited Edition</p>
                 <p class="price">₱199.00</p>
+
+                <button class="details-btn" onclick="openDetails('The Golden Era')" style="background: none; border: 1px solid #7e57c2; color: #7e57c2; margin-bottom: 5px; padding: 5px; cursor: pointer; border-radius: 4px; width: 100%;">View Details</button>
+    
                 <button class="add-btn" onclick="addToCart('The Golden Era', 199.00)">Add to Cart</button>
             </div>
         </div>
@@ -81,6 +97,14 @@
             <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
             <p style="font-size: 1.2rem; font-weight: bold;">Total: ₱<span id="cart-total-price">0.00</span></p>
             <button class="add-btn" onclick="alert('Proceeding to checkout!')">Checkout</button>
+        </div>
+    </div>
+
+    <div id="details-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-btn" onclick="closeDetails()">&times;</span>
+            <div id="details-content" style="display: flex; gap: 20px; align-items: center; text-align: left;">
+                </div>
         </div>
     </div>
 
