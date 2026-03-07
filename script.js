@@ -156,3 +156,67 @@ function showNotification(message) {
         toast.classList.remove("show");
     }, 3000);
 }
+<<<<<<< HEAD
+
+const productInfo = {
+    "Midnight Diver": {
+        description: "A rugged masterpiece designed for the deep sea. Features a luminous dial and stainless steel casing.",
+        specs: "Water resistant: 200m | Movement: Automatic | Case: 42mm",
+        icon: "🌊"
+    },
+    "Alpine Explorer": {
+        description: "Built for the highest peaks. Lightweight titanium and scratch-resistant sapphire crystal.",
+        specs: "Altimeter included | Movement: Quartz | Case: 40mm",
+        icon: "⛰️"
+    },
+    "Silver Classic": {
+        description: "Timeless elegance for every occasion. A sleek silver finish that matches any outfit.",
+        specs: "Strap: Genuine Leather | Movement: Quartz | Case: 38mm",
+        icon: "💎"
+    },
+    "Rose Gold Petit": {
+        description: "A delicate touch of luxury. Designed for smaller wrists with a stunning rose gold hue.",
+        specs: "Strap: Mesh Gold | Movement: Japanese Quartz | Case: 32mm",
+        icon: "🌸"
+    },
+    "The Golden Era": {
+        description: "A rare collector's piece. Limited to only 100 units worldwide with 18k gold accents.",
+        specs: "Gold Plating: 18k | Movement: Swiss Automatic | Case: 41mm",
+        icon: "✨"
+    }
+};
+
+function openDetails(watchName) {
+    const modal = document.getElementById("details-modal");
+    const container = document.getElementById("details-content");
+    const data = productInfo[watchName];
+
+    if (!data) return;
+
+    container.innerHTML = `
+        <div style="font-size: 80px;">${data.icon}</div>
+        <div style="text-align: left;">
+            <h2 style="margin-bottom: 10px; color: #2e004f;">${watchName}</h2>
+            <p style="color: #555; line-height: 1.5;">${data.description}</p>
+            <p style="margin-top: 15px; font-weight: bold; font-size: 0.9em; color: #7e57c2;">${data.specs}</p>
+            <button class="add-btn" style="margin-top: 20px;" onclick="addToCart('${watchName}', ${getPrice(watchName)})">
+                Add to Cart
+            </button>
+        </div>
+    `;
+
+    modal.style.display = "block";
+}
+
+function closeDetails() {
+    document.getElementById("details-modal").style.display = "none";
+}
+
+function getPrice(name) {
+    if (name === "Midnight Diver") return 150.0;
+    if (name === "Alpine Explorer") return 180.0;
+    if (name === "Silver Classic") return 120.0;
+    if (name === "Rose Gold Petit") return 140.0;
+    if (name === "The Golden Era") return 199.0;
+    return 0;
+}
