@@ -9,10 +9,9 @@
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: #f3f0f7; /* Very light violet tint for background */
+    background-color: #f3f0f7; 
 }
 
-/* HEADER STYLE */
 .main-header {
     background-color: var(--indigo-dark);
     color: var(--white);
@@ -50,7 +49,6 @@ body {
     cursor: pointer;
 }
 
-/* CATEGORY BAR */
 .category-bar {
     background-color: var(--white);
     display: flex;
@@ -74,7 +72,6 @@ body {
     border-bottom: 3px solid var(--violet-main);
 }
 
-/* CONTENT AREA */
 .content-area {
     padding: 50px 10%;
     text-align: center;
@@ -86,7 +83,7 @@ body {
     padding: 100px;
     border-radius: 10px;
 }
-/* Grid Layout */
+
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -94,19 +91,18 @@ body {
     padding: 20px 0;
 }
 
-/* Watch Cards */
 .watch-card {
     background: white;
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     transition: 0.3s;
-    border: 1px solid #e1bee7; /* Light violet border */
+    border: 1px solid #e1bee7; 
 }
 
 .watch-card:hover {
     transform: translateY(-5px);
-    border-color: #7e57c2; /* Indigo border on hover */
+    border-color: #7e57c2; 
 }
 
 .image-placeholder {
@@ -130,7 +126,7 @@ body {
 
 .add-btn {
     width: 100%;
-    background-color: #2e004f; /* Indigo */
+    background-color: #2e004f; 
     color: white;
     border: none;
     padding: 10px;
@@ -140,14 +136,13 @@ body {
 
 .price {
     font-weight: 700;
-    color: #4b0082; /* Indigo to match your header */
+    color: #4b0082; 
     font-size: 1.25rem;
     margin-top: 8px;
 }
 
-/* The semi-transparent background */
 .modal {
-    display: none; /* Hidden by default */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -157,7 +152,6 @@ body {
     background-color: rgba(0,0,0,0.5);
 }
 
-/* The actual cart box */
 .modal-content {
     background-color: white;
     margin: 15% auto;
@@ -180,7 +174,7 @@ body {
 .toast {
     visibility: hidden;
     min-width: 250px;
-    background-color: #4b0082; /* Your Indigo color */
+    background-color: #4b0082; 
     color: #fff;
     text-align: center;
     border-radius: 8px;
