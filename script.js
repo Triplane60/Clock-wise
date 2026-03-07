@@ -156,8 +156,6 @@ function showNotification(message) {
         toast.classList.remove("show");
     }, 3000);
 }
-<<<<<<< HEAD
-
 const productInfo = {
     "Midnight Diver": {
         description: "A rugged masterpiece designed for the deep sea. Features a luminous dial and stainless steel casing.",
