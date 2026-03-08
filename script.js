@@ -77,43 +77,48 @@ function closeLogin() {
 
 function toggleAuthMode() {
     isRegisterMode = !isRegisterMode;
-    document.getElementById("login-title").innerText = isRegisterMode ? "Create Account" : "Welcome Back";
-    document.getElementById("auth-submit-btn").innerText = isRegisterMode ? "Register" : "Login";
-    document.getElementById("toggle-link").innerText = isRegisterMode ? "Login here" : "Register here";
+
+    if (isRegisterMode == true) {
+        document.getElementById("login-title").innerText = "Create Account";
+        document.getElementById("auth-submit-btn").innerText = "Register";
+        document.getElementById("toggle-link").innerText = "Login here";
+    } else {
+        document.getElementById("login-title").innerText = "Welcome Back";
+        document.getElementById("auth-submit-btn").innerText = "Login";
+        document.getElementById("toggle-link").innerText = "Register here";
+    }
 }
 
 function handleAuth(event) {
     event.preventDefault(); 
-    
-    const user = document.getElementById("auth-username").value;
-    const pass = document.getElementById("auth-password").value;
+    var user = document.getElementById("auth-username").value;
+    var pass = document.getElementById("auth-password").value;
 
-    if (user.trim() !== "" && pass.trim() !== "") {
+    if (user != "" && pass != "") {
         isLoggedIn = true;
         closeLogin(); 
-        
-        if (isRegisterMode) {
-            showNotification(`Account created for ${user}!`);
+        if (isRegisterMode == true) {
+            showNotification("Account created for " + user + "!");
         } else {
-            showNotification(`Welcome back, ${user}!`);
+            showNotification("Welcome back, " + user + "!");
         }
-        
-        document.getElementById("user-display").innerText = user;
+        document.getElementById("user-display").innerText = "👤 " + user;
     } else {
         showNotification("Please enter a username and password.");
     }
 }
 
 function addToCart(name) {
-    const watch = watchData[name];
+    var watch = watchData[name];
     if (watch && watch.stock > 0) {
-        watch.stock -= 1; 
+        watch.stock = watch.stock - 1; 
         cart.push({ name: name, price: watch.price });
-        total += watch.price;
+        total = total + watch.price;
         
         updateCartDisplay();
         renderCartItems();
-        showNotification(`✨ ${name} added to cart!`);
+        
+        showNotification("✨ " + name + " added to cart!");
 
         if (document.getElementById("details-modal").style.display === "block") {
             openDetails(name);
@@ -124,123 +129,99 @@ function addToCart(name) {
 }
 
 function removeFromCart(index) {
-    const itemName = cart[index].name;
+    var itemName = cart[index].name;
     if (watchData[itemName]) {
-        watchData[itemName].stock += 1; 
+        watchData[itemName].stock = watchData[itemName].stock + 1; 
     }
-    total -= cart[index].price;
+    total = total - cart[index].price;
     cart.splice(index, 1);
     
     updateCartDisplay();
     renderCartItems();
 }
 
-function openDetails(name) {
-    const data = watchData[name];
-    if (!data) return;
+function renderCartItems() {
+    var list = document.getElementById("cart-items-list");
+    var totalDisplay = document.getElementById("cart-total-price");
+    
+    if (cart.length === 0) {
+        list.innerHTML = "<p style='color: #888; padding: 20px;'>Empty cart</p>";
+    } else {
+        var cartHTML = "";
+        for (var i = 0; i < cart.length; i++) {
+            cartHTML += '<div class="cart-item" style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">';
+            cartHTML += '<span>' + cart[i].name + '</span>';
+            cartHTML += '<span>₱' + cart[i].price.toFixed(2) + ' <button onclick="removeFromCart(' + i + ')" style="color:red; border:none; background:none; cursor:pointer;">x</button></span>';
+            cartHTML += '</div>';
+        }
+        list.innerHTML = cartHTML;
+    }
+    totalDisplay.innerText = total.toFixed(2);
+}
 
-    const container = document.getElementById("details-content");
-    container.innerHTML = `
-        <div style="font-size: 80px;">${data.icon}</div>
-        <div style="text-align: left;">
-            <h2 style="color: #2e004f;">${name}</h2>
-            <p>${data.desc}</p>
-            <p style="margin-top: 10px; font-weight: bold; color: ${data.stock > 0 ? 'green' : 'red'};">
-                Stock: ${data.stock}
-            </p>
-            <p style="color: #7e57c2; font-size: 0.9em;">${data.specs}</p>
-            <button class="add-btn" style="margin-top: 20px;" onclick="addToCart('${name}')">
-                Add to Cart - ₱${data.price.toFixed(2)}
-            </button>
-        </div>
-    `;
+function openDetails(name) {
+    var data = watchData[name];
+    var container = document.getElementById("details-content");
+    
+    var stockColor = "green";
+    if (data.stock <= 0) {
+        stockColor = "red";
+    }
+
+    var content = '<div style="font-size: 80px;">' + data.icon + '</div>'; 
+    content += '<div style="text-align: left;">';
+    content += '<h2 style="color: #2e004f;">' + name + '</h2>';
+    content += '<p>' + data.desc + '</p>';
+    content += '<p style="margin-top: 10px; font-weight: bold; color: ' + stockColor + ';">Stock: ' + data.stock + '</p>';
+    content += '<p style="color: #7e57c2; font-size: 0.9em;">' + data.specs + '</p>';
+    content += '<button class="add-btn" style="margin-top: 20px;" onclick="addToCart(\'' + name + '\')">Add to Cart - ₱' + data.price.toFixed(2) + '</button>';
+    content += '</div>';
+    
+    container.innerHTML = content;
     document.getElementById("details-modal").style.display = "block";
 }
-
-window.onclick = function(event) {
-    const cartModal = document.getElementById("cart-modal");
-    const detailsModal = document.getElementById("details-modal");
-    if (event.target == cartModal) cartModal.style.display = "none";
-    if (event.target == detailsModal) detailsModal.style.display = "none";
-}
-
 function updateCartDisplay() { document.getElementById('cart-count').innerText = cart.length; }
 function openCart() { document.getElementById("cart-modal").style.display = "block"; }
 function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
 function closeDetails() { document.getElementById("details-modal").style.display = "none"; }
 
-function renderCartItems() {
-    const list = document.getElementById("cart-items-list");
-    const totalDisplay = document.getElementById("cart-total-price");
-    if (!list) return;
-
-    if (cart.length === 0) {
-        list.innerHTML = "<p style='color: #888; padding: 20px;'>Empty cart</p>";
-    } else {
-        list.innerHTML = cart.map((item, index) => `
-            <div class="cart-item" style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
-                <span>${item.name}</span>
-                <span>₱${item.price.toFixed(2)} <button onclick="removeFromCart(${index})" style="color:red; border:none; background:none; cursor:pointer;">x</button></span>
-            </div>
-        `).join('');
-    }
-    totalDisplay.innerText = total.toFixed(2);
-}
-
 function showNotification(msg) {
-    const toast = document.getElementById("toast-notification");
+    var toast = document.getElementById("toast-notification");
     toast.innerText = msg;
     toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 3000);
+    setTimeout(function() { toast.classList.remove("show"); }, 3000);
 }
 
 function filterCategory(category) {
-    const cards = document.querySelectorAll('.watch-card');
-    
-    cards.forEach(card => {
-        if (category === 'all' || card.classList.contains(category)) {
-            card.style.display = 'block'; 
+    var cards = document.querySelectorAll('.watch-card');
+    for (var i = 0; i < cards.length; i++) {
+        if (category === 'all' || cards[i].classList.contains(category)) {
+            cards[i].style.display = 'block'; 
         } else {
-            card.style.display = 'none';  
+            cards[i].style.display = 'none';  
         }
-    });
-
+    }
+    var buttons = document.querySelectorAll('.nav-item');
+    for (var j = 0; j < buttons.length; j++) {
+        buttons[j].classList.remove('active');
+    }
     if (window.event && window.event.target) {
-        const buttons = document.querySelectorAll('.nav-item');
-        buttons.forEach(btn => btn.classList.remove('active'));
         window.event.target.classList.add('active');
     }
 }
 
 function autoSlide() {
-    const container = document.getElementById("slides");
+    var container = document.getElementById("slides");
     if (!container) return; 
-    
     currentSlide = (currentSlide + 1) % 2; 
-    
-    container.style.transform = `translateX(-${currentSlide * 50}%)`;
+    container.style.transform = "translateX(-" + (currentSlide * 50) + "%)";
 }
 
 setInterval(autoSlide, 4000);
 
-function handleAuth(event) {
-    event.preventDefault(); 
-    
-    const user = document.getElementById("auth-username").value;
-    const pass = document.getElementById("auth-password").value;
-
-    if (user.trim() !== "" && pass.trim() !== "") {
-        isLoggedIn = true;
-        closeLogin(); 
-        
-        if (isRegisterMode) {
-            showNotification(`Account created for ${user}!`);
-        } else {
-            showNotification(`Welcome back, ${user}!`);
-        }
-        
-        document.getElementById("user-display").innerText = `👤 ${user}`;
-    } else {
-        showNotification("Please enter a username and password.");
-    }
+window.onclick = function(event) {
+    var cartModal = document.getElementById("cart-modal");
+    var detailsModal = document.getElementById("details-modal");
+    if (event.target == cartModal) cartModal.style.display = "none";
+    if (event.target == detailsModal) detailsModal.style.display = "none";
 }
