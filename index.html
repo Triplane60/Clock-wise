@@ -16,9 +16,9 @@
             <input type="text" id="searchInput" placeholder="Search for premium timepieces...">
             <button class="search-btn">🔍</button>
         </div>
-        <div class="cart-icon" style="cursor: pointer;">
-            <span onclick="openCart()">🛒 <span id="cart-count">0</span></span>
-            <span id="user-display" onclick="openLoginModal()" style="margin-left: 15px;">👤 Login</span>
+        <div class="cart-icon" style="display: flex; gap: 20px; align-items: center;">
+            <span onclick="openCart()" style="cursor: pointer;">🛒 <span id="cart-count">0</span></span>
+           <span onclick="openLoginModal()" style="cursor: pointer;" id="user-display">👤 Login</span>
         </div>
     </header>
 
@@ -212,15 +212,19 @@
     </div>
 
     <div id="login-modal" class="modal">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <span class="close-btn" onclick="closeLogin()">&times;</span>
-            <h2 id="login-title">Welcome Back</h2>
+        <div class="modal-content" style="max-width: 400px; text-align: center; background-color: #ffffff; color: #333;">
+            <span class="close-btn" onclick="closeLogin()" style="color: #333;">&times;</span>
+            <h2 id="login-title" style="color: #2e004f;">Welcome Back</h2>
             <p id="login-subtitle">Please login to start shopping</p>
+            
             <form id="auth-form" onsubmit="handleAuth(event)" style="margin-top: 20px;">
-                <input type="text" id="auth-username" placeholder="Username" required style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                <input type="password" id="auth-password" placeholder="Password" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                <button type="submit" id="auth-submit-btn" class="add-btn" style="width: 100%;">Login</button>
+                <input type="text" id="auth-username" placeholder="Username" required 
+                    style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                <input type="password" id="auth-password" placeholder="Password" required 
+                    style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                <button type="submit" id="auth-submit-btn" class="add-btn" style="width: 100%; padding: 12px;">Login</button>
             </form>
+
             <p style="margin-top: 20px; font-size: 0.9em;">
                 <span id="toggle-text">Don't have an account?</span> 
                 <a href="#" onclick="toggleAuthMode()" id="toggle-link" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Register here</a>

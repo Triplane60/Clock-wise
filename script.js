@@ -64,6 +64,45 @@ const watchData = {
 let cart = [];
 let total = 0;
 let currentSlide = 0;
+let isLoggedIn = false;
+let isRegisterMode = false;
+
+function openLoginModal() { 
+    document.getElementById("login-modal").style.display = "block"; 
+}
+
+function closeLogin() { 
+    document.getElementById("login-modal").style.display = "none"; 
+}
+
+function toggleAuthMode() {
+    isRegisterMode = !isRegisterMode;
+    document.getElementById("login-title").innerText = isRegisterMode ? "Create Account" : "Welcome Back";
+    document.getElementById("auth-submit-btn").innerText = isRegisterMode ? "Register" : "Login";
+    document.getElementById("toggle-link").innerText = isRegisterMode ? "Login here" : "Register here";
+}
+
+function handleAuth(event) {
+    event.preventDefault(); 
+    
+    const user = document.getElementById("auth-username").value;
+    const pass = document.getElementById("auth-password").value;
+
+    if (user.trim() !== "" && pass.trim() !== "") {
+        isLoggedIn = true;
+        closeLogin(); 
+        
+        if (isRegisterMode) {
+            showNotification(`Account created for ${user}!`);
+        } else {
+            showNotification(`Welcome back, ${user}!`);
+        }
+        
+        document.getElementById("user-display").innerText = user;
+    } else {
+        showNotification("Please enter a username and password.");
+    }
+}
 
 function addToCart(name) {
     const watch = watchData[name];
@@ -183,3 +222,25 @@ function autoSlide() {
 }
 
 setInterval(autoSlide, 4000);
+
+function handleAuth(event) {
+    event.preventDefault(); 
+    
+    const user = document.getElementById("auth-username").value;
+    const pass = document.getElementById("auth-password").value;
+
+    if (user.trim() !== "" && pass.trim() !== "") {
+        isLoggedIn = true;
+        closeLogin(); 
+        
+        if (isRegisterMode) {
+            showNotification(`Account created for ${user}!`);
+        } else {
+            showNotification(`Welcome back, ${user}!`);
+        }
+        
+        document.getElementById("user-display").innerText = `👤 ${user}`;
+    } else {
+        showNotification("Please enter a username and password.");
+    }
+}
