@@ -16,9 +16,10 @@
             <input type="text" id="searchInput" placeholder="Search for premium timepieces...">
             <button class="search-btn">🔍</button>
         </div>
-        <div class="cart-icon" style="display: flex; gap: 20px; align-items: center;">
+        <div class="cart-icon" style="display: flex; gap: 15px; align-items: center;">
             <span onclick="openCart()" style="cursor: pointer;">🛒 <span id="cart-count">0</span></span>
-           <span onclick="openLoginModal()" style="cursor: pointer;" id="user-display">👤 Login</span>
+            <span onclick="openLoginModal()" style="cursor: pointer;" id="user-display">👤 Login</span>
+            <button id="logout-btn" onclick="handleLogout()" style="display: none; background: #7e57c2; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Logout</button>
         </div>
     </header>
 
@@ -173,6 +174,7 @@
                 <h3>Quick Links</h3>
                 <a href="#" onclick="filterCategory('men')">Men's Collection</a>
                 <a href="#" onclick="filterCategory('women')">Women's Collection</a>
+                <a href="#" onclick="filterCategory('kids')">Kids' Collection</a>
                 <a href="#" onclick="filterCategory('limited')">Limited Edition</a>
             </div>
             <div class="footer-column">
@@ -220,8 +222,12 @@
             <form id="auth-form" onsubmit="handleAuth(event)" style="margin-top: 20px;">
                 <input type="text" id="auth-username" placeholder="Username" required 
                     style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                <input type="password" id="auth-password" placeholder="Password" required 
-                    style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                
+                <div style="position: relative; width: 100%;">
+                    <input type="password" id="auth-password" placeholder="Password" required 
+                        style="width: 100%; padding: 12px; padding-right: 40px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                    <span id="eye-icon" onclick="togglePasswordVisibility()" style="position: absolute; right: 12px; top: 12px; cursor: pointer; color: #7e57c2;">👁️</span>
+                </div>
                 <button type="submit" id="auth-submit-btn" class="add-btn" style="width: 100%; padding: 12px;">Login</button>
             </form>
 
