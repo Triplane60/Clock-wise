@@ -18,8 +18,14 @@
         </div>
         <div class="cart-icon" style="display: flex; gap: 15px; align-items: center;">
             <span onclick="openCart()" style="cursor: pointer;">🛒 <span id="cart-count">0</span></span>
-            <span onclick="openLoginModal()" style="cursor: pointer;" id="user-display">👤 Login</span>
-            <button id="logout-btn" onclick="handleLogout()" style="display: none; background: #7e57c2; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Logout</button>
+            
+            <div style="position: relative; display: inline-block;">
+                <span onclick="handleUserClick()" style="cursor: pointer;" id="user-display">👤 Login</span>
+                
+                <div id="user-dropdown" class="user-dropdown">
+                    <button onclick="handleLogout()" class="dropdown-item">Logout</button>
+                </div>
+            </div>
         </div>
     </header>
 
