@@ -70,32 +70,29 @@ body {
 }
 
 .category-bar {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    background-color: var(--white);
-    padding: 15px 0;
-    border-bottom: 2px solid #eee; 
-    position: sticky;
-    top: 0;
-    z-index: 100; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    display: block;      
+    text-align: center;  
+    padding: 20px 0;
+    background: #f8f9fa; 
+    border-bottom: 1px solid #ddd;
 }
 
 .nav-item {
-    background: none;
-    border: none;
-    font-size: 16px; 
+    display: inline-block; 
+    margin: 0 15px;        
     padding: 10px 20px;
-    font-weight: 600;
-    color: var(--indigo-medium);
+    border: 1px solid #7e57c2;
+    background: white;
+    color: #7e57c2;
+    border-radius: 20px;
     cursor: pointer;
+    font-size: 16px;
     transition: 0.3s;
 }
 
-.nav-item:hover, .nav-item.active {
-    color: var(--violet-main);
-    border-bottom: 3px solid var(--violet-main);
+.nav-item.active, .nav-item:hover {
+    background: #7e57c2;
+    color: white;
 }
 
 .hero-banner {

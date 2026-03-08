@@ -1,6 +1,3 @@
-// ==========================================================================
-// 1. PRODUCT DATA & GLOBAL VARIABLES
-// ==========================================================================
 var watchData = {
     "Midnight Diver": { desc: "Rugged masterpiece for deep-sea exploration.", specs: "200m Waterproof | Strap: Rubber", icon: "🌊", price: 150.00, stock: 12 },
     "Alpine Explorer": { desc: "Built for those who reach the highest peaks.", specs: "Altimeter | Strap: Leather", icon: "⛰️", price: 180.00, stock: 5 },
@@ -203,19 +200,12 @@ function filterCategory(category) {
             cards[i].style.display = 'none';  
         }
     }
-
     var buttons = document.querySelectorAll('.nav-item');
     for (var j = 0; j < buttons.length; j++) {
         buttons[j].classList.remove('active');
     }
-
-    for (var k = 0; k < buttons.length; k++) {
-        var btnText = buttons[k].innerText.toLowerCase();
-        if (btnText.includes(category)) {
-            buttons[k].classList.add('active');
-        } else if (category === 'all' && btnText.includes('all')) {
-            buttons[k].classList.add('active');
-        }
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
     }
 }
 
