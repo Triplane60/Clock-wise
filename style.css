@@ -224,6 +224,7 @@ body {
     background-color: #f8f4ff;
 }
 
+/* --- ORIGINAL MODAL STYLES (UPDATED) --- */
 .modal {
     display: none; 
     position: fixed;
@@ -244,7 +245,48 @@ body {
     width: 90%;
     max-width: 450px;
     position: relative;
+    /* Pinagsamang shadow at font style */
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+/* --- BAGONG DAGDAG PARA SA SHOPEE-STYLE LOGIN --- */
+
+/* Style para sa Social Buttons (Google & Facebook) */
+.social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect para sa Social Buttons */
+.social-btn:hover {
+    background-color: #f8f8f8;
+    border-color: #7e57c2; /* Mag-vi-violet ang border pag itinapat ang mouse */
+}
+
+/* Para sa Login Button hover */
+.add-btn:hover {
+    background-color: #5e35b1 !important; /* Mas madilim na violet pag ni-hover */
+    transform: translateY(-1px); /* Konting angat effect */
+}
+
+/* Responsive adjustment para sa maliliit na screen */
+@media (max-width: 400px) {
+    .social-login-container {
+        flex-direction: column;
+    }
 }
 
 .close-btn {
