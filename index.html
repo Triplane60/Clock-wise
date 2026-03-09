@@ -62,21 +62,17 @@
         <section class="category-showcase">
             <h2>Shop by Category</h2>
             <div class="category-grid">
-                <div class="category-card" onclick="showShopWithCategory('men')">
-                    <div class="category-image">👔</div>  
-                    <h3>Men</h3>
+                <div class="category-card" onclick="showShopWithCategory('gentlemen')">
+                    <img src="images/gentlemen-category.jpg" alt="Gentlemen's Watches" class="category-image">
+                    <h3>Gentlemen</h3>
                 </div>
-                <div class="category-card" onclick="showShopWithCategory('women')">
-                    <div class="category-image">👚</div>  
-                    <h3>Women</h3>
+                <div class="category-card" onclick="showShopWithCategory('ladies')">
+                    <img src="images/ladies-category.jpg" alt="Ladies' Watches" class="category-image">
+                    <h3>Ladies</h3>
                 </div>
-                <div class="category-card" onclick="showShopWithCategory('kids')">
-                    <div class="category-image">🧸</div>  
-                    <h3>Kids</h3>
-                </div>
-                <div class="category-card" onclick="showShopWithCategory('limited')">
-                    <div class="category-image">⭐</div>  
-                    <h3>Limited Edition</h3>
+                <div class="category-card" onclick="showShopWithCategory('new-arrivals')">
+                    <img src="images/new-arrivals-category.jpg" alt="New Arrivals" class="category-image">
+                    <h3>New Arrivals</h3>
                 </div>
             </div>
         </section>
@@ -162,11 +158,11 @@
 
         <nav class="category-bar">
             <button class="nav-item active" onclick="filterCategory('all')">All Watches</button>
-            <button class="nav-item" onclick="filterCategory('men')">Men</button>
-            <button class="nav-item" onclick="filterCategory('women')">Women</button>
-            <button class="nav-item" onclick="filterCategory('kids')">Kids</button>
-            <button class="nav-item" onclick="filterCategory('limited')">Limited Edition</button>
+            <button class="nav-item" onclick="filterCategory('gentlemen')">Gentlemen</button>
+            <button class="nav-item" onclick="filterCategory('ladies')">Ladies</button>
+            <button class="nav-item" onclick="filterCategory('new-arrivals')">New Arrivals</button>
         </nav>
+
 
         <div class="hero-banner">
             <div class="slides-container" id="slides">
@@ -189,98 +185,74 @@
 
         <main class="content-area">
             <div class="product-grid" id="watchContainer">
-                <div class="watch-card men">
+                <div class="watch-card gentlemen">
                     <img src="watch-one.png" alt="Midnight Diver Watch" class="image-placeholder">
                     <h3>Midnight Diver</h3>
-                    <p class="category-tag">Men's Collection</p>
+                    <p class="category-tag">Gentlemen's Collection</p>
                     <p class="price">₱150.00</p>
                     <button class="details-btn" onclick="openDetails('Midnight Diver')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Midnight Diver')">Add to Cart</button>
                 </div>
-                <div class="watch-card men">
+                <div class="watch-card gentlemen">
                     <img src="watch-two.png" alt="Alpine Explore Watch" class="image-placeholder">
                     <h3>Alpine Explorer</h3>
-                    <p class="category-tag">Men's Collection</p>
+                    <p class="category-tag">Gentlemen's Collection</p>
                     <p class="price">₱180.00</p>
                     <button class="details-btn" onclick="openDetails('Alpine Explorer')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Alpine Explorer')">Add to Cart</button>
                 </div>
-                <div class="watch-card men">
+                <div class="watch-card gentlemen">
                     <img src="watch-three.png" alt="Titan Stealth Watch" class="image-placeholder">
                     <h3>Titan Stealth</h3>
-                    <p class="category-tag">Men's Collection</p>
+                    <p class="category-tag">Gentlemen's Collection</p>
                     <p class="price">₱210.00</p>
                     <button class="details-btn" onclick="openDetails('Titan Stealth')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Titan Stealth')">Add to Cart</button>
                 </div>
-                <div class="watch-card women">
+                <div class="watch-card ladies">
                     <div class="image-placeholder">✨</div>
                     <h3>Starlight Pearl</h3>
-                    <p class="category-tag">Women's Collection</p>
+                    <p class="category-tag">Ladies' Collection</p>
                     <p class="price">₱165.00</p>
                     <button class="details-btn" onclick="openDetails('Starlight Pearl')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Starlight Pearl')">Add to Cart</button>
                 </div>
-                <div class="watch-card women">
+                <div class="watch-card ladies">
                     <div class="image-placeholder">💎</div>
                     <h3>Silver Classic</h3>
-                    <p class="category-tag">Women's Collection</p>
+                    <p class="category-tag">Ladies' Collection</p>
                     <p class="price">₱120.00</p>
                     <button class="details-btn" onclick="openDetails('Silver Classic')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Silver Classic')">Add to Cart</button>
                 </div>
-                <div class="watch-card women">
+                <div class="watch-card ladies">
                     <div class="image-placeholder">🌸</div>
                     <h3>Rose Gold Petit</h3>
-                    <p class="category-tag">Women's Collection</p>
+                    <p class="category-tag">Ladies' Collection</p>
                     <p class="price">₱140.00</p>
                     <button class="details-btn" onclick="openDetails('Rose Gold Petit')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Rose Gold Petit')">Add to Cart</button>
                 </div>
-                <div class="watch-card kids">
-                    <div class="image-placeholder">🚀</div>
-                    <h3>Sky Rocket</h3>
-                    <p class="category-tag">Kid's Collection</p>
-                    <p class="price">₱45.00</p>
-                    <button class="details-btn" onclick="openDetails('Sky Rocket')">View Details</button>
-                    <button class="add-btn" onclick="addToCart('Sky Rocket')">Add to Cart</button>
-                </div>
-                <div class="watch-card kids">
-                    <div class="image-placeholder">🦖</div>
-                    <h3>Dino Track</h3>
-                    <p class="category-tag">Kid's Collection</p>
-                    <p class="price">₱40.00</p>
-                    <button class="details-btn" onclick="openDetails('Dino Track')">View Details</button>
-                    <button class="add-btn" onclick="addToCart('Dino Track')">Add to Cart</button>
-                </div>
-                <div class="watch-card kids">
-                    <div class="image-placeholder">🌈</div>
-                    <h3>Neon Pulse</h3>
-                    <p class="category-tag">Kid's Collection</p>
-                    <p class="price">₱55.00</p>
-                    <button class="details-btn" onclick="openDetails('Neon Pulse')">View Details</button>
-                    <button class="add-btn" onclick="addToCart('Neon Pulse')">Add to Cart</button>
-                </div>
-                <div class="watch-card limited">
+                <div class="watch-card new-arrivals">
                     <div class="image-placeholder">👑</div>
                     <h3>The Golden Era</h3>
-                    <p class="category-tag">Limited Edition</p>
+                    <p class="category-tag">New Arrivals</p>
                     <p class="price">₱199.00</p>
                     <button class="details-btn" onclick="openDetails('The Golden Era')">View Details</button>
                     <button class="add-btn" onclick="addToCart('The Golden Era')">Add to Cart</button>
                 </div>
-                <div class="watch-card limited">
+                <div class="watch-card new-arrivals">
                     <div class="image-placeholder">🌙</div>
                     <h3>Lunar Eclipse</h3>
-                    <p class="category-tag">Limited Edition</p>
+                    <p class="category-tag">New Arrivals</p>
                     <p class="price">₱250.00</p>
                     <button class="details-btn" onclick="openDetails('Lunar Eclipse')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Lunar Eclipse')">Add to Cart</button>
                 </div>
-                <div class="watch-card limited">
+                <div class="watch-card new-arrivals">
                     <div class="image-placeholder">📜</div>
                     <h3>Heritage 1920</h3>
-                    <p class="category-tag">Limited Edition</p>
+                    <p class="category-tag">New Arrivals</p>
                     <p class="price">₱225.00</p>
                     <button class="details-btn" onclick="openDetails('Heritage 1920')">View Details</button>
                     <button class="add-btn" onclick="addToCart('Heritage 1920')">Add to Cart</button>
@@ -389,8 +361,7 @@
                 <h3>Quick Links</h3>
                 <a href="#" onclick="showShopWithCategory('men'); return false;">Men's Collection</a>
                 <a href="#" onclick="showShopWithCategory('women'); return false;">Women's Collection</a>
-                <a href="#" onclick="showShopWithCategory('kids'); return false;">Kids' Collection</a>
-                <a href="#" onclick="showShopWithCategory('limited'); return false;">Limited Edition</a>
+                <a href="#" onclick="showShopWithCategory('limited'); return false;">New Arrivals</a>
             </div>
             <div class="footer-column">
                 <h3>Customer Care</h3>
