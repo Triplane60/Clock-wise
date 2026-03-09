@@ -309,6 +309,7 @@ body {
 .item-name {
     color: var(--indigo-dark);
     font-weight: bold;
+    margin-left: 10px; 
 }
 
 .item-price {

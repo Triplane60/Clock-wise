@@ -67,31 +67,24 @@ function handleAuth(event) {
     var pass = document.getElementById("auth-password").value;
 
     if (isRegisterMode) {
-        if (pass.length < 8) {
-            showNotification("Password must be at least 8 characters! 🛑");
+        if (pass.length < 8 || !/[a-zA-Z]/.test(pass)) {
+            showNotification("Password needs 8 chars and 1 letter! 🛑");
             return;
         }
-
-        var hasLetter = /[a-zA-Z]/.test(pass); 
-        if (!hasLetter) {
-            showNotification("Password must include at least one letter! 🔠");
-            return;
-        }
-
         localStorage.setItem("user_" + user, pass);
-        showNotification("Account created! Now please Login.");
+        showNotification("Account created! Please Login.");
         toggleAuthMode();
-        
     } else {
         var savedPass = localStorage.getItem("user_" + user);
-        
         if (savedPass && savedPass === pass) {
             isLoggedIn = true;
             localStorage.setItem("currentUser", user);
-            
             document.getElementById("user-display").innerText = "👤 " + user;
+            
             document.getElementById("auth-username").value = "";
             document.getElementById("auth-password").value = "";
+            document.getElementById("auth-password").type = "password";
+            document.getElementById("eye-icon").innerText = "👁️";
             
             closeLogin();
             showNotification("Welcome back, " + user + "! ✨");
@@ -178,12 +171,16 @@ function closeLogoutModal() {
 
 function executeLogout() {
     isLoggedIn = false;
-    localStorage.removeItem("currentUser"); 
-    
+    localStorage.removeItem("currentUser");
     document.getElementById("user-display").innerText = "👤 Login";
+    document.getElementById("logout-confirm-modal").style.display = "none";
     
-    closeLogoutModal(); 
-    showNotification("Logged out successfully!");
+    document.getElementById("auth-username").value = "";
+    document.getElementById("auth-password").value = "";
+    document.getElementById("auth-password").type = "password";
+    document.getElementById("eye-icon").innerText = "👁️";
+
+    showNotification("Logged out successfully! 👋");
 }
 
 function togglePasswordVisibility() {
@@ -199,34 +196,46 @@ function togglePasswordVisibility() {
     }
 }
 
-function addToCart(name) {
-    if (!isLoggedIn) {
-        showNotification("Login Required to shop! 👤");
-        openLoginModal();
-        return; 
+var cartItemCount = 0;
+
+function addToCart(watchName) {
+    var watch = watchData[watchName];
+
+    var existingItemIndex = cart.findIndex(item => item.name === watchName);
+
+    if (existingItemIndex > -1) {
+        cart[existingItemIndex].quantity += 1;
+    } else {
+        cart.push({
+            name: watchName,
+            price: watch.price,
+            quantity: 1
+        });
     }
 
-    var watch = watchData[name];
-    if (watch && watch.stock > 0) {
-        watch.stock--; 
-        cart.push({ name: name, price: watch.price });
-        total += watch.price;
-        updateCartDisplay();
-        renderCartItems();
-        showNotification("✨ " + name + " added!");
-    } else {
-        showNotification("Out of stock! 🚫");
-    }
+    total += watch.price;
+
+    updateCartDisplay();
+    renderCartItems();
+
+    showNotification(watchName + " added to cart! 🛒");
 }
 
-function removeFromCart(index) {
-    var itemName = cart[index].name;
-    if (watchData[itemName]) {
-        watchData[itemName].stock = watchData[itemName].stock + 1; 
+function removeFromCart(event, index) {
+    if (event) {
+        event.stopPropagation();
     }
-    total = total - cart[index].price;
-    cart.splice(index, 1);
-    
+
+    var item = cart[index];
+
+    total -= item.price;
+
+    if (item.quantity > 1) {
+        item.quantity -= 1;
+    } else {
+        cart.splice(index, 1);
+    }
+
     updateCartDisplay();
     renderCartItems();
 }
@@ -234,24 +243,52 @@ function removeFromCart(index) {
 function renderCartItems() {
     var list = document.getElementById("cart-items-list");
     var totalDisplay = document.getElementById("cart-total-price");
-    
+
     if (cart.length === 0) {
-        list.innerHTML = "<p style='color: #888; padding: 20px;'>Empty cart</p>";
+        list.innerHTML = "<p style='color: #888; padding: 20px; text-align: center; font-style: italic;'>Your cart is empty.</p>";
     } else {
         var cartHTML = "";
         for (var i = 0; i < cart.length; i++) {
-            cartHTML += '<div class="cart-item-row">';
-            cartHTML += '<span class="item-name">' + cart[i].name + '</span>';
-            cartHTML += '<span class="item-price">₱' + cart[i].price.toFixed(2) + 
-                        ' <button onclick="removeFromCart(' + i + ')" class="remove-btn">x</button></span>';
+            var qtyText = cart[i].quantity > 1 ? " <span style='color: #4CAF50; font-weight: bold;'>(x" + cart[i].quantity + ")</span>" : "";
+            var itemTotal = (cart[i].price * cart[i].quantity).toFixed(2);
+
+            cartHTML += '<div class="cart-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee;">';
+           cartHTML += '      <span class="item-name">' + cart[i].name + qtyText + '</span>';
+            cartHTML += '  <div>';
+            cartHTML += '    <span style="font-weight: bold; margin-right: 15px; color: var(--indigo-dark);">₱' + itemTotal + '</span>';
+            cartHTML += '    <button onclick="removeFromCart(event, ' + i + ')" style="color: #ff4757; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 16px;">X</button>';
+            cartHTML += '  </div>';
             cartHTML += '</div>';
         }
         list.innerHTML = cartHTML;
     }
-    totalDisplay.innerText = total.toFixed(2);
+
+    if (totalDisplay) {
+        totalDisplay.innerText = total.toFixed(2);
+    }
 }
 
-function updateCartDisplay() { document.getElementById('cart-count').innerText = cart.length; }
+function toggleCartDropdown() {
+    var dropdown = document.getElementById("cart-dropdown");
+    if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+    } else {
+        dropdown.style.display = "block";
+    }
+}
+
+function updateCartDisplay() {
+    var count = 0;
+    for (var i = 0; i < cart.length; i++) {
+        count += cart[i].quantity;
+    }
+    
+    var cartCountBadge = document.getElementById("cart-count");
+    if (cartCountBadge) {
+        cartCountBadge.innerText = count;
+    }
+}
+
 function openCart() { document.getElementById("cart-modal").style.display = "block"; }
 function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
 
@@ -285,23 +322,19 @@ function filterCategory(category) {
     var cards = document.querySelectorAll('.watch-card');
     for (var i = 0; i < cards.length; i++) {
         if (category === 'all' || cards[i].classList.contains(category)) {
-            cards[i].style.display = 'block'; 
+            cards[i].style.display = 'block';
         } else {
-            cards[i].style.display = 'none';  
+            cards[i].style.display = 'none';
         }
     }
 
     var buttons = document.querySelectorAll('.nav-item');
     for (var j = 0; j < buttons.length; j++) {
         buttons[j].classList.remove('active');
-    }
-
-    for (var k = 0; k < buttons.length; k++) {
-        var btnText = buttons[k].innerText.toLowerCase();
-        if (btnText.includes(category)) {
-            buttons[k].classList.add('active');
-        } else if (category === 'all' && btnText.includes('all')) {
-            buttons[k].classList.add('active');
+        
+        var targetClick = "filterCategory('" + category + "')";
+        if (buttons[j].getAttribute('onclick') === targetClick) {
+            buttons[j].classList.add('active');
         }
     }
 }
@@ -321,7 +354,21 @@ window.onclick = function(event) {
     var detailsModal = document.getElementById("details-modal");
     if (event.target == cartModal) cartModal.style.display = "none";
     if (event.target == detailsModal) detailsModal.style.display = "none";
-}
+    
+    var cartDropdown = document.getElementById("cart-dropdown");
+    var userDropdown = document.getElementById("user-dropdown");
+
+    var clickedCart = event.target.closest('[onclick="toggleCartDropdown()"]') || event.target.closest('#cart-dropdown');
+    var clickedUser = event.target.closest('#user-display') || event.target.closest('#user-dropdown');
+
+    if (!clickedCart && cartDropdown) {
+        cartDropdown.style.display = "none";
+    }
+
+    if (!clickedUser && userDropdown) {
+        userDropdown.style.display = "none";
+    }
+};
 
 function toggleResetPassword(inputId, iconElement) {
     var passwordInput = document.getElementById(inputId);
