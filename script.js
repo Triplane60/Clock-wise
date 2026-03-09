@@ -1,6 +1,3 @@
-// ==========================================================================
-// 1. PRODUCT DATA & GLOBAL VARIABLES
-// ==========================================================================
 var watchData = {
     "Midnight Diver": { desc: "Rugged masterpiece for deep-sea exploration.", specs: "200m Waterproof | Strap: Rubber", icon: "🌊", price: 150.00, stock: 12 },
     "Alpine Explorer": { desc: "Built for those who reach the highest peaks.", specs: "Altimeter | Strap: Leather", icon: "⛰️", price: 180.00, stock: 5 },
@@ -21,6 +18,7 @@ var total = 0;
 var currentSlide = 0;
 var isLoggedIn = false;
 var isRegisterMode = false;
+var userToReset = "";
 
 window.onload = function() {
     var activeUser = localStorage.getItem("currentUser");
@@ -69,33 +67,122 @@ function handleAuth(event) {
     var pass = document.getElementById("auth-password").value;
 
     if (isRegisterMode) {
+        if (pass.length < 8) {
+            showNotification("Password must be at least 8 characters! 🛑");
+            return;
+        }
+
+        var hasLetter = /[a-zA-Z]/.test(pass); 
+        if (!hasLetter) {
+            showNotification("Password must include at least one letter! 🔠");
+            return;
+        }
+
         localStorage.setItem("user_" + user, pass);
         showNotification("Account created! Now please Login.");
         toggleAuthMode();
+        
     } else {
         var savedPass = localStorage.getItem("user_" + user);
+        
         if (savedPass && savedPass === pass) {
             isLoggedIn = true;
             localStorage.setItem("currentUser", user);
             
             document.getElementById("user-display").innerText = "👤 " + user;
-            document.getElementById("logout-btn").style.display = "block";
-            document.getElementById("user-display").style.pointerEvents = "none";
+            document.getElementById("auth-username").value = "";
+            document.getElementById("auth-password").value = "";
             
             closeLogin();
-            showNotification("Welcome, " + user + "!");
+            showNotification("Welcome back, " + user + "! ✨");
         } else {
             showNotification("Invalid Credentials! ❌");
         }
     }
 }
 
+function handleForgotPassword() {
+    var username = document.getElementById("auth-username").value;
+
+    if (username === "") {
+        showNotification("Please enter your username first! 📧");
+        return; 
+    }
+
+    var savedPass = localStorage.getItem("user_" + username);
+    if (!savedPass) {
+        showNotification("Account not found! Please check the username. ❌");
+        return; 
+    }
+
+    userToReset = username; 
+    document.getElementById("reset-username-display").innerText = username; 
+    document.getElementById("new-reset-password").value = ""; 
+    document.getElementById("confirm-reset-password").value = ""; 
+    
+    closeLogin(); 
+    document.getElementById("forgot-password-modal").style.display = "block"; 
+}
+
+function closeForgotPasswordModal() {
+    document.getElementById("forgot-password-modal").style.display = "none";
+}
+
+function executePasswordReset() {
+    var newPassword = document.getElementById("new-reset-password").value;
+    var confirmPassword = document.getElementById("confirm-reset-password").value; 
+
+    if (newPassword !== confirmPassword) {
+        showNotification("Passwords do not match! Please try again. ❌");
+        return;
+    }
+
+    if (newPassword.length < 8) {
+        showNotification("Reset failed: Password must be at least 8 characters! 🛑");
+        return;
+    }
+    
+    var hasLetter = /[a-zA-Z]/.test(newPassword);
+    if (!hasLetter) {
+        showNotification("Reset failed: Password must include at least one letter! 🔠");
+        return;
+    }
+
+    localStorage.setItem("user_" + userToReset, newPassword);
+    
+    closeForgotPasswordModal();
+    showNotification("Password successfully updated! You can now login. 🔐");
+}
+
+function handleUserClick() {
+    if (!isLoggedIn) {
+        openLoginModal(); 
+    } else {
+        var dropdown = document.getElementById("user-dropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    }
+}
+
 function handleLogout() {
+    document.getElementById("user-dropdown").style.display = "none"; 
+    document.getElementById("logout-confirm-modal").style.display = "block"; 
+}
+
+function closeLogoutModal() {
+    document.getElementById("logout-confirm-modal").style.display = "none";
+}
+
+function executeLogout() {
     isLoggedIn = false;
     localStorage.removeItem("currentUser"); 
+    
     document.getElementById("user-display").innerText = "👤 Login";
-    document.getElementById("logout-btn").style.display = "none";
-    document.getElementById("user-display").style.pointerEvents = "auto";
+    
+    closeLogoutModal(); 
     showNotification("Logged out successfully!");
 }
 
@@ -236,18 +323,14 @@ window.onclick = function(event) {
     if (event.target == detailsModal) detailsModal.style.display = "none";
 }
 
-function searchWatches() {
-    var input = document.getElementById("searchInput").value.toLowerCase();
+function toggleResetPassword(inputId, iconElement) {
+    var passwordInput = document.getElementById(inputId);
     
-    var cards = document.querySelectorAll('.watch-card');
-
-    for (var i = 0; i < cards.length; i++) {
-        var watchName = cards[i].querySelector('h3').innerText.toLowerCase();
-        
-        if (watchName.includes(input)) {
-            cards[i].style.display = "block";
-        } else {
-            cards[i].style.display = "none";
-        }
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        iconElement.innerText = "👓"; 
+    } else {
+        passwordInput.type = "password";
+        iconElement.innerText = "👁️"; 
     }
 }
