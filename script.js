@@ -84,7 +84,7 @@ function handleAuth(event) {
             document.getElementById("auth-username").value = "";
             document.getElementById("auth-password").value = "";
             document.getElementById("auth-password").type = "password";
-            document.getElementById("eye-icon").innerText = "👁️";
+            document.getElementById("eye-icon").innerHTML = closedEyeSVG;
             
             closeLogin();
             showNotification("Welcome back, " + user + "! ✨");
@@ -178,10 +178,14 @@ function executeLogout() {
     document.getElementById("auth-username").value = "";
     document.getElementById("auth-password").value = "";
     document.getElementById("auth-password").type = "password";
-    document.getElementById("eye-icon").innerText = "👁️";
+    document.getElementById("eye-icon").innerHTML = closedEyeSVG;
 
     showNotification("Logged out successfully! 👋");
 }
+
+var openEyeSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+
+var closedEyeSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
 
 function togglePasswordVisibility() {
     var passInput = document.getElementById("auth-password");
@@ -189,10 +193,10 @@ function togglePasswordVisibility() {
 
     if (passInput.type === "password") {
         passInput.type = "text";
-        eyeIcon.innerText = "👓"; 
+        eyeIcon.innerHTML = openEyeSVG; 
     } else {
         passInput.type = "password";
-        eyeIcon.innerText = "👁️"; 
+        eyeIcon.innerHTML = closedEyeSVG; 
     }
 }
 
@@ -372,12 +376,12 @@ window.onclick = function(event) {
 
 function toggleResetPassword(inputId, iconElement) {
     var passwordInput = document.getElementById(inputId);
-    
+
     if (passwordInput.type === "password") {
         passwordInput.type = "text";
-        iconElement.innerText = "👓"; 
+        iconElement.innerHTML = openEyeSVG; 
     } else {
         passwordInput.type = "password";
-        iconElement.innerText = "👁️"; 
+        iconElement.innerHTML = closedEyeSVG; 
     }
 }

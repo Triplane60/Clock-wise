@@ -56,17 +56,53 @@ body {
 
 .search-container {
     display: flex;
-    flex: 1; 
-    max-width: 500px; 
-    margin: 0 40px; 
+    align-items: center;
+    background: white;
+    border: 2px solid #7e57c2;
+    border-radius: 25px;
+    
+    width: 100%; 
+    max-width: 700px; 
+    
+    height: 45px; 
+    overflow: hidden;
+    margin: 0 30px;
+    transition: all 0.3s ease;
 }
 
-.search-container input {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ddd; 
-    border-radius: 4px 0 0 4px;
+.search-container:focus-within {
+    border-color: #5e35b1;
+    box-shadow: 0 4px 12px rgba(126, 87, 194, 0.2); 
+}
+
+.search-input {
+    flex: 1;
+    border: none;
+    padding: 0 25px;
     outline: none;
+    font-size: 16px; 
+    background: transparent;
+}
+
+.search-btn {
+    background: #7e57c2;
+    color: white;
+    border: none;
+    height: 100%;
+    width: 60px; 
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0; 
+}
+
+.search-btn:hover {
+    background-color: #5e35b1;
+}
+
+.search-btn svg {
+    pointer-events: none;
 }
 
 .category-bar {
@@ -418,4 +454,16 @@ body {
 .dropdown-item:hover {
     background-color: #f8f4ff;
     color: #7e57c2;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
+input::-webkit-contacts-auto-fill-button, 
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
 }
