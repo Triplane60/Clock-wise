@@ -18,13 +18,8 @@
         </div>
         <div class="cart-icon" style="display: flex; gap: 15px; align-items: center;">
             <span onclick="openCart()" style="cursor: pointer;">🛒 <span id="cart-count">0</span></span>
-            <div style="position: relative; display: inline-block;">
-            <span onclick="handleUserClick()" style="cursor: pointer;" id="user-display">👤 Login</span>
-            
-            <div id="user-dropdown" class="user-dropdown">
-                <button onclick="handleLogout()" class="dropdown-item">Logout</button>
-            </div>
-        </div>
+            <span onclick="openLoginModal()" style="cursor: pointer;" id="user-display">👤 Login</span>
+            <button id="logout-btn" onclick="handleLogout()" style="display: none; background: #7e57c2; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Logout</button>
         </div>
     </header>
 
@@ -219,94 +214,29 @@
     </div>
 
     <div id="login-modal" class="modal">
-    <div class="modal-content" style="max-width: 480px; padding: 35px; text-align: center; background-color: #ffffff; border-radius: 8px;">
-        <span class="close-btn" onclick="closeLogin()" style="color: #333; float: right; cursor: pointer; font-size: 24px;">&times;</span>
-        
-        <h2 id="login-title" style="color: #2e004f; margin-bottom: 5px;">Welcome Back</h2>
-        <p id="login-subtitle" style="color: #666; font-size: 0.9em; margin-bottom: 20px;">Please login to start shopping</p>
-        
-        <form id="auth-form" autocomplete="off" onsubmit="handleAuth(event)">
+        <div class="modal-content" style="max-width: 400px; text-align: center; background-color: #ffffff; color: #333;">
+            <span class="close-btn" onclick="closeLogin()" style="color: #333;">&times;</span>
+            <h2 id="login-title" style="color: #2e004f;">Welcome Back</h2>
+            <p id="login-subtitle">Please login to start shopping</p>
             
-            <input type="text" id="auth-username" autocomplete="off" placeholder="Username" required 
-                style="width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 15px;">
-            
-            <div style="position: relative; width: 100%; margin-bottom: 5px;">
-                <input type="password" id="auth-password" placeholder="Min. 8 chars (Letters & Numbers)" required 
-                    style="width: 100%; padding: 14px; padding-right: 40px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 15px;">
-                <span id="eye-icon" onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; top: 14px; cursor: pointer; color: #7e57c2; font-size: 18px;">👁️</span>
-            </div>
+            <form id="auth-form" onsubmit="handleAuth(event)" style="margin-top: 20px;">
+                <input type="text" id="auth-username" placeholder="Username" required 
+                    style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                
+                <div style="position: relative; width: 100%;">
+                    <input type="password" id="auth-password" placeholder="Password" required 
+                        style="width: 100%; padding: 12px; padding-right: 40px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                    <span id="eye-icon" onclick="togglePasswordVisibility()" style="position: absolute; right: 12px; top: 12px; cursor: pointer; color: #7e57c2;">👁️</span>
+                </div>
+                <button type="submit" id="auth-submit-btn" class="add-btn" style="width: 100%; padding: 12px;">Login</button>
+            </form>
 
-            <div id="forgot-password-wrapper" style="text-align: right; margin-bottom: 20px;">
-                <span onclick="handleForgotPassword()" style="color: #7e57c2; font-size: 0.85em; font-weight: bold; cursor: pointer;">Forgot Password?</span>
-            </div>
-
-            <button type="submit" id="auth-submit-btn" class="add-btn" style="width: 100%; padding: 14px; background-color: #2e004f; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px;">Login</button>
-        </form>
-
-        <div style="display: flex; align-items: center; margin: 25px 0;">
-            <div style="flex: 1; height: 1px; background: #eee;"></div>
-            <span style="padding: 0 15px; color: #aaa; font-size: 0.85rem; font-weight: bold;">OR</span>
-            <div style="flex: 1; height: 1px; background: #eee;"></div>
-        </div>
-
-        <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;">
-            <button type="button" class="social-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-size: 0.95rem; font-weight: bold; color: #444;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_2023.png" width="20" alt="Facebook">
-                Facebook
-            </button>
-            <button type="button" class="social-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border: 1px solid #ddd; border-radius: 5px; background: white; cursor: pointer; font-size: 0.95rem; font-weight: bold; color: #444;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_Logo.svg" width="20" alt="Google">
-                Google
-            </button>
-        </div>
-
-        <p style="margin-top: 15px; font-size: 0.95em; color: #666;">
-            <span id="toggle-text">New to Clock-wise?</span> 
-            <a href="#" onclick="toggleAuthMode()" id="toggle-link" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Register here</a>
-        </p>
-    </div>
-</div>
-
-<div id="forgot-password-modal" class="modal">
-    <div class="modal-content" style="max-width: 420px; padding: 35px; text-align: center; background-color: #ffffff; border-radius: 8px;">
-        
-        <button class="close-btn" onclick="closeForgotPasswordModal()" 
-            style="color: #333; float: right; cursor: pointer; font-size: 24px; background: none; border: none; padding: 0; line-height: 1;">&times;</button>
-        
-        <h2 style="color: #2e004f; margin-bottom: 10px;">Reset Password</h2>
-        <p style="color: #555; margin-bottom: 25px;">Account found for: <strong id="reset-username-display" style="color: #7e57c2;"></strong></p>
-        
-        <div style="position: relative; width: 100%; margin-bottom: 15px;">
-            <input type="password" id="new-reset-password" placeholder="New Password (Min. 8 chars & 1 Letter)" 
-                style="width: 100%; padding: 14px; padding-right: 40px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 15px;">
-            
-            <span onclick="toggleResetPassword('new-reset-password', this)" 
-                style="position: absolute; right: 15px; top: 14px; cursor: pointer; color: #7e57c2; font-size: 18px;">👁️</span>
-        </div>
-
-        <div style="position: relative; width: 100%; margin-bottom: 25px;">
-            <input type="password" id="confirm-reset-password" placeholder="Confirm New Password" 
-                style="width: 100%; padding: 14px; padding-right: 40px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-size: 15px;">
-            
-            <span onclick="toggleResetPassword('confirm-reset-password', this)" 
-                style="position: absolute; right: 15px; top: 14px; cursor: pointer; color: #7e57c2; font-size: 18px;">👁️</span>
-        </div>
-        
-        <button onclick="executePasswordReset()" style="width: 100%; padding: 14px; background: #2e004f; color: white; font-weight: bold; font-size: 16px; border: none; border-radius: 5px; cursor: pointer;">Save New Password</button>
-    </div>
-</div>
-
-<div id="logout-confirm-modal" class="modal">
-    <div class="modal-content" style="max-width: 350px; text-align: center; background-color: #ffffff; padding: 30px; border-radius: 10px;">
-        <h2 style="color: #2e004f; margin-bottom: 10px;">Sign Out?</h2>
-        <p style="color: #555; margin-bottom: 25px;">Are you sure you want to log out of your account?</p>
-        
-        <div style="display: flex; gap: 15px; justify-content: center;">
-            <button onclick="closeLogoutModal()" style="flex: 1; padding: 10px; border: 2px solid #7e57c2; background: white; color: #7e57c2; font-weight: bold; border-radius: 5px; cursor: pointer;">Cancel</button>
-            <button onclick="executeLogout()" style="flex: 1; padding: 10px; border: none; background: #2e004f; color: white; font-weight: bold; border-radius: 5px; cursor: pointer;">Yes, Logout</button>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                <span id="toggle-text">Don't have an account?</span> 
+                <a href="#" onclick="toggleAuthMode()" id="toggle-link" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Register here</a>
+            </p>
         </div>
     </div>
-</div>
 
     <div id="toast-notification" class="toast"></div>
 

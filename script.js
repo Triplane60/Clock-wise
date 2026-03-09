@@ -25,10 +25,21 @@ window.onload = function() {
     if (activeUser) {
         isLoggedIn = true;
         document.getElementById("user-display").innerText = "👤 " + activeUser;
-        document.getElementById("logout-btn").style.display = "block";
-        document.getElementById("user-display").style.pointerEvents = "none";
     }
 };
+
+function handleUserClick() {
+    if (!isLoggedIn) {
+        openLoginModal(); 
+    } else {
+        var dropdown = document.getElementById("user-dropdown");
+        if (dropdown.style.display === "block") {
+            dropdown.style.display = "none";
+        } else {
+            dropdown.style.display = "block";
+        }
+    }
+}
 
 function openLoginModal() { 
     document.getElementById("login-modal").style.display = "block"; 
@@ -45,6 +56,9 @@ function toggleAuthMode() {
     var submitBtn = document.getElementById("auth-submit-btn");
     var toggleLink = document.getElementById("toggle-link");
     var toggleText = document.getElementById("toggle-text");
+
+    document.getElementById("auth-username").value = "";
+    document.getElementById("auth-password").value = "";
 
     if (isRegisterMode) {
         title.innerText = "Create Account";
@@ -90,8 +104,8 @@ function handleAuth(event) {
             localStorage.setItem("currentUser", user);
             
             document.getElementById("user-display").innerText = "👤 " + user;
-            document.getElementById("auth-username").value = "";
-            document.getElementById("auth-password").value = "";
+            document.getElementById("logout-btn").style.display = "block";
+            document.getElementById("user-display").style.pointerEvents = "none";
             
             closeLogin();
             showNotification("Welcome back, " + user + "! ✨");
@@ -181,8 +195,8 @@ function executeLogout() {
     localStorage.removeItem("currentUser"); 
     
     document.getElementById("user-display").innerText = "👤 Login";
-    
-    closeLogoutModal(); 
+    document.getElementById("logout-btn").style.display = "none";
+    document.getElementById("user-display").style.pointerEvents = "auto";
     showNotification("Logged out successfully!");
 }
 
@@ -209,7 +223,20 @@ function addToCart(name) {
     var watch = watchData[name];
     if (watch && watch.stock > 0) {
         watch.stock--; 
-        cart.push({ name: name, price: watch.price });
+        
+        var found = false;
+        for (var i = 0; i < cart.length; i++) {
+            if (cart[i].name === name) {
+                cart[i].qty++; 
+                found = true;
+                break; 
+            }
+        }
+        
+        if (!found) {
+            cart.push({ name: name, price: watch.price, qty: 1 });
+        }
+        
         total += watch.price;
         updateCartDisplay();
         renderCartItems();
@@ -221,12 +248,19 @@ function addToCart(name) {
 
 function removeFromCart(index) {
     var itemName = cart[index].name;
+
     if (watchData[itemName]) {
-        watchData[itemName].stock = watchData[itemName].stock + 1; 
+        watchData[itemName].stock += 1; 
     }
-    total = total - cart[index].price;
-    cart.splice(index, 1);
     
+    total -= cart[index].price;
+    
+    if (cart[index].qty > 1) {
+        cart[index].qty--;
+    } else {
+        cart.splice(index, 1);
+    }
+
     updateCartDisplay();
     renderCartItems();
 }
@@ -240,9 +274,16 @@ function renderCartItems() {
     } else {
         var cartHTML = "";
         for (var i = 0; i < cart.length; i++) {
+            var qtyText = "";
+            if (cart[i].qty > 1) {
+                qtyText = "<span style='color: #7e57c2; font-weight: bold; margin-right: 5px;'>" + cart[i].qty + "x</span>";
+            }
+            
+            var rowTotal = cart[i].price * cart[i].qty; 
+            
             cartHTML += '<div class="cart-item-row">';
-            cartHTML += '<span class="item-name">' + cart[i].name + '</span>';
-            cartHTML += '<span class="item-price">₱' + cart[i].price.toFixed(2) + 
+            cartHTML += '<span class="item-name">' + qtyText + cart[i].name + '</span>';
+            cartHTML += '<span class="item-price">₱' + rowTotal.toFixed(2) + 
                         ' <button onclick="removeFromCart(' + i + ')" class="remove-btn">x</button></span>';
             cartHTML += '</div>';
         }
@@ -251,7 +292,14 @@ function renderCartItems() {
     totalDisplay.innerText = total.toFixed(2);
 }
 
-function updateCartDisplay() { document.getElementById('cart-count').innerText = cart.length; }
+function updateCartDisplay() { 
+    var count = 0;
+    for (var i = 0; i < cart.length; i++) {
+        count += cart[i].qty;
+    }
+    document.getElementById('cart-count').innerText = count; 
+}
+
 function openCart() { document.getElementById("cart-modal").style.display = "block"; }
 function closeCart() { document.getElementById("cart-modal").style.display = "none"; }
 
@@ -281,7 +329,7 @@ function showNotification(msg) {
     setTimeout(function() { toast.classList.remove("show"); }, 3000);
 }
 
-function filterCategory(category) {
+function filterCategory(category, clickedButton) {
     var cards = document.querySelectorAll('.watch-card');
     for (var i = 0; i < cards.length; i++) {
         if (category === 'all' || cards[i].classList.contains(category)) {
@@ -296,12 +344,22 @@ function filterCategory(category) {
         buttons[j].classList.remove('active');
     }
 
-    for (var k = 0; k < buttons.length; k++) {
-        var btnText = buttons[k].innerText.toLowerCase();
-        if (btnText.includes(category)) {
-            buttons[k].classList.add('active');
-        } else if (category === 'all' && btnText.includes('all')) {
-            buttons[k].classList.add('active');
+    if (clickedButton) {
+        clickedButton.classList.add('active');
+    }
+}
+
+function searchWatches() {
+    var input = document.getElementById("searchInput").value.toLowerCase();
+    var cards = document.querySelectorAll('.watch-card');
+
+    for (var i = 0; i < cards.length; i++) {
+        var watchName = cards[i].querySelector('h3').innerText.toLowerCase();
+        
+        if (watchName.includes(input)) {
+            cards[i].style.display = "block";
+        } else {
+            cards[i].style.display = "none";
         }
     }
 }
@@ -332,5 +390,34 @@ function toggleResetPassword(inputId, iconElement) {
     } else {
         passwordInput.type = "password";
         iconElement.innerText = "👁️"; 
+    }
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        showNotification("Your cart is empty! 🛒");
+        return;
+    }
+
+    var shippingFee = 50.00; 
+    var grandTotal = total + shippingFee;
+
+    var confirmOrder = confirm(
+        "--- ORDER SUMMARY ---\n" +
+        "Subtotal: ₱" + total.toFixed(2) + "\n" +
+        "Shipping: ₱" + shippingFee.toFixed(2) + "\n" +
+        "Grand Total: ₱" + grandTotal.toFixed(2) + "\n\n" +
+        "Proceed with purchase?"
+    );
+
+    if (confirmOrder) {
+        cart = [];
+        total = 0;
+        
+        updateCartDisplay();
+        renderCartItems();
+        closeCart(); 
+        
+        showNotification("Success! Your watches are on the way! 📦✨");
     }
 }
