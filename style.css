@@ -70,36 +70,32 @@ body {
 }
 
 .category-bar {
-    display: block;      
-    text-align: center;  
-    padding: 20px 0;
-    background: #f8f9fa; 
-    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    background-color: var(--white);
+    padding: 15px 0;
+    border-bottom: 2px solid #eee; 
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 100; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .nav-item {
-    display: inline-block; 
-    margin: 0 15px;        
+    background: none;
+    border: none;
+    font-size: 16px; 
     padding: 10px 20px;
-    border: 1px solid #7e57c2;
-    background: white;
-    color: #7e57c2;
-    border-radius: 20px;
+    font-weight: 600;
+    color: var(--indigo-medium);
     cursor: pointer;
-    font-size: 16px;
     transition: 0.3s;
 }
 
-.nav-item.active, .nav-item:hover {
-    background: #7e57c2;
-    color: white;
-}
-.nav-item.active {
-    background-color: #7e57c2
-    color: white 
+.nav-item:hover, .nav-item.active {
+    color: var(--violet-main);
+    border-bottom: 3px solid var(--violet-main);
 }
 
 .nav-item.active {
@@ -253,48 +249,7 @@ body {
     width: 90%;
     max-width: 450px;
     position: relative;
-    /* Pinagsamang shadow at font style */
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-}
-
-/* --- BAGONG DAGDAG PARA SA SHOPEE-STYLE LOGIN --- */
-
-/* Style para sa Social Buttons (Google & Facebook) */
-.social-btn {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: white;
-    cursor: pointer;
-    font-size: 0.9rem;
-    color: #333;
-    transition: all 0.3s ease;
-}
-
-/* Hover effect para sa Social Buttons */
-.social-btn:hover {
-    background-color: #f8f8f8;
-    border-color: #7e57c2; /* Mag-vi-violet ang border pag itinapat ang mouse */
-}
-
-/* Para sa Login Button hover */
-.add-btn:hover {
-    background-color: #5e35b1 !important; /* Mas madilim na violet pag ni-hover */
-    transform: translateY(-1px); /* Konting angat effect */
-}
-
-/* Responsive adjustment para sa maliliit na screen */
-@media (max-width: 400px) {
-    .social-login-container {
-        flex-direction: column;
-    }
 }
 
 .close-btn {
@@ -422,11 +377,44 @@ body {
     color: #ffffff;
     text-decoration: underline;
 }
-
 .footer-bottom {
     background-color: #0f0f1c; 
     text-align: center;
     padding: 20px 0;
     font-size: 12px;
     color: #888888;
+}
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: 150%;
+    right: 0;
+    background-color: white;
+    min-width: 130px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    z-index: 200;
+    overflow: hidden;
+    border: 1px solid #e1bee7;
+}
+
+.dropdown-item {
+    color: #2e004f;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f4ff;
+    color: #7e57c2;
 }
