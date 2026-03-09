@@ -421,3 +421,4 @@ function checkout() {
         showNotification("Success! Your watches are on the way! 📦✨");
     }
 }
+
