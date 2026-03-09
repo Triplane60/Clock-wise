@@ -97,6 +97,10 @@ body {
     background: #7e57c2;
     color: white;
 }
+.nav-item.active {
+    background-color: #7e57c2
+    color: white 
+}
 
 .hero-banner {
     width: 100%;
