@@ -202,15 +202,12 @@ body {
 }
 
 .image-placeholder {
-    background-color: #f3f0f7;
+    width: 100%;
     height: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
+    object-fit: cover;        
     border-radius: 4px;
     margin-bottom: 10px;
-    transition: background-color 0.3s;
+    background-color: #f3f0f7; 
 }
 
 .watch-card:hover .image-placeholder {

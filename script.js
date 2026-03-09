@@ -259,18 +259,34 @@ function addToCart(watchName) {
     renderCartItems();
     showNotification(watchName + " added to cart! 🛒");
 }
+
 function removeFromCart(event, index) {
     if (event) event.stopPropagation();
+    
+    if (index < 0 || index >= cart.length) return;
+    
     var item = cart[index];
+    if (!item) return;
+    
     total -= item.price;
+    
     if (item.quantity > 1) {
         item.quantity -= 1;
     } else {
         cart.splice(index, 1);
     }
+    
     updateCartDisplay();
     renderCartItems();
+    
+    var modalList = document.getElementById("cart-items-list-modal");
+    if (modalList) {
+        renderModalCartItems(); 
+    }
+    
+    showNotification("Item updated in cart");
 }
+
 function renderCartItems() {
     var list = document.getElementById("cart-items-list");
     var totalDisplay = document.getElementById("cart-total-price");
