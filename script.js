@@ -1,24 +1,166 @@
 var watchData = {
-    "Midnight Diver": { desc: "Rugged masterpiece for deep-sea exploration.", specs: "200m Waterproof | Strap: Rubber", icon: "🌊", price: 150.00, stock: 12 },
-    "Alpine Explorer": { desc: "Built for those who reach the highest peaks.", specs: "Altimeter | Strap: Leather", icon: "⛰️", price: 180.00, stock: 5 },
-    "Titan Stealth": { desc: "Tactical matte black finish with night-vision lume.", specs: "Titanium Case | 100m Water Resist", icon: "🌑", price: 210.00, stock: 7 },
-    "Silver Classic": { desc: "Timeless elegance for every occasion.", specs: "Stainless Steel | Case: 38mm", icon: "💎", price: 120.00, stock: 8 },
-    "Rose Gold Petit": { desc: "Delicate luxury designed for smaller wrists.", specs: "18k Rose Gold | Strap: Mesh", icon: "🌸", price: 140.00, stock: 2 },
-    "Starlight Pearl": { desc: "Mother-of-pearl dial with Swarovski crystals.", specs: "Case: 34mm | Strap: Satin Leather", icon: "✨", price: 165.00, stock: 4 },
-    "Sky Rocket": { desc: "Space-themed timepiece with shock-resistance.", specs: "Shock Resistant | Glow-in-dark", icon: "🚀", price: 45.00, stock: 15 },
-    "Dino Track": { desc: "BPA-free silicone with prehistoric design.", specs: "Waterproof | Movement: Analog", icon: "🦖", price: 40.00, stock: 20 },
-    "Neon Pulse": { desc: "Vibrant watch with LED backlight and stopwatch.", specs: "LED Backlight | Strap: Nylon", icon: "🌈", price: 55.00, stock: 12 },
-    "The Golden Era": { desc: "Rare 18k gold collector piece (1 of 100).", specs: "Gold Plating | Swiss Automatic", icon: "👑", price: 199.00, stock: 2 },
-    "Lunar Eclipse": { desc: "Features actual fragments of meteorite.", specs: "Meteorite Dial | Swiss Automatic", icon: "🌙", price: 250.00, stock: 2 },
-    "Heritage 1920": { desc: "Centennial reissue with manual-wind movement.", specs: "Manual Wind | Sapphire Glass", icon: "📜", price: 225.00, stock: 5 }
+    "Cosmograph Daytona Everose Black Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Rolex",
+        price: 150.00,
+        stock: 10,
+        images: ["men.png", "men2.png", "men3.png", "men4.png"]
+    },
+    "Cosmograpgh Daytona Panda": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 26 Silver Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 26 Two Tone Yellow Gold Champagne Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 28 Two Tone Everose Green Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Royal Oak Grey Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Royal Oak Rose Gold White Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Royal Oak Jumbo Black Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 31 Blue Roman Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 41 White Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 31 Rhodium Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 31 Two Tone Everose Aubergine Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 31 Two Tone Everose Mother Of Pearl Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 31 Two Tone Yellow Gold Sakura Green": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 36 Black Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 36 Blue Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 36 Silver Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 36 Two Tone Everose Black Roman Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 36 Two Tone Yellow Gold Black Dial With Diamonds": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 36 Wimbledon": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 41 Azzuro Blue": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    },
+    "Datejust 41 Iced Out Roman Dial": {
+        desc: "A premium timepiece for the modern gentleman.",
+        specs: "Stainless Steel | Automatic | Water Resistant",
+        price: 100.00,
+        stock: 10,
+        images: ["images/placeholder1.jpg"]
+    }
 };
 
-var cart = [];
-var total = 0;
 var currentSlide = 0;
 var isLoggedIn = false;
 var isRegisterMode = false;
 var userToReset = "";
+var currentDetailsImages = [];
+var currentSlideIndex = 0;
 
 function showHome() {
     document.getElementById('homepage').style.display = 'block';
@@ -246,14 +388,25 @@ function toggleResetPassword(inputId, iconElement) {
     }
 }
 
+var cart = [];
+var total = 0;
+
 function addToCart(watchName) {
+    if (!isLoggedIn) {
+        showNotification("Please login first to add items to your cart! 🔐");
+        openLoginModal(); 
+        return; 
+    }
+
     var watch = watchData[watchName];
     var existingItemIndex = cart.findIndex(item => item.name === watchName);
+    
     if (existingItemIndex > -1) {
         cart[existingItemIndex].quantity += 1;
     } else {
         cart.push({ name: watchName, price: watch.price, quantity: 1 });
     }
+    
     total += watch.price;
     updateCartDisplay();
     renderCartItems();
@@ -334,21 +487,81 @@ function closeCart() {
     if (modal) modal.style.display = "none"; 
 }
 
+var currentDetailsImages = [];
+var currentSlideIndex = 0;
+
 function openDetails(name) {
+    console.log("Opening Advance UI details for:", name);
     var data = watchData[name];
-    var container = document.getElementById("details-content");
-    var stockColor = (data.stock <= 5) ? "red" : "green"; 
-    var content = '<div style="font-size: 80px;">' + data.icon + '</div>'; 
-    content += '<div style="text-align: left;">';
-    content += '<h2 style="color: #2e004f;">' + name + '</h2>';
-    content += '<p>' + data.desc + '</p>';
-    content += '<p style="margin-top: 10px; font-weight: bold; color: ' + stockColor + ';">Stock: ' + data.stock + '</p>';
-    content += '<p style="color: #7e57c2; font-size: 0.9em;">' + data.specs + '</p>';
-    content += '<button class="add-btn" style="margin-top: 20px;" onclick="addToCart(\'' + name + '\')">Add to Cart - ₱' + data.price.toFixed(2) + '</button>';
-    content += '</div>';
-    container.innerHTML = content;
+    
+    if (!data) {
+        alert("No data found for: " + name);
+        return;
+    }
+    
+    var images = data.images || [];
+    while (images.length < 4) { 
+        images.push("images/placeholder.jpg");   
+    }
+    currentDetailsImages = images;
+    currentSlideIndex = 0;
+    
+    var mainContainer = document.getElementById("new-advance-content");
+    mainContainer.innerHTML = ""; 
+    
+    var html = '<span class="close-btn" onclick="closeDetails()">&times;</span>';
+    html += '<div class="modal-split-container">';
+    
+    html += '<div class="modal-text-panel">';
+    
+    html += '<h1 class="premium-modal-title">' + name + '</h1>';
+    
+    html += '<p class="premium-modal-desc">' + data.desc + '</p>';
+    
+    html += '<ul class="premium-modal-specs">';
+    
+    var specsArray = data.specs.split('|'); 
+    for (var s = 0; s < specsArray.length; s++) {
+        if (specsArray[s].trim() !== "") {
+            html += '<li>' + specsArray[s].trim() + '</li>';
+        }
+    }
+    
+    var stockColor = (data.stock <= 5) ? "#ff4757" : "#2ed573"; 
+    html += '<li style="color: ' + stockColor + '; font-weight: bold; border-bottom: none;">In Stock: ' + data.stock + '</li>';
+    html += '</ul>'; 
+    html += '<div class="action-area">';
+    html += '<p class="premium-modal-price">₱' + data.price.toFixed(2) + '</p>';
+    html += '<button class="add-btn" style="width: 100%; padding: 18px;" onclick="addToCart(\'' + name + '\')">Add to Cart</button>';
+    html += '</div>'; 
+    
+    html += '</div>'; 
+    html += '<div class="modal-image-panel">';
+    
+    html += '<div class="slideshow-container">';
+    html += '<div class="slides" id="details-slides">'; 
+    for (var i = 0; i < currentDetailsImages.length; i++) {
+        html += '<img src="' + currentDetailsImages[i] + '" alt="' + name + '" style="display:' + (i === 0 ? 'block' : 'none') + ';">';
+    }
+    html += '</div>'; 
+    html += '<button class="slide-prev" onclick="changeSlide(-1)">&#10094;</button>';
+    html += '<button class="slide-next" onclick="changeSlide(1)">&#10095;</button>';
+    html += '</div>'; 
+    html += '<div id="slide-dots" class="slide-dots">';
+    for (var j = 0; j < currentDetailsImages.length; j++) {
+        var dotColor = (j === 0) ? '#7e57c2' : '#bbb';
+        html += '<span class="dot" onclick="goToSlide(' + j + ')" style="background-color: ' + dotColor + ';"></span>';
+    }
+    html += '</div>'; 
+    
+    html += '</div>';
+    
+    html += '</div>';
+    mainContainer.innerHTML = html;
+    
     document.getElementById("details-modal").style.display = "block";
 }
+
 function closeDetails() { 
     document.getElementById("details-modal").style.display = "none"; 
 }
@@ -418,3 +631,34 @@ function searchWatches() {
         }
     }
 }
+
+function changeSlide(direction) {
+    var slides = document.querySelectorAll('#details-slides img');
+    var dots = document.querySelectorAll('#slide-dots .dot');
+    if (slides.length === 0) return;
+    
+    slides[currentSlideIndex].style.display = 'none';
+    if (dots.length) dots[currentSlideIndex].style.backgroundColor = '#bbb';
+    
+    currentSlideIndex += direction;
+    if (currentSlideIndex < 0) currentSlideIndex = slides.length - 1;
+    if (currentSlideIndex >= slides.length) currentSlideIndex = 0;
+    
+    slides[currentSlideIndex].style.display = 'block';
+    if (dots.length) dots[currentSlideIndex].style.backgroundColor = '#7e57c2';
+}
+
+function goToSlide(index) {
+    var slides = document.querySelectorAll('#details-slides img');
+    var dots = document.querySelectorAll('#slide-dots .dot');
+    if (slides.length === 0 || index < 0 || index >= slides.length) return;
+    
+    slides[currentSlideIndex].style.display = 'none';
+    if (dots.length) dots[currentSlideIndex].style.backgroundColor = '#bbb';
+    
+    currentSlideIndex = index;
+    
+    slides[currentSlideIndex].style.display = 'block';
+    if (dots.length) dots[currentSlideIndex].style.backgroundColor = '#7e57c2';
+}
+
