@@ -1,31 +1,31 @@
 var watchData = {
     "Cosmograph Daytona Everose Black Dial With Diamonds": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Rolex",
+        specs: "Brand: Rolex",
         price: 150.00,
         stock: 10,
-        images: ["men.png", "men2.png", "men3.png", "men4.png"]
+        images: ["daytonab.png", "daytonab2.png", "daytonab3.png", "daytonab4.png"]
     },
     "Cosmograpgh Daytona Panda": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: Rolex",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["daytonap.png", "daytonap2.png", "daytonap3.png", "daytonap4.png"]
     },
     "Datejust 26 Silver Dial With Diamonds": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: Rolex",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["datejusts.png", "datejusts2.png", "datejusts3.png", "datejusts4.png"]
     },
     "Datejust 26 Two Tone Yellow Gold Champagne Dial": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: Rolex",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["datejustg.png", "datejustg2.png", "datejustg3.png", "datejustg4.png"]
     },
     "Datejust 28 Two Tone Everose Green Dial With Diamonds": {
         desc: "A premium timepiece for the modern gentleman.",
@@ -520,12 +520,18 @@ function openDetails(name) {
     
     html += '<ul class="premium-modal-specs">';
     
-    var specsArray = data.specs.split('|'); 
-    for (var s = 0; s < specsArray.length; s++) {
-        if (specsArray[s].trim() !== "") {
+    var specsArray = data.specs.split('|');
+for (var s = 0; s < specsArray.length; s++) {
+    if (specsArray[s].trim() !== "") {
+        
+        if (s === 0) {
+            html += '<li style="font-weight: 800; font-size: 1.4rem; color: #2e004f; text-transform: uppercase; letter-spacing: 1px;">' + specsArray[s].trim() + '</li>';
+        } else {
             html += '<li>' + specsArray[s].trim() + '</li>';
         }
+        
     }
+}
     
     var stockColor = (data.stock <= 5) ? "#ff4757" : "#2ed573"; 
     html += '<li style="color: ' + stockColor + '; font-weight: bold; border-bottom: none;">In Stock: ' + data.stock + '</li>';
