@@ -924,3 +924,54 @@ input::-webkit-credentials-auto-fill-button {
     font-size: 35px;
     z-index: 20; 
 }
+
+.brand-line {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 10px;
+    font-style: italic;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.cart-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.cart-info {
+    flex-grow: 1;
+}
+
+.cart-info h4 {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #2e004f;
+    text-transform: uppercase;
+}
+
+.cart-info p {
+    margin: 5px 0 0;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #ff4757;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0 10px;
+}

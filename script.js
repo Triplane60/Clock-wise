@@ -2,107 +2,107 @@ var watchData = {
     "Submariner 41": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
-        price: 150.00,
+        price: 950000.00,
         stock: 10,
         images: ["men-images/sub1.png", "men-images/sub2.png", "men-images/sub3.png"]
     },
     "Cosmograph Daytona Congo": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
-        price: 100.00,
+        price: 1850000.00,
         stock: 10,
         images: ["men-images/cos1.png", "men-images/cos2.png", "men-images/cos3.png"]
     },
     "GMT-Master II Two Tone Everose Rootbeer": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
-        price: 100.00,
+        price: 1250000.00,
         stock: 10,
         images: ["men-images/gmt1.png", "men-images/gmt2.png", "men-images/gmt3.png"]
     },
     "Explorer II 42 Polar": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
-        price: 100.00,
+        price: 680000.00,
         stock: 10,
         images: ["men-images/exp1.png", "men-images/exp2.png", "men-images/exp3.png"]
     },
     "Submariner Date 41 Two Tone Yellow Gold Bluesy": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
-        price: 100.00,
+        price: 1150000.00,
         stock: 10,
         images: ["men-images/mar1.png", "men-images/mar2.png", "men-images/mar3.png"]
     },
     "MRG-B5000": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: G-Shock",
-        price: 100.00,
+        price: 220000.00,
         stock: 10,
         images: ["men-images/mrg1.png", "men-images/mrg2.png", "men-images/mrg3.png"]
     },
     "MTG-B3000": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: G-Shock",
-        price: 100.00,
+        price: 65000.00,
         stock: 10,
         images: ["men-images/mtg1.png", "men-images/mtg2.png", "men-images/mtg3.png"]
     },
     "GMW-B5000": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: G-Shock",
-        price: 100.00,
+        price: 35000.00,
         stock: 10,
         images: ["men-images/gmw1.png", "men-images/gmw2.png", "men-images/gmw3.png"]
     },
     "GM-B2100": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: G-Shock",
-        price: 100.00,
+        price: 35000.00,
         stock: 10,
         images: ["men-images/gm1.png", "men-images/gm2.png", "men-images/gm3.png"]
     },
     "GWG-B1000": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: G-Shock",
-        price: 100.00,
+        price: 50000.00,
         stock: 10,
         images: ["men-images/gwg1.png", "men-images/gwg2.png", "men-images/gwg3.png"]
     },
     "Navitimer B01 Chronograph 46": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
+        specs: "Brand: Breitling",
+        price: 520000.00,
         stock: 10,
         images: ["men-images/nav.png", "men-images/nav1.png", "men-images/nav2.png"]
     },
     "Superocean Heritage B31 Automatic 44": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
+        specs: "Brand: Breitling",
+        price: 310000.00,
         stock: 10,
         images: ["men-images/sup.png", "men-images/sup1.png", "men-images/sup2.png"]
     },
     "Chronomat B01 42":{
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
+        specs: "Brand: Breitling",
+        price: 485000.00,
         stock: 10,
         images: ["men-images/chr.png", "men-images/chr1.png", "men-images/chr2.png"]
     },
-    "Planet Ocean":{
+    "Super Avenger B01 Chronograph 46":{
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
+        specs: "Brand: Breitling",
+        price: 340000.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/ave.png", "men-images/ave1.png", "men-images/ave2.png"]
     },
-    "Moonwatch Professional":{
+    "Professional Endurance Pro 44":{
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
+        specs: "Brand: Breitling",
+        price: 185000.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/end.png", "men-images/end1.png", "men-images/end2.png"]
     },
 };
 
@@ -394,25 +394,46 @@ function removeFromCart(event, index) {
 function renderCartItems() {
     var list = document.getElementById("cart-items-list");
     var totalDisplay = document.getElementById("cart-total-price");
-    if (!list) return; 
+    if (!list) return;
+
+    let pesoFormat = new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+        minimumFractionDigits: 2
+    });
+
     if (cart.length === 0) {
         list.innerHTML = "<p style='color: #888; padding: 20px; text-align: center; font-style: italic;'>Your cart is empty.</p>";
     } else {
         var cartHTML = "";
         for (var i = 0; i < cart.length; i++) {
+            var watch = watchData[cart[i].name];
+            var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg"; 
+
             var qtyText = cart[i].quantity > 1 ? " <span style='color: #4CAF50; font-weight: bold;'>(x" + cart[i].quantity + ")</span>" : "";
-            var itemTotal = (cart[i].price * cart[i].quantity).toFixed(2);
-            cartHTML += '<div class="cart-item-row" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee;">';
-            cartHTML += '<span class="item-name">' + cart[i].name + qtyText + '</span>';
-            cartHTML += '<div>';
-            cartHTML += '<span style="font-weight: bold; margin-right: 15px; color: var(--indigo-dark);">₱' + itemTotal + '</span>';
-            cartHTML += '<button onclick="removeFromCart(event, ' + i + ')" style="color: #ff4757; background: none; border: none; cursor: pointer; font-weight: bold; font-size: 16px;">X</button>';
-            cartHTML += '</div></div>';
+            var itemTotal = cart[i].price * cart[i].quantity;
+
+            cartHTML += "<div class='cart-item-row' style='display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee'>";
+            
+            cartHTML += "<img src='" + imgSrc + "' style='width: 40px; height: 40px; object-fit: contain; border-radius: 4px; background: white;'>";
+            
+            cartHTML += "<div style='flex-grow: 1; line-height: 1.2;'>";
+            cartHTML += "<span class='item-name' style='font-size: 0.85rem; font-weight: bold; color: #2e004f; display: block;'>" + cart[i].name + qtyText + "</span>";
+            cartHTML += "</div>";
+
+            cartHTML += "<div style='display: flex; align-items: center; gap: 10px;'>";
+            cartHTML += "<span style='font-weight: bold; font-size: 0.9rem; color: #2e004f;'>" + pesoFormat.format(itemTotal) + "</span>";
+            cartHTML += "<button onclick='removeFromCart(event, " + i + ")' style='color: #ff4757; background: none; border: none; cursor: pointer; font-size: 1.2rem; font-weight: bold;'>&times;</button>";
+            cartHTML += "</div></div>";
         }
         list.innerHTML = cartHTML;
     }
-    if (totalDisplay) totalDisplay.innerText = total.toFixed(2);
+
+    if (totalDisplay) {
+        totalDisplay.innerText = pesoFormat.format(total);
+    }
 }
+
 function updateCartDisplay() {
     var count = 0;
     for (var i = 0; i < cart.length; i++) count += cart[i].quantity;
@@ -442,81 +463,92 @@ var currentDetailsImages = [];
 var currentSlideIndex = 0;
 
 function openDetails(name) {
-    console.log("Opening Advance UI details for:", name);
     var data = watchData[name];
-    
     if (!data) {
         alert("No data found for: " + name);
         return;
     }
-    
+
     var images = data.images || [];
-    while (images.length < 3) { 
-        images.push("images/placeholder.jpg");   
+    while (images.length < 3) {
+        images.push("images/placeholder.jpg");
     }
     images = images.slice(0, 3);
     currentDetailsImages = images;
     currentSlideIndex = 0;
-    
-    var mainContainer = document.getElementById("new-advance-content");
-    mainContainer.innerHTML = ""; 
-    
+
+    var modalContent = document.querySelector("#details-modal .modal-content");
+    if (!modalContent) {
+        alert("Modal content not found!");
+        return;
+    }
+
+    var brand = "";
+    var otherSpecs = [];
+    if (data.specs) {
+        var specsArray = data.specs.split('|');
+        for (var s = 0; s < specsArray.length; s++) {
+            var spec = specsArray[s].trim();
+            if (spec !== "") {
+                if (brand === "") {
+                    brand = spec;
+                } else {
+                    otherSpecs.push(spec);
+                }
+            }
+        }
+    }
+
     var html = '<span class="close-btn" onclick="closeDetails()">&times;</span>';
     html += '<div class="modal-split-container">';
-    
-    html += '<div class="modal-text-panel">';
-    
-    html += '<h1 class="premium-modal-title">' + name + '</h1>';
-    
-    html += '<p class="premium-modal-desc">' + data.desc + '</p>';
-    
-    html += '<ul class="premium-modal-specs">';
-    
-    var specsArray = data.specs.split('|');
-for (var s = 0; s < specsArray.length; s++) {
-    if (specsArray[s].trim() !== "") {
-        
-        if (s === 0) {
-            html += '<li style="font-weight: 800; font-size: 1.4rem; color: #2e004f; text-transform: uppercase; letter-spacing: 1px;">' + specsArray[s].trim() + '</li>';
-        } else {
-            html += '<li>' + specsArray[s].trim() + '</li>';
-        }
-        
-    }
-}
-    
-    var stockColor = (data.stock <= 5) ? "#ff4757" : "#2ed573"; 
-    html += '<li style="color: ' + stockColor + '; font-weight: bold; border-bottom: none;">In Stock: ' + data.stock + '</li>';
-    html += '</ul>'; 
-    html += '<div class="action-area">';
-    html += '<p class="premium-modal-price">₱' + data.price.toFixed(2) + '</p>';
-    html += '<button class="add-btn" style="width: 100%; padding: 18px;" onclick="addToCart(\'' + name + '\')">Add to Cart</button>';
-    html += '</div>'; 
-    
-    html += '</div>'; 
+
     html += '<div class="modal-image-panel">';
-    
-    html += '<div class="slideshow-container">';
-    html += '<div class="slides" id="details-slides">'; 
-    for (var i = 0; i < currentDetailsImages.length; i++) {
-        html += '<img src="' + currentDetailsImages[i] + '" alt="' + name + '" style="display:' + (i === 0 ? 'block' : 'none') + ';">';
+    html += '<div class="slideshow-container" style="position: relative;">';
+    html += '<div class="slides" id="details-slides">';
+    for (var i = 0; i < images.length; i++) {
+        html += '<img src="' + images[i] + '" alt="' + name + '" style="display:' + (i === 0 ? 'block' : 'none') + '; width:100%; border-radius:8px;">';
     }
-    html += '</div>'; 
-    html += '<button class="slide-prev" onclick="changeSlide(-1)">&#10094;</button>';
-    html += '<button class="slide-next" onclick="changeSlide(1)">&#10095;</button>';
-    html += '</div>'; 
-    html += '<div id="slide-dots" class="slide-dots">';
-    for (var j = 0; j < currentDetailsImages.length; j++) {
-        var dotColor = (j === 0) ? '#7e57c2' : '#bbb';
-        html += '<span class="dot" onclick="goToSlide(' + j + ')" style="background-color: ' + dotColor + ';"></span>';
+    html += '</div>';
+    html += '<button class="slide-prev" onclick="changeSlide(-1)">❮</button>';
+    html += '<button class="slide-next" onclick="changeSlide(1)">❯</button>';
+    html += '</div>';
+
+    html += '<div class="slide-dots" id="slide-dots" style="text-align:center; margin-top:10px;">';
+    for (var j = 0; j < images.length; j++) {
+        html += '<span class="dot" onclick="goToSlide(' + j + ')" style="display:inline-block; width:12px; height:12px; margin:0 5px; background-color:' + (j === 0 ? '#7e57c2' : '#bbb') + '; border-radius:50%; cursor:pointer;"></span>';
     }
-    html += '</div>'; 
-    
     html += '</div>';
-    
     html += '</div>';
-    mainContainer.innerHTML = html;
-    
+
+    html += '<div class="modal-text-panel">';
+    html += '<h2 class="watch-name" style="font-weight: 800; font-size: 1.6rem; color: #2e004f; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">' + name + '</h2>';
+
+    if (brand) {
+        html += '<p class="brand-line" style="font-weight: 790; font-size: 1.0rem; color: #2e004f; text-transform: uppercase; letter-spacing: 1.5px; font-style: normal !important; margin-bottom: 15px;">' + brand + '</p>';
+    }
+
+    html += '<p class="watch-description">' + data.desc + '</p>';
+
+    if (otherSpecs.length > 0) {
+        html += '<ul class="specs-list">';
+        for (var k = 0; k < otherSpecs.length; k++) {
+            html += '<li>' + otherSpecs[k] + '</li>';
+        }
+        html += '</ul>';
+    }
+
+    var stockColor = data.stock < 5 ? "#ff4757" : "#2ed573";
+    html += '<p class="stock" style="color:' + stockColor + '; font-weight:bold;">In Stock: ' + data.stock + '</p>';
+
+    var formattedPrice = data.price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    html += '<p class="price" style="font-size:1.5rem; font-weight:bold; color:#2e004f;">₱' + formattedPrice + '</p>';
+
+    html += '<button class="add-btn" onclick="addToCart(\'' + name + '\')">Add to Cart</button>';
+
+    html += '</div>';
+    html += '</div>';
+
+    modalContent.innerHTML = html;
     document.getElementById("details-modal").style.display = "block";
 }
 
