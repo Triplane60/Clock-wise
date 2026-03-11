@@ -1,158 +1,109 @@
 var watchData = {
-    "Cosmograph Daytona Everose Black Dial With Diamonds": {
+    "Submariner 41": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Rolex",
         price: 150.00,
         stock: 10,
         images: ["men.png", "men2.png", "men3.png", "men4.png"]
     },
-    "Cosmograpgh Daytona Panda": {
+    "Cosmograpgh Daytona Congo": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 26 Silver Dial With Diamonds": {
+    "GMT-Master II Two Tone Everose Rootbeer": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 26 Two Tone Yellow Gold Champagne Dial": {
+    "Explorer II 42 Polar": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 28 Two Tone Everose Green Dial With Diamonds": {
+    "Submariner Date 41 Two Tone Yellow Gold Bluesy": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Royal Oak Grey Dial": {
+    "MRG-B5000": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Royal Oak Rose Gold White Dial": {
+    "MTG-B3000l": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Royal Oak Jumbo Black Dial": {
+    "GMW-B5000": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 31 Blue Roman Dial": {
+    "GM-B2100": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 41 White Dial": {
+    "GWG-B1000": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 31 Rhodium Dial With Diamonds": {
+    "Aqua Terra": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 31 Two Tone Everose Aubergine Dial With Diamonds": {
+    "Dark Side of the Moon": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 31 Two Tone Everose Mother Of Pearl Dial With Diamonds": {
+    "Seamaster Diver":{
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 31 Two Tone Yellow Gold Sakura Green": {
+    "Planet Ocean":{
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 36 Black Dial With Diamonds": {
+    "Moonwatch Professional":{
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
         images: ["images/placeholder1.jpg"]
     },
-    "Datejust 36 Blue Dial With Diamonds": {
-        desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
-        stock: 10,
-        images: ["images/placeholder1.jpg"]
-    },
-    "Datejust 36 Silver Dial": {
-        desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
-        stock: 10,
-        images: ["images/placeholder1.jpg"]
-    },
-    "Datejust 36 Two Tone Everose Black Roman Dial": {
-        desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
-        stock: 10,
-        images: ["images/placeholder1.jpg"]
-    },
-    "Datejust 36 Two Tone Yellow Gold Black Dial With Diamonds": {
-        desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
-        stock: 10,
-        images: ["images/placeholder1.jpg"]
-    },
-    "Datejust 36 Wimbledon": {
-        desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
-        stock: 10,
-        images: ["images/placeholder1.jpg"]
-    },
-    "Datejust 41 Azzuro Blue": {
-        desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
-        stock: 10,
-        images: ["images/placeholder1.jpg"]
-    },
-    "Datejust 41 Iced Out Roman Dial": {
-        desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
-        price: 100.00,
-        stock: 10,
-        images: ["images/placeholder1.jpg"]
-    }
 };
 
 var currentSlide = 0;
