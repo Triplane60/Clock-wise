@@ -860,7 +860,7 @@ input::-webkit-credentials-auto-fill-button {
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 700;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     margin-top: 0;
     line-height: 1.1;
 }
