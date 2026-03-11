@@ -4,91 +4,91 @@ var watchData = {
         specs: "Brand: Rolex",
         price: 150.00,
         stock: 10,
-        images: ["daytonab.png", "daytonab2.png", "daytonab3.png", "daytonab4.png"]
+        images: ["men-images/sub1.png", "men-images/sub2.png", "men-images/sub3.png"]
     },
-    "Cosmograpgh Daytona Congo": {
+    "Cosmograph Daytona Congo": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
         price: 100.00,
         stock: 10,
-        images: ["daytonap.png", "daytonap2.png", "daytonap3.png", "daytonap4.png"]
+        images: ["men-images/cos1.png", "men-images/cos2.png", "men-images/cos3.png"]
     },
     "GMT-Master II Two Tone Everose Rootbeer": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
         price: 100.00,
         stock: 10,
-        images: ["datejusts.png", "datejusts2.png", "datejusts3.png", "datejusts4.png"]
+        images: ["men-images/gmt1.png", "men-images/gmt2.png", "men-images/gmt3.png"]
     },
     "Explorer II 42 Polar": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Brand: Rolex",
         price: 100.00,
         stock: 10,
-        images: ["datejustg.png", "datejustg2.png", "datejustg3.png", "datejustg4.png"]
+        images: ["men-images/exp1.png", "men-images/exp2.png", "men-images/exp3.png"]
     },
     "Submariner Date 41 Two Tone Yellow Gold Bluesy": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: Rolex",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/mar1.png", "men-images/mar2.png", "men-images/mar3.png"]
     },
     "MRG-B5000": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: G-Shock",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/mrg1.png", "men-images/mrg2.png", "men-images/mrg3.png"]
     },
-    "MTG-B3000l": {
+    "MTG-B3000": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: G-Shock",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/mtg1.png", "men-images/mtg2.png", "men-images/mtg3.png"]
     },
     "GMW-B5000": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: G-Shock",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/gmw1.png", "men-images/gmw2.png", "men-images/gmw3.png"]
     },
     "GM-B2100": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: G-Shock",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/gm1.png", "men-images/gm2.png", "men-images/gm3.png"]
     },
     "GWG-B1000": {
         desc: "A premium timepiece for the modern gentleman.",
-        specs: "Stainless Steel | Automatic | Water Resistant",
+        specs: "Brand: G-Shock",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/gwg1.png", "men-images/gwg2.png", "men-images/gwg3.png"]
     },
-    "Aqua Terra": {
+    "Navitimer B01 Chronograph 46": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/nav.png", "men-images/nav1.png", "men-images/nav2.png"]
     },
-    "Dark Side of the Moon": {
+    "Superocean Heritage B31 Automatic 44": {
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/sup.png", "men-images/sup1.png", "men-images/sup2.png"]
     },
-    "Seamaster Diver":{
+    "Chronomat B01 42":{
         desc: "A premium timepiece for the modern gentleman.",
         specs: "Stainless Steel | Automatic | Water Resistant",
         price: 100.00,
         stock: 10,
-        images: ["images/placeholder1.jpg"]
+        images: ["men-images/chr.png", "men-images/chr1.png", "men-images/chr2.png"]
     },
     "Planet Ocean":{
         desc: "A premium timepiece for the modern gentleman.",
@@ -451,9 +451,10 @@ function openDetails(name) {
     }
     
     var images = data.images || [];
-    while (images.length < 4) { 
+    while (images.length < 3) { 
         images.push("images/placeholder.jpg");   
     }
+    images = images.slice(0, 3);
     currentDetailsImages = images;
     currentSlideIndex = 0;
     
