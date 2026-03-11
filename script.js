@@ -1,109 +1,110 @@
 var watchData = {
     "Submariner 41": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "The quintessential diver. It set the standard for what a dive watch should look like in 1953. In 2026, it remains the ultimate symbol of success and durability.",
         specs: "Brand: Rolex",
         price: 950000.00,
         stock: 10,
         images: ["men-images/sub1.png", "men-images/sub2.png", "men-images/sub3.png"]
     },
     "Cosmograph Daytona Congo": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "Inspired by car racing at Daytona Beach. It features a tachymeter scale to measure speed and is the most difficult Rolex to buy at a retail store due to its massive demand.",
         specs: "Brand: Rolex",
         price: 1850000.00,
         stock: 10,
         images: ["men-images/cos1.png", "men-images/cos2.png", "men-images/cos3.png"]
     },
     "GMT-Master II Two Tone Everose Rootbeer": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "Designed for pilots crossing multiple time zones. The brown and black \"Cerachrom bezel\" represents day and night hours, and the rose gold adds a warm, sophisticated touch.",
         specs: "Brand: Rolex",
         price: 1250000.00,
         stock: 10,
         images: ["men-images/gmt1.png", "men-images/gmt2.png", "men-images/gmt3.png"]
     },
     "Explorer II 42 Polar": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "A tool watch meant for adventurers. The white dial is designed for maximum visibility in dark caves or blinding snow, and the fixed bezel tracks a 24-hour cycle.",
         specs: "Brand: Rolex",
         price: 680000.00,
         stock: 10,
         images: ["men-images/exp1.png", "men-images/exp2.png", "men-images/exp3.png"]
     },
     "Submariner Date 41 Two Tone Yellow Gold Bluesy": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "A more status-heavy version of the diver. The 18k yellow gold against the royal blue dial makes it a favorite for those who want their watch to be noticed.",
         specs: "Brand: Rolex",
         price: 1150000.00,
         stock: 10,
         images: ["men-images/mar1.png", "men-images/mar2.png", "men-images/mar3.png"]
     },
     "MRG-B5000": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "Hand-assembled on Casio's elite \"Premium Production\" Line in Japan. It uses a multi-piece bezel for better shock absorption and is finished with Sallaz polishing",
         specs: "Brand: G-Shock",
         price: 220000.00,
         stock: 10,
         images: ["men-images/mrg1.png", "men-images/mrg2.png", "men-images/mrg3.png"]
     },
     "MTG-B3000": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "A sophisticated \"Metal-Twisted\" G-Shock. It uses a carbon-fiber-reinforced resin case inside a metal exterior, giving you luxury looks with \"mountain-climbing\" toughness.",
         specs: "Brand: G-Shock",
         price: 65000.00,
         stock: 10,
         images: ["men-images/mtg1.png", "men-images/mtg2.png", "men-images/mtg3.png"]
     },
     "GMW-B5000": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "The all-steel legend. It’s solar-powered and syncs with atomic clocks or your smartphone to ensure the time is accurate to the second, anywhere in the world.",
         specs: "Brand: G-Shock",
         price: 35000.00,
         stock: 10,
         images: ["men-images/gmw1.png", "men-images/gmw2.png", "men-images/gmw3.png"]
     },
     "GM-B2100": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "This octagonal design became a global phenomenon for its slim, wearable profile. The full-metal version is water-resistant to 200m and virtually indestructible.",
         specs: "Brand: G-Shock",
         price: 35000.00,
         stock: 10,
         images: ["men-images/gm1.png", "men-images/gm2.png", "men-images/gm3.png"]
     },
     "GWG-B1000": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "A massive survival watch. The buttons are specially sealed to prevent mud and sand from entering the case. It’s a favorite for search-and-rescue teams because of its built-in compass and altimeter.",
         specs: "Brand: G-Shock",
         price: 50000.00,
         stock: 10,
         images: ["men-images/gwg1.png", "men-images/gwg2.png", "men-images/gwg3.png"]
     },
     "Navitimer B01 Chronograph 46": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "The crown jewel of Breitling. It features a circular slide rule (the numbers on the outer rim) that allows pilots to calculate flight speed and fuel consumption. It’s a piece of aviation history on the wrist.",
         specs: "Brand: Breitling",
         price: 520000.00,
         stock: 10,
         images: ["men-images/nav.png", "men-images/nav1.png", "men-images/nav2.png"]
     },
     "Superocean Heritage B31 Automatic 44": {
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "A tribute to the original 1957 Breitling diver. It lacks the bulky tool look of modern divers, opting for a clean dial and a beautiful steel mesh bracelet. It’s the most elegant of the Breitling sport line.",
         specs: "Brand: Breitling",
         price: 310000.00,
         stock: 10,
         images: ["men-images/sup.png", "men-images/sup1.png", "men-images/sup2.png"]
     },
     "Chronomat B01 42":{
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "Famous for its \"Rouleaux\" bracelet. It has rider tabs on the bezel to protect the crystal and is considered Breitling’s most versatile all-purpose sports watch.",
         specs: "Brand: Breitling",
         price: 485000.00,
         stock: 10,
         images: ["men-images/chr.png", "men-images/chr1.png", "men-images/chr2.png"]
     },
     "Super Avenger B01 Chronograph 46":{
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "Built for durability and shock resistance. It has a very military feel with large, easy-to-grip buttons and a rugged case. It’s designed to be operated even while wearing flight gloves.",
         specs: "Brand: Breitling",
         price: 340000.00,
         stock: 10,
         images: ["men-images/ave.png", "men-images/ave1.png", "men-images/ave2.png"]
     },
     "Professional Endurance Pro 44":{
-        desc: "A premium timepiece for the modern gentleman.",
+        desc: "This is the modern, high-performance diver. It features a thick ceramic bezel and high-contrast minute tracks for easy reading underwater. It’s bold, colorful, and very sturdy.",
         specs: "Brand: Breitling",
         price: 185000.00,
         stock: 10,
         images: ["men-images/end.png", "men-images/end1.png", "men-images/end2.png"]
     },
+
 };
 
 var currentSlide = 0;
@@ -131,6 +132,7 @@ function showShopWithCategory(category) {
     setTimeout(function() {
         filterCategory(category);
     }, 50);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 window.onload = function() {
@@ -651,3 +653,16 @@ function goToSlide(index) {
     slides[currentSlideIndex].style.display = 'block';
     if (dots.length) dots[currentSlideIndex].style.backgroundColor = '#7e57c2';
 }
+
+window.addEventListener('hashchange', function() {
+    
+    if (window.location.hash === '' || window.location.hash === '#home') {
+        document.getElementById('shop-page').style.display = 'none'; 
+        document.getElementById('homepage').style.display = 'block'; 
+    } 
+    
+    else if (window.location.hash === '#shop') {
+        document.getElementById('homepage').style.display = 'none';
+        document.getElementById('shop-page').style.display = 'block';
+    }
+});

@@ -975,3 +975,24 @@ input::-webkit-credentials-auto-fill-button {
     cursor: pointer;
     padding: 0 10px;
 }
+
+.cat-img {
+    width: 100%;
+    height: 200px; 
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px 8px 0 0;
+    background-color: #f4f4f4; 
+}
+
+.gentlemens-bg {
+    background-image: url('gentlemen.png');
+}
+
+.ladies-bg {
+    background-image: url('ladies.png');
+}
+
+.new-arrivals-bg {
+    background-image: url('images/new-arrivals.jpg');
+}
