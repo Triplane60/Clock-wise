@@ -618,4 +618,3 @@ function goToSlide(index) {
     slides[currentSlideIndex].style.display = 'block';
     if (dots.length) dots[currentSlideIndex].style.backgroundColor = '#7e57c2';
 }
-
