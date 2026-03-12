@@ -104,7 +104,111 @@ var watchData = {
         stock: 10,
         images: ["men-images/end.png", "men-images/end1.png", "men-images/end2.png"]
     },
-
+    "Lady Datejust 28 Two Tone Everose Aubergine Dial With Diamonds":{
+        desc: "",
+        specs: "Brand: Rolex",
+        price: .00,
+        stock: 10,
+        images: ["women-images/lad1.png", "women-images/lad2.png", "women-images/lad3.png"]
+    },
+    "Datejust 31 Mother Of Pearl Dial With Diamonds":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/dat1.png", "women-images/dat2.png", "women-images/dat3.png"]
+    },
+    "Oyster Perpetual 36 Candy Pink Dial":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/oys1.png", "women-images/oys2.png", "women-images/oys3.png"]
+    },
+    "Datejust 36 Wimbledon":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/daj1.png", "women-images/daj2.png", "women-images/daj3.png"]
+    },
+    "Air-King 40":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/air1.png", "women-images/air2.png", "women-images/air3.png"]
+    },
+    "Navitimer 32":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/nav.png", "women-images/nav1.png", "women-images/nav2.png"]
+    },
+    "Chronomat Automatic 36 South Sea":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/chr.png", "women-images/chr1.png", "women-images/chr2.png"]
+    },
+    "Superocean Automatic 36":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/sup.png", "women-images/sup1.png", "women-images/sup2.png"]
+    },
+    "Lady Premier 32":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/lap.png", "women-images/lap1.png", "women-images/lap2.png"]
+    },
+    "Professional Endurance Pro 38":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/end.png", "women-images/end1.png", "women-images/end2.png"]
+    },
+    "Ingenieur Automatic 35":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/ing.png", "women-images/ing2.png", "women-images/ing1.png"]
+    },
+    "Portofino Automatic 34":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/por.png", "women-images/por1.png", "women-images/por2.png"]
+    },
+    "Portofino Automatic Moon Phase 37":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/pot.png", "women-images/pot2.png", "women-images/pot1.png"]
+    },
+    "Portofino Perpetual Calendar":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/prt.png", "women-images/prt1.png", "women-images/prt2.png"]
+    },
+    "Portofino Automatic Day & Night 34":{
+        desc: "",
+        specs: "",
+        price: .00,
+        stock: 10,
+        images: ["women-images/pro.png", "women-images/pro1.png", "women-images/pro2.png"]
+    },
 };
 
 var currentSlide = 0;
@@ -583,6 +687,7 @@ function filterCategory(category) {
             buttons[j].classList.add('active');
         }
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 setInterval(function() {
