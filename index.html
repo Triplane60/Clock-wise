@@ -20,22 +20,51 @@
             </nav>
         </header>
 
-        <section class="hero-home">
-            <div class="hero-content">
-                <h1>Define Your Style</h1>
-                <p>Bold Streetwear Inspired By Real Culture – Crafted For Comfort, Movement, And Everyday Confidence.</p>
-                <div class="hero-buttons">
-                    <a href="#" onclick="showShop(); return false;" class="btn-primary">Shop The Drop</a>
-                    <a href="#" onclick="showShop(); return false;" class="btn-secondary">View All Styles</a>
+        <section class="tiktok-hero">
+            <div class="hero-text">
+                <h1 style="font-size: 4rem; color: #2e004f; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Define Your<br>Style</h1>
+                <p style="color: #666; font-size: 1.1rem; margin-bottom: 40px; max-width: 450px; line-height: 1.6;">Bold luxury inspired by heritage — Crafted for precision, movement, and everyday confidence.</p>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button onclick="showShopWithCategory('all')" style="padding: 16px 35px; background-color: #2e004f; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Shop The Drop</button>
+                    <button onclick="showShopWithCategory('new-arrivals')" style="padding: 16px 35px; background-color: transparent; color: #2e004f; border: 2px solid #2e004f; border-radius: 6px; font-weight: bold; cursor: pointer;">View All Styles</button>
                 </div>
-                <div class="hero-features">
-                    <span>✓ Hassle-Free Returns</span>
-                    <span>✓ 100% Cotton Made In China</span>
-                    <span>✓ Free Shipping</span>
+            </div>
+
+           <div class="hero-visuals" style="flex: 1; min-width: 350px; position: relative; height: 600px; display: flex; align-items: center; overflow: hidden;">
+    
+                <div class="guarantee-badge" style="position: absolute; top: 10%; right: 5%; background: white; padding: 12px 25px; border-radius: 50px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); z-index: 10; font-weight: bold; font-size: 0.9rem; color: #333; display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #2e004f; font-size: 1.2rem;">★</span> 100% Satisfaction Guaranteed
+                </div>
+
+                <div id="pill-track" style="display: flex; gap: 30px; height: 460px; transition: transform 0.8s ease-in-out; padding-left: 20px;">
+                    
+                    <div class="moving-pill" onclick="goToProduct('MTG-B3000')" style="cursor: pointer;">
+                        <img src="men-images/mtg.png" alt="Watch 1" style="transform: scale(0.90);">
+                    </div>
+
+                    <div class="moving-pill" onclick="goToProduct('Submariner 41')" style="cursor: pointer;">
+                        <img src="men-images/sub.png" alt="Watch 2" style="transform: scale(1.1);">
+                    </div>
+
+                    <div class="moving-pill" onclick="goToProduct('Superocean Heritage B31 Automatic 44')" style="cursor: pointer;">
+                        <img src="men-images/sup.png" alt="Watch 3" style="transform: scale(1.1);">
+                    </div>
+
+                    <div class="moving-pill" onclick="goToProduct('Oyster Perpetual 36 Candy Pink Dial')" style="cursor: pointer;">
+                        <img src="women-images/oys.png" alt="Watch 4" style="transform: scale(1.1);">
+                    </div>
+
+                    <div class="moving-pill" onclick="goToProduct('Professional Endurance Pro 44')" style="cursor: pointer;">
+                        <img src="women-images/end.png" alt="Watch 5" style="transform: scale(1.1);">
+                    </div>
+
+                    <div class="moving-pill" onclick="goToProduct('Portofino Perpetual Calendar')" style="cursor: pointer;">
+                        <img src="women-images/prt.png" alt="Watch 6" style="transform: scale(0.90);">
+                    </div>
                 </div>
             </div>
         </section>
-
         <section class="features-grid">
             <div class="feature-item">
                 <span class="feature-icon">🔒</span>
@@ -73,35 +102,10 @@
                 </div>
                 
                 <div class="category-card" onclick="showShopWithCategory('new-arrivals')">
-                    <img src="images/new-arrivals-category.jpg" alt="New Arrivals" class="category-image">
+                    <img src="arrival.png" alt="New Arrivals" style="width: 100%; max-width: 290px; height: auto; display: block; margin: 0 auto 15px;">
                     <h3>New Arrivals</h3>
                 </div>
             </div>
-        </section>
-
-        <section class="countdown-timer">
-            <h2>Act Fast! Incredible Offer Expires Soon</h2>
-            <p class="timer-sub">Time Is Running Out On This Incredible Deal. Act Fast To Secure Premium Benefit.</p>
-            <div class="timer">
-                <div class="timer-block">
-                    <span id="days">190</span>
-                    <small>Days</small>
-                </div>
-                <div class="timer-block">
-                    <span id="hours">04</span>
-                    <small>Hrs</small>
-                </div>
-                <div class="timer-block">
-                    <span id="minutes">38</span>
-                    <small>Mins</small>
-                </div>
-                <div class="timer-block">
-                    <span id="seconds">13</span>
-                    <small>Secs</small>
-                </div>
-            </div>
-            <p class="offer-note">Limited Time Offer • The Deal Is Available Time December, 2025 <strong>HURRY UP Now!</strong></p>
-            <a href="#" onclick="showShop(); return false;" class="btn-collection">VIEW COLLECTION</a>
         </section>
 
         <section class="newsletter-section">
@@ -572,8 +576,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="toast-notification" class="toast"></div>
     </div>
 
     <footer class="main-footer">
@@ -584,9 +586,11 @@
             </div>
             <div class="footer-column">
                 <h3>Quick Links</h3>
-                <a href="#" onclick="showShopWithCategory('men'); return false;">Men's Collection</a>
-                <a href="#" onclick="showShopWithCategory('women'); return false;">Women's Collection</a>
-                <a href="#" onclick="showShopWithCategory('limited'); return false;">New Arrivals</a>
+                <a href="javascript:void(0)" onclick="showShopWithCategory('gentlemen')">Men's Collection</a>
+                
+                <a href="javascript:void(0)" onclick="showShopWithCategory('ladies')">Women's Collection</a>
+                
+                <a href="javascript:void(0)" onclick="showShopWithCategory('new-arrivals')">New Arrivals</a>
             </div>
             <div class="footer-column">
                 <h3>Customer Care</h3>
@@ -643,6 +647,8 @@
             </form>
         </div>
     </div>
+
+    <div id="toast-notification" class="toast"></div>
 
     <script src="script.js"></script>
 </body>

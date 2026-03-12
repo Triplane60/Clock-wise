@@ -238,7 +238,6 @@ function showShopWithCategory(category) {
     }, 50);
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 window.onload = function() {
     var activeUser = localStorage.getItem("currentUser");
     if (activeUser) {
@@ -250,41 +249,9 @@ window.onload = function() {
     if (window.location.hash === '#shop') {
         showShop();
     } else {
-        showHome();
+        if (typeof showHome === "function") showHome();
     }
-
-    startCountdown();
 };
-
-function startCountdown() {
-    var countDownDate = new Date("Dec 31, 2025 23:59:59").getTime();
-    var x = setInterval(function() {
-        var now = new Date().getTime();
-        var distance = countDownDate - now;
-
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        var daysSpan = document.getElementById("days");
-        var hoursSpan = document.getElementById("hours");
-        var minutesSpan = document.getElementById("minutes");
-        var secondsSpan = document.getElementById("seconds");
-
-        if (daysSpan) daysSpan.innerHTML = days;
-        if (hoursSpan) hoursSpan.innerHTML = hours;
-        if (minutesSpan) minutesSpan.innerHTML = minutes;
-        if (secondsSpan) secondsSpan.innerHTML = seconds;
-
-        if (distance < 0) {
-            clearInterval(x);
-            var timerDiv = document.querySelector(".timer");
-            if (timerDiv) timerDiv.innerHTML = "EXPIRED";
-        }
-    }, 1000);
-}
-
 function openLoginModal() {
     document.getElementById("login-modal").style.display = "block";
 }
@@ -875,4 +842,41 @@ function processOrder(event) {
     
     closeCheckout();
     document.getElementById("checkout-form").reset();
+}
+
+function startInfiniteLoop() {
+    const track = document.getElementById('pill-track');
+    
+    if (!track || track.children.length === 0) return;
+
+    setInterval(() => {
+        const firstPill = track.firstElementChild;
+        const pillWidth = firstPill.offsetWidth;
+        const gap = 30; 
+        const jumpDistance = pillWidth + gap;
+
+        track.style.transition = 'transform 0.8s ease-in-out';
+        track.style.transform = `translateX(-${jumpDistance}px)`; 
+
+        setTimeout(() => {
+            track.style.transition = 'none';
+            track.appendChild(track.firstElementChild);
+            track.style.transform = 'translateX(0px)';
+        }, 800);
+
+    }, 3500); 
+}
+
+window.addEventListener('DOMContentLoaded', startInfiniteLoop);
+
+function goToProduct(productName) {
+    showShop(); 
+
+    setTimeout(() => {
+        if (typeof openDetails === 'function') {
+            openDetails(productName);
+        } else {
+            console.log("Product details function not found!");
+        }
+    }, 100);
 }
