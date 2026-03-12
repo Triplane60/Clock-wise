@@ -1,55 +1,55 @@
 var watchData = {
     "Submariner 41": {
-        desc: "The quintessential diver. It set the standard for what a dive watch should look like in 1953. In 2026, it remains the ultimate symbol of success and durability.",
+        desc: "The ultimate archetype of the modern diver's watch. Forged in exceptionally durable Oystersteel, it seamlessly transitions from ocean exploration to the boardroom..",
         specs: "Brand: Rolex",
         price: 950000.00,
         stock: 10,
         images: ["men-images/sub1.png", "men-images/sub2.png", "men-images/sub3.png"]
     },
     "Cosmograph Daytona Congo": {
-        desc: "Inspired by car racing at Daytona Beach. It features a tachymeter scale to measure speed and is the most difficult Rolex to buy at a retail store due to its massive demand.",
+        desc: "A motorsport legend built for unparalleled precision. This highly sought-after chronograph features a high-contrast dial and a tachymetric scale for tracking ultimate speeds.",
         specs: "Brand: Rolex",
         price: 1850000.00,
         stock: 10,
         images: ["men-images/cos1.png", "men-images/cos2.png", "men-images/cos3.png"]
     },
     "GMT-Master II Two Tone Everose Rootbeer": {
-        desc: "Designed for pilots crossing multiple time zones. The brown and black \"Cerachrom bezel\" represents day and night hours, and the rose gold adds a warm, sophisticated touch.",
+        desc: "A sophisticated travel companion wrapped in warm Everose gold and Oystersteel. The bi-color Cerachrom bezel allows frequent flyers to track multiple time zones with timeless elegance.",
         specs: "Brand: Rolex",
         price: 1250000.00,
         stock: 10,
         images: ["men-images/gmt1.png", "men-images/gmt2.png", "men-images/gmt3.png"]
     },
     "Explorer II 42 Polar": {
-        desc: "A tool watch meant for adventurers. The white dial is designed for maximum visibility in dark caves or blinding snow, and the fixed bezel tracks a 24-hour cycle.",
+        desc: "Designed to push the boundaries of human endurance in extreme environments. The highly legible white dial and prominent orange 24-hour hand ensure clarity in the darkest conditions.",
         specs: "Brand: Rolex",
         price: 680000.00,
         stock: 10,
         images: ["men-images/exp1.png", "men-images/exp2.png", "men-images/exp3.png"]
     },
     "Submariner Date 41 Two Tone Yellow Gold Bluesy": {
-        desc: "A more status-heavy version of the diver. The 18k yellow gold against the royal blue dial makes it a favorite for those who want their watch to be noticed.",
+        desc: "A captivating blend of deep marine blue and brilliant 18ct yellow gold. This striking two-tone variation brings an undeniable aura of luxury to the iconic diver profile.",
         specs: "Brand: Rolex",
         price: 1150000.00,
         stock: 10,
         images: ["men-images/mar1.png", "men-images/mar2.png", "men-images/mar3.png"]
     },
     "MRG-B5000": {
-        desc: "Hand-assembled on Casio's elite \"Premium Production\" Line in Japan. It uses a multi-piece bezel for better shock absorption and is finished with Sallaz polishing",
+        desc: "The absolute pinnacle of G-Shock engineering and craftsmanship. Hand-assembled on Casio's elite \"Premium Production Line\" in Japan, this full-titanium masterpiece features flawless Sallaz polishing.",
         specs: "Brand: G-Shock",
         price: 220000.00,
         stock: 10,
         images: ["men-images/mrg1.png", "men-images/mrg2.png", "men-images/mrg3.png"]
     },
     "MTG-B3000": {
-        desc: "A sophisticated \"Metal-Twisted\" G-Shock. It uses a carbon-fiber-reinforced resin case inside a metal exterior, giving you luxury looks with \"mountain-climbing\" toughness.",
+        desc: "A sleek marvel of structural innovation. Its ultra-slim dual-core guard structure combines the warmth of resin with the sharp, faceted brilliance of polished metal.",
         specs: "Brand: G-Shock",
         price: 65000.00,
         stock: 10,
         images: ["men-images/mtg1.png", "men-images/mtg2.png", "men-images/mtg3.png"]
     },
     "GMW-B5000": {
-        desc: "The all-steel legend. It’s solar-powered and syncs with atomic clocks or your smartphone to ensure the time is accurate to the second, anywhere in the world.",
+        desc: "The legendary 1983 origin story, reborn in full stainless steel. It pairs the classic digital square aesthetic with modern Bluetooth connectivity and Tough Solar power.",
         specs: "Brand: G-Shock",
         price: 35000.00,
         stock: 10,
@@ -63,149 +63,149 @@ var watchData = {
         images: ["men-images/gm1.png", "men-images/gm2.png", "men-images/gm3.png"]
     },
     "GWG-B1000": {
-        desc: "A massive survival watch. The buttons are specially sealed to prevent mud and sand from entering the case. It’s a favorite for search-and-rescue teams because of its built-in compass and altimeter.",
+        desc: "An unstoppable force built to conquer the harshest terrain on Earth. Engineered with mud-resist construction, sapphire crystal, and forged carbon for extreme tactical durability.",
         specs: "Brand: G-Shock",
         price: 50000.00,
         stock: 10,
         images: ["men-images/gwg1.png", "men-images/gwg2.png", "men-images/gwg3.png"]
     },
     "Navitimer B01 Chronograph 46": {
-        desc: "The crown jewel of Breitling. It features a circular slide rule (the numbers on the outer rim) that allows pilots to calculate flight speed and fuel consumption. It’s a piece of aviation history on the wrist.",
+        desc: "The definitive watch for aviation professionals. Its commanding 46mm presence showcases the legendary circular slide rule, powered by the masterful Breitling Manufacture Caliber 01.",
         specs: "Brand: Breitling",
         price: 520000.00,
         stock: 10,
         images: ["men-images/nav.png", "men-images/nav1.png", "men-images/nav2.png"]
     },
     "Superocean Heritage B31 Automatic 44": {
-        desc: "A tribute to the original 1957 Breitling diver. It lacks the bulky tool look of modern divers, opting for a clean dial and a beautiful steel mesh bracelet. It’s the most elegant of the Breitling sport line.",
+        desc: "A stunning tribute to Breitling's 1950s diving legacy. The combination of a high-tech ceramic bezel and a mesh-style bracelet offers the perfect blend of vintage charm and modern performance.",
         specs: "Brand: Breitling",
         price: 310000.00,
         stock: 10,
         images: ["men-images/sup.png", "men-images/sup1.png", "men-images/sup2.png"]
     },
     "Chronomat B01 42":{
-        desc: "Famous for its \"Rouleaux\" bracelet. It has rider tabs on the bezel to protect the crystal and is considered Breitling’s most versatile all-purpose sports watch.",
+        desc: "Breitling’s all-purpose sports watch in its most luxurious form. Featuring the signature \"Rouleaux\" bracelet, this piece makes a bold, unapologetic statement in solid gold.",
         specs: "Brand: Breitling",
         price: 485000.00,
         stock: 10,
         images: ["men-images/chr.png", "men-images/chr1.png", "men-images/chr2.png"]
     },
     "Super Avenger B01 Chronograph 46":{
-        desc: "Built for durability and shock resistance. It has a very military feel with large, easy-to-grip buttons and a rugged case. It’s designed to be operated even while wearing flight gloves.",
+        desc: "Built for those who demand maximum presence and extreme robustness. Shock-resistant and highly legible, it is the ultimate tool for demanding aerial and terrestrial missions.",
         specs: "Brand: Breitling",
         price: 340000.00,
         stock: 10,
         images: ["men-images/ave.png", "men-images/ave1.png", "men-images/ave2.png"]
     },
     "Professional Endurance Pro 44":{
-        desc: "This is the modern, high-performance diver. It features a thick ceramic bezel and high-contrast minute tracks for easy reading underwater. It’s bold, colorful, and very sturdy.",
+        desc: "The ultimate luxury sports watch designed for rigorous physical activity. Its ultra-lightweight Breitlight case is 3.3 times lighter than titanium, offering peak comfort and vibrant style.",
         specs: "Brand: Breitling",
         price: 185000.00,
         stock: 10,
         images: ["men-images/end.png", "men-images/end1.png", "men-images/end2.png"]
     },
     "Lady Datejust 28 Two Tone Everose Aubergine Dial With Diamonds":{
-        desc: "",
+        desc: "A breathtaking blend of Oystersteel and Everose gold. The rich aubergine dial, accented with brilliant-cut diamonds, offers unmatched evening elegance.",
         specs: "Brand: Rolex",
-        price: .00,
+        price: 1350000.00,
         stock: 10,
         images: ["women-images/lad1.png", "women-images/lad2.png", "women-images/lad3.png"]
     },
     "Datejust 31 Mother Of Pearl Dial With Diamonds":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "Nature's beauty captured on your wrist. The iridescent mother-of-pearl dial ensures no two watches are exactly alike, elevated by stunning diamond hour markers.",
+        specs: "Brand: Rolex",
+        price: 1150000.00,
         stock: 10,
         images: ["women-images/dat1.png", "women-images/dat2.png", "women-images/dat3.png"]
     },
     "Oyster Perpetual 36 Candy Pink Dial":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "A vibrant pop of color backed by legendary Rolex reliability. The candy pink dial brings a playful yet highly exclusive energy to a timeless silhouette.",
+        specs: "Brand: Rolex",
+        price: 950000.00,
         stock: 10,
         images: ["women-images/oys1.png", "women-images/oys2.png", "women-images/oys3.png"]
     },
     "Datejust 36 Wimbledon":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "A nod to prestigious tennis heritage. Featuring the iconic slate dial with forest green Roman numerals, this piece perfectly bridges the gap between sporty and sophisticated.",
+        specs: "Brand: Rolex",
+        price: 820000.00,
         stock: 10,
         images: ["women-images/daj1.png", "women-images/daj2.png", "women-images/daj3.png"]
     },
     "Air-King 40":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "Originally designed for aviation pioneers, now a modern icon. Its bold 40mm case and striking green accents make a confident, powerful statement on any wrist.",
+        specs: "Brand: Rolex",
+        price: 650000.00,
         stock: 10,
         images: ["women-images/air1.png", "women-images/air2.png", "women-images/air3.png"]
     },
     "Navitimer 32":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "The legendary pilot's watch, elegantly resized for the feminine wrist. It trades the complex slide rule for a clean, radiant dial that brings aviation heritage to everyday luxury.",
+        specs: "Brand: Breitling",
+        price: 250000.00,
         stock: 10,
         images: ["women-images/nav.png", "women-images/nav1.png", "women-images/nav2.png"]
     },
     "Chronomat Automatic 36 South Sea":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "A tropical escape in horological form. Adorned with a dazzling gem-set bezel and vivid dial, it brings a vibrant, exotic flair to the classic Chronomat.",
+        specs: "Brand: Breitling",
+        price: 480000.00,
         stock: 10,
         images: ["women-images/chr.png", "women-images/chr1.png", "women-images/chr2.png"]
     },
     "Superocean Automatic 36":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "High-performance underwater capability meets coastal chic. Its bright, legible dial and durable build make it the ultimate companion for the active, modern woman.",
+        specs: "Brand: Breitling",
+        price: 280000.00,
         stock: 10,
         images: ["women-images/sup.png", "women-images/sup1.png", "women-images/sup2.png"]
     },
     "Lady Premier 32":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "Refined, dressy, and unmistakably elegant. This piece combines vintage-inspired charm with a slim, graceful profile that slips perfectly under any tailored cuff.",
+        specs: "Brand: Breitling",
+        price: 260000.00,
         stock: 10,
         images: ["women-images/lap.png", "women-images/lap1.png", "women-images/lap2.png"]
     },
     "Professional Endurance Pro 38":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "he ultimate luxury athleisure watch. Crafted from ultra-lightweight proprietary materials, it delivers vibrant style and rugged durability for high-intensity lifestyles.",
+        specs: "Brand: Breitling",
+        price: 185000.00,
         stock: 10,
         images: ["women-images/end.png", "women-images/end1.png", "women-images/end2.png"]
     },
     "Ingenieur Automatic 35":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "A masterclass in integrated bracelet design. This timepiece offers a highly architectural, anti-magnetic build that feels both industrial and incredibly chic.",
+        specs: "Brand: IWC Schaffhausen",
+        price: 350000.00,
         stock: 10,
         images: ["women-images/ing.png", "women-images/ing2.png", "women-images/ing1.png"]
     },
     "Portofino Automatic 34":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "The pure essence of Mediterranean luxury. Its uncluttered, minimalist dial and perfectly round case offer a timeless, understated grace that never goes out of style.",
+        specs: "Brand: IWC Schaffhausen",
+        price: 320000.00,
         stock: 10,
         images: ["women-images/por.png", "women-images/por1.png", "women-images/por2.png"]
     },
     "Portofino Automatic Moon Phase 37":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "A poetic complication for the romantic soul. The meticulously crafted moon phase display sits beautifully atop a pristine dial, offering starry elegance.",
+        specs: "Brand: IWC Schaffhausen",
+        price: 490000.00,
         stock: 10,
         images: ["women-images/pot.png", "women-images/pot2.png", "women-images/pot1.png"]
     },
     "Portofino Perpetual Calendar":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "A true mechanical masterpiece. This highly complex movement automatically tracks the date, month, and leap years without needing adjustment, wrapped in a sleek Portofino case.",
+        specs: "Brand: IWC Schaffhausen",
+        price: 1250000.00,
         stock: 10,
         images: ["women-images/prt.png", "women-images/prt1.png", "women-images/prt2.png"]
     },
     "Portofino Automatic Day & Night 34":{
-        desc: "",
-        specs: "",
-        price: .00,
+        desc: "Track the passing of time with celestial beauty. A delicate sun and moon disc slowly rotates on the dial, perfectly capturing the magic of day and night.",
+        specs: "Brand: IWC Schaffhausen",
+        price: 410000.00,
         stock: 10,
         images: ["women-images/pro.png", "women-images/pro1.png", "women-images/pro2.png"]
     },
@@ -285,91 +285,136 @@ function startCountdown() {
     }, 1000);
 }
 
-function openLoginModal() { 
-    document.getElementById("login-modal").style.display = "block"; 
+function openLoginModal() {
+    document.getElementById("login-modal").style.display = "block";
 }
-function closeLogin() { 
-    document.getElementById("login-modal").style.display = "none"; 
-}
-function toggleAuthMode() {
-    isRegisterMode = !isRegisterMode;
-    var title = document.getElementById("login-title");
-    var subtitle = document.getElementById("login-subtitle"); 
-    var submitBtn = document.getElementById("auth-submit-btn");
-    var toggleLink = document.getElementById("toggle-link");
-    var toggleText = document.getElementById("toggle-text");
 
-    if (isRegisterMode) {
-        title.innerText = "Create Account";
-        subtitle.innerText = "Join us to explore premium timepieces"; 
-        submitBtn.innerText = "Register";
-        toggleText.innerText = "Already have an account?";
-        toggleLink.innerText = "Login here";
-    } else {
+function closeLogin() {
+    document.getElementById("login-modal").style.display = "none";
+}
+
+function toggleAuth() {
+    var loginForm = document.getElementById("login-form-content");
+    var registerForm = document.getElementById("register-form-content");
+    var title = document.getElementById("login-title");
+    var subtitle = document.getElementById("login-subtitle");
+
+    if (loginForm.style.display === "none") {
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
         title.innerText = "Welcome Back";
-        subtitle.innerText = "Please login to start shopping"; 
-        submitBtn.innerText = "Login";
-        toggleText.innerText = "Don't have an account?";
-        toggleLink.innerText = "Register here";
+        subtitle.innerText = "Please login to start shopping";
+    } else {
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+        title.innerText = "Create Account";
+        subtitle.innerText = "Join us to explore premium timepieces";
     }
 }
+
+function handleRegister(event) {
+    event.preventDefault();
+    
+    var username = document.getElementById("reg-username").value;
+    var password = document.getElementById("reg-password").value;
+    var confirm = document.getElementById("reg-confirm-password").value;
+
+    if (password.length < 8 || !/[a-zA-Z]/.test(password)) {
+        showNotification("Password must be at least 8 characters and contain a letter! 🛑");
+        return;
+    }
+    if (password !== confirm) {
+        showNotification("Passwords do not match! ❌");
+        return;
+    }
+    
+    if (localStorage.getItem("user_" + username)) {
+        showNotification("Username already exists! Choose another. ❌");
+        return;
+    }
+
+    localStorage.setItem("user_" + username, password);
+    showNotification("Account created! Please login.");
+    
+    document.getElementById("reg-username").value = "";
+    document.getElementById("reg-password").value = "";
+    document.getElementById("reg-confirm-password").value = "";
+    toggleAuth(); 
+}
+
 function handleAuth(event) {
     event.preventDefault();
     var user = document.getElementById("auth-username").value;
     var pass = document.getElementById("auth-password").value;
 
     if (isRegisterMode) {
+        var confirmPass = document.getElementById("auth-confirm-password").value;
+
         if (pass.length < 8 || !/[a-zA-Z]/.test(pass)) {
-            showNotification("Password needs 8 chars and 1 letter! 🛑");
+            showNotification("Password must be at least 8 characters and contain a letter! 🛑");
             return;
         }
+        if (pass !== confirmPass) {
+            showNotification("Passwords do not match! ❌");
+            return;
+        }
+
+        if (localStorage.getItem("user_" + user)) {
+            showNotification("Username already exists! Choose another. ❌");
+            return;
+        }
+
         localStorage.setItem("user_" + user, pass);
-        showNotification("Account created! Please Login.");
-        toggleAuthMode();
+        showNotification("Account created! Please login.");
+        toggleAuthMode(); 
     } else {
         var savedPass = localStorage.getItem("user_" + user);
         if (savedPass && savedPass === pass) {
             isLoggedIn = true;
             localStorage.setItem("currentUser", user);
             document.getElementById("user-display").innerText = "👤 " + user;
-            
+
             document.getElementById("auth-username").value = "";
             document.getElementById("auth-password").value = "";
             document.getElementById("auth-password").type = "password";
-            document.getElementById("eye-icon").innerHTML = closedEyeSVG;
-            
+            var eyeIcon = document.getElementById("eye-icon");
+            if (eyeIcon) eyeIcon.innerHTML = closedEyeSVG; 
+
             closeLogin();
             showNotification("Welcome back, " + user + "! ✨");
         } else {
-            showNotification("Invalid Credentials! ❌");
+            showNotification("Invalid username or password! ❌");
         }
     }
 }
+
 function handleForgotPassword() {
     var username = document.getElementById("auth-username").value;
     if (username === "") {
         showNotification("Please enter your username first! 📧");
-        return; 
+        return;
     }
     var savedPass = localStorage.getItem("user_" + username);
     if (!savedPass) {
         showNotification("Account not found! Please check the username. ❌");
-        return; 
+        return;
     }
-    userToReset = username; 
-    document.getElementById("reset-username-display").innerText = username; 
-    document.getElementById("new-reset-password").value = ""; 
-    document.getElementById("confirm-reset-password").value = ""; 
+    userToReset = username;
+    document.getElementById("reset-username-display").innerText = username;
+    document.getElementById("new-reset-password").value = "";
+    document.getElementById("confirm-reset-password").value = "";
     
-    closeLogin(); 
-    document.getElementById("forgot-password-modal").style.display = "block"; 
+    closeLogin();
+    document.getElementById("forgot-password-modal").style.display = "block";
 }
+
 function closeForgotPasswordModal() {
     document.getElementById("forgot-password-modal").style.display = "none";
 }
+
 function executePasswordReset() {
     var newPassword = document.getElementById("new-reset-password").value;
-    var confirmPassword = document.getElementById("confirm-reset-password").value; 
+    var confirmPassword = document.getElementById("confirm-reset-password").value;
 
     if (newPassword !== confirmPassword) {
         showNotification("Passwords do not match! Please try again. ❌");
@@ -388,6 +433,7 @@ function executePasswordReset() {
     closeForgotPasswordModal();
     showNotification("Password successfully updated! You can now login. 🔐");
 }
+
 function handleUserClick() {
     if (!isLoggedIn) {
         openLoginModal(); 
@@ -419,6 +465,15 @@ function executeLogout() {
     document.getElementById("eye-icon").innerHTML = closedEyeSVG;
 
     showNotification("Logged out successfully! 👋");
+
+    cart = []; 
+    updateCartDisplay(); 
+    renderCartItems(); 
+    window.location.hash = '#home'; 
+    document.getElementById('shop-page').style.display = 'none'; 
+    document.getElementById('homepage').style.display = 'block'; 
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 var openEyeSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
@@ -500,6 +555,9 @@ function removeFromCart(event, index) {
 function renderCartItems() {
     var list = document.getElementById("cart-items-list");
     var totalDisplay = document.getElementById("cart-total-price");
+    
+    var checkoutBtn = document.querySelector("#cart-dropdown button"); 
+
     if (!list) return;
 
     let pesoFormat = new Intl.NumberFormat('en-PH', {
@@ -510,7 +568,11 @@ function renderCartItems() {
 
     if (cart.length === 0) {
         list.innerHTML = "<p style='color: #888; padding: 20px; text-align: center; font-style: italic;'>Your cart is empty.</p>";
+        
+        if (checkoutBtn) checkoutBtn.style.display = "none"; 
     } else {
+        if (checkoutBtn) checkoutBtn.style.display = "block"; 
+
         var cartHTML = "";
         for (var i = 0; i < cart.length; i++) {
             var watch = watchData[cart[i].name];
@@ -520,13 +582,10 @@ function renderCartItems() {
             var itemTotal = cart[i].price * cart[i].quantity;
 
             cartHTML += "<div class='cart-item-row' style='display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee'>";
-            
             cartHTML += "<img src='" + imgSrc + "' style='width: 40px; height: 40px; object-fit: contain; border-radius: 4px; background: white;'>";
-            
             cartHTML += "<div style='flex-grow: 1; line-height: 1.2;'>";
             cartHTML += "<span class='item-name' style='font-size: 0.85rem; font-weight: bold; color: #2e004f; display: block;'>" + cart[i].name + qtyText + "</span>";
             cartHTML += "</div>";
-
             cartHTML += "<div style='display: flex; align-items: center; gap: 10px;'>";
             cartHTML += "<span style='font-weight: bold; font-size: 0.9rem; color: #2e004f;'>" + pesoFormat.format(itemTotal) + "</span>";
             cartHTML += "<button onclick='removeFromCart(event, " + i + ")' style='color: #ff4757; background: none; border: none; cursor: pointer; font-size: 1.2rem; font-weight: bold;'>&times;</button>";
@@ -771,3 +830,49 @@ window.addEventListener('hashchange', function() {
         document.getElementById('shop-page').style.display = 'block';
     }
 });
+
+function openCheckout() {
+    if (cart.length === 0) {
+        return;
+    }
+
+    var total = 0;
+    for (var i = 0; i < cart.length; i++) {
+        var watch = watchData[cart[i].name];
+        if (watch) {
+            total += watch.price * cart[i].quantity;
+        }
+    }
+
+    let pesoFormat = new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+        minimumFractionDigits: 2
+    });
+
+    document.getElementById("checkout-total-display").innerText = "Total to Pay: " + pesoFormat.format(total);
+
+    var dropdown = document.getElementById("cart-dropdown");
+    if(dropdown) dropdown.style.display = "none";
+    
+    document.getElementById("checkout-modal").style.display = "block";
+}
+
+function closeCheckout() {
+    document.getElementById("checkout-modal").style.display = "none";
+}
+
+function processOrder(event) {
+    event.preventDefault(); 
+    
+    let name = document.getElementById("cust-name").value;
+    
+    alert("Thank you, " + name + "! Your order has been placed successfully. We will contact you shortly for payment details.");
+    
+    cart = [];
+    updateCartDisplay();
+    renderCartItems();
+    
+    closeCheckout();
+    document.getElementById("checkout-form").reset();
+}
