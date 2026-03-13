@@ -724,7 +724,7 @@ function filterCategory(category) {
     var cards = document.querySelectorAll('.watch-card');
     for (var i = 0; i < cards.length; i++) {
         if (category === 'all' || cards[i].classList.contains(category)) {
-            cards[i].style.display = 'block';
+            cards[i].style.display = 'flex';
         } else {
             cards[i].style.display = 'none';
         }
