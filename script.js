@@ -257,7 +257,24 @@ function openLoginModal() {
 }
 
 function closeLogin() {
-    document.getElementById("login-modal").style.display = "none";
+    var modal = document.getElementById("login-modal");
+    if (modal) modal.style.display = "none";
+    
+    document.getElementById("auth-username").value = "";
+    document.getElementById("auth-password").value = "";
+    
+    document.getElementById("reg-username").value = "";
+    document.getElementById("reg-password").value = "";
+    document.getElementById("reg-confirm-password").value = "";
+
+    document.getElementById("auth-password").type = "password";
+    document.getElementById("reg-password").type = "password";
+    document.getElementById("reg-confirm-password").type = "password";
+
+    document.getElementById("login-form-content").style.display = "block";
+    document.getElementById("register-form-content").style.display = "none";
+    document.getElementById("login-title").innerText = "Welcome Back";
+    document.getElementById("login-subtitle").innerText = "Please login to start shopping";
 }
 
 function toggleAuth() {
@@ -310,48 +327,33 @@ function handleRegister(event) {
 }
 
 function handleAuth(event) {
-    event.preventDefault();
+    if (event) event.preventDefault(); 
+    
     var user = document.getElementById("auth-username").value;
     var pass = document.getElementById("auth-password").value;
 
-    if (isRegisterMode) {
-        var confirmPass = document.getElementById("auth-confirm-password").value;
+    if (user === "" || pass === "") {
+        showNotification("Please enter both username and password! 🛑");
+        return;
+    }
 
-        if (pass.length < 8 || !/[a-zA-Z]/.test(pass)) {
-            showNotification("Password must be at least 8 characters and contain a letter! 🛑");
-            return;
-        }
-        if (pass !== confirmPass) {
-            showNotification("Passwords do not match! ❌");
-            return;
-        }
+    var savedPass = localStorage.getItem("user_" + user);
+    
+    if (savedPass && savedPass === pass) {
+        isLoggedIn = true;
+        localStorage.setItem("currentUser", user);
+        
+        var userDisplay = document.getElementById("user-display");
+        if (userDisplay) userDisplay.innerText = "👤 " + user;
 
-        if (localStorage.getItem("user_" + user)) {
-            showNotification("Username already exists! Choose another. ❌");
-            return;
-        }
+        document.getElementById("auth-username").value = "";
+        document.getElementById("auth-password").value = "";
+        document.getElementById("auth-password").type = "password";
 
-        localStorage.setItem("user_" + user, pass);
-        showNotification("Account created! Please login.");
-        toggleAuthMode(); 
+        closeLogin();
+        showNotification("Welcome back, " + user + "! ✨");
     } else {
-        var savedPass = localStorage.getItem("user_" + user);
-        if (savedPass && savedPass === pass) {
-            isLoggedIn = true;
-            localStorage.setItem("currentUser", user);
-            document.getElementById("user-display").innerText = "👤 " + user;
-
-            document.getElementById("auth-username").value = "";
-            document.getElementById("auth-password").value = "";
-            document.getElementById("auth-password").type = "password";
-            var eyeIcon = document.getElementById("eye-icon");
-            if (eyeIcon) eyeIcon.innerHTML = closedEyeSVG; 
-
-            closeLogin();
-            showNotification("Welcome back, " + user + "! ✨");
-        } else {
-            showNotification("Invalid username or password! ❌");
-        }
+        showNotification("Invalid username or password! ❌");
     }
 }
 
@@ -383,22 +385,22 @@ function executePasswordReset() {
     var newPassword = document.getElementById("new-reset-password").value;
     var confirmPassword = document.getElementById("confirm-reset-password").value;
 
+    if (newPassword.length < 8 || newPassword.length > 10) {
+        showNotification("Password must be between 8 and 10 characters! 🛑");
+        return;
+    }
+    
     if (newPassword !== confirmPassword) {
-        showNotification("Passwords do not match! Please try again. ❌");
+        showNotification("Passwords do not match! ❌");
         return;
     }
-    if (newPassword.length < 8) {
-        showNotification("Reset failed: Password must be at least 8 characters! 🛑");
-        return;
-    }
-    var hasLetter = /[a-zA-Z]/.test(newPassword);
-    if (!hasLetter) {
-        showNotification("Reset failed: Password must include at least one letter! 🔠");
-        return;
-    }
+
     localStorage.setItem("user_" + userToReset, newPassword);
+
     closeForgotPasswordModal();
-    showNotification("Password successfully updated! You can now login. 🔐");
+    showNotification("Password updated! Please log in. 🔐");
+
+    openLoginModal();
 }
 
 function handleUserClick() {
@@ -423,37 +425,40 @@ function closeLogoutModal() {
 function executeLogout() {
     isLoggedIn = false;
     localStorage.removeItem("currentUser");
+
+    // Reset User UI
     document.getElementById("user-display").innerText = "👤 Login";
     document.getElementById("logout-confirm-modal").style.display = "none";
     
     document.getElementById("auth-username").value = "";
     document.getElementById("auth-password").value = "";
     document.getElementById("auth-password").type = "password";
-    document.getElementById("eye-icon").innerHTML = closedEyeSVG;
 
     showNotification("Logged out successfully! 👋");
 
     cart = []; 
-    updateCartDisplay(); 
-    renderCartItems(); 
-    window.location.hash = '#home'; 
+    if (typeof updateCartDisplay === "function") updateCartDisplay(); 
+    if (typeof renderCartItems === "function") renderCartItems(); 
+    
     document.getElementById('shop-page').style.display = 'none'; 
     document.getElementById('homepage').style.display = 'block'; 
-    
+    window.location.hash = '#home'; 
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-var openEyeSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
-var closedEyeSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
-function togglePasswordVisibility() {
-    var passInput = document.getElementById("auth-password");
-    var eyeIcon = document.getElementById("eye-icon");
-    if (passInput.type === "password") {
-        passInput.type = "text";
-        eyeIcon.innerHTML = openEyeSVG; 
+var eyeOpenSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+
+var eyeClosedSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+
+function togglePasswordVisibility(inputId, iconElement) {
+    var passwordInput = document.getElementById(inputId);
+    
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        iconElement.innerHTML = eyeOpenSVG; 
     } else {
-        passInput.type = "password";
-        eyeIcon.innerHTML = closedEyeSVG; 
+        passwordInput.type = "password";
+        iconElement.innerHTML = eyeClosedSVG; 
     }
 }
 function toggleResetPassword(inputId, iconElement) {
@@ -688,12 +693,31 @@ function closeDetails() {
     document.getElementById("details-modal").style.display = "none"; 
 }
 
-function showNotification(msg) {
+
+function showNotification(message) {
     var toast = document.getElementById("toast-notification");
-    if (!toast) return;
-    toast.innerText = msg;
+    
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toast-notification";
+        toast.className = "toast";
+        document.body.appendChild(toast);
+    }
+
+    toast.classList.remove("show");
+    if (toast.hideTimeout) {
+        clearTimeout(toast.hideTimeout);
+    }
+
+    toast.innerText = message;
+
+    void toast.offsetWidth; 
+
     toast.classList.add("show");
-    setTimeout(function() { toast.classList.remove("show"); }, 3000);
+
+    toast.hideTimeout = setTimeout(function() {
+        toast.classList.remove("show");
+    }, 3000);
 }
 
 function filterCategory(category) {
@@ -880,3 +904,30 @@ function goToProduct(productName) {
         }
     }, 100);
 }
+
+document.addEventListener("keydown", function(event) {
+    
+    if (event.key === "Escape") {
+        if (typeof closeLogin === "function") closeLogin();
+        if (typeof closeForgotPasswordModal === "function") closeForgotPasswordModal();
+        
+        var modals = document.querySelectorAll('.modal');
+        modals.forEach(function(modal) {
+            modal.style.display = "none";
+        });
+    }
+
+    if (event.key === "Enter") {
+        var focused = document.activeElement.id;
+
+        if (focused === "auth-username" || focused === "auth-password") {
+            handleAuth(event);
+        }
+        else if (focused === "reg-username" || focused === "reg-password" || focused === "reg-confirm-password") {
+            if (typeof handleRegister === "function") handleRegister(event);
+        }
+        else if (focused === "new-reset-password" || focused === "confirm-reset-password") {
+            if (typeof executePasswordReset === "function") executePasswordReset();
+        }
+    }
+});
