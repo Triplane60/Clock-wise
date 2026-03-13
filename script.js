@@ -446,7 +446,6 @@ function executeLogout() {
     isLoggedIn = false;
     localStorage.removeItem("currentUser");
 
-    // Reset User UI
     document.getElementById("user-display").innerText = "👤 Login";
     document.getElementById("logout-confirm-modal").style.display = "none";
     
