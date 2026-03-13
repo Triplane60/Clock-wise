@@ -931,3 +931,22 @@ document.addEventListener("keydown", function(event) {
         }
     }
 });
+
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'cart-checkout-btn') {
+        console.log("Force-loading cart page...");
+        showCartPage();
+    }
+});
+
+function showCartPage() {
+    const home = document.getElementById('homepage');
+    const shop = document.getElementById('shop-page');
+    const cart = document.getElementById('cart-page');
+
+    if(home) home.style.setProperty('display', 'none', 'important');
+    if(shop) shop.style.setProperty('display', 'none', 'important');
+    if(cart) cart.style.setProperty('display', 'block', 'important');
+    
+    window.scrollTo(0, 0);
+}
