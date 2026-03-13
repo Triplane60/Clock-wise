@@ -222,13 +222,33 @@ function showHome() {
     document.getElementById('homepage').style.display = 'block';
     document.getElementById('shop-page').style.display = 'none';
     window.location.hash = '';
+
+    document.body.classList.remove('on-cart-page');
+    
+    window.location.hash = '';
 }
 
 function showShop() {
-    document.getElementById('homepage').style.display = 'none';
-    document.getElementById('shop-page').style.display = 'block';
+    var homePage = document.getElementById('homepage');
+    if (homePage) homePage.style.display = 'none';
+
+    var shopPage = document.getElementById('shop-page');
+    if (shopPage) shopPage.style.display = 'block';
+
+    document.querySelector('.category-bar').style.display = 'flex';
+    document.querySelector('.hero-banner').style.display = 'block';
+    document.querySelector('.content-area').style.display = 'block';
+
+    var cartPage = document.getElementById('cart-page');
+    if (cartPage) cartPage.style.display = 'none';
+
     window.location.hash = 'shop';
-    filterCategory('all');
+    if (typeof filterCategory === 'function') filterCategory('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    document.body.classList.remove('on-cart-page');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function showShopWithCategory(category) {
@@ -515,6 +535,7 @@ function removeFromCart(event, index) {
     
     updateCartDisplay();
     renderCartItems();
+    renderFullCartPage(); 
     
     var modalList = document.getElementById("cart-items-list-modal");
     if (modalList) {
@@ -560,7 +581,6 @@ function renderCartItems() {
             cartHTML += "</div>";
             cartHTML += "<div style='display: flex; align-items: center; gap: 10px;'>";
             cartHTML += "<span style='font-weight: bold; font-size: 0.9rem; color: #2e004f;'>" + pesoFormat.format(itemTotal) + "</span>";
-            cartHTML += "<button onclick='removeFromCart(event, " + i + ")' style='color: #ff4757; background: none; border: none; cursor: pointer; font-size: 1.2rem; font-weight: bold;'>&times;</button>";
             cartHTML += "</div></div>";
         }
         list.innerHTML = cartHTML;
@@ -761,7 +781,6 @@ window.onclick = function(event) {
     var clickedUser = event.target.closest('#user-display') || event.target.closest('#user-dropdown');
 
     if (!clickedCart && cartDropdown) cartDropdown.style.display = "none";
-    if (!clickedUser && userDropdown) userDropdown.style.display = "none";
 };
 
 function searchWatches() {
@@ -940,13 +959,191 @@ document.addEventListener('click', function(e) {
 });
 
 function showCartPage() {
-    const home = document.getElementById('homepage');
-    const shop = document.getElementById('shop-page');
-    const cart = document.getElementById('cart-page');
+    var homePage = document.getElementById('homepage');
+    if (homePage) homePage.style.display = 'none';
 
-    if(home) home.style.setProperty('display', 'none', 'important');
-    if(shop) shop.style.setProperty('display', 'none', 'important');
-    if(cart) cart.style.setProperty('display', 'block', 'important');
+    var shopPage = document.getElementById('shop-page');
+    if (shopPage) shopPage.style.display = 'block';
+
+    document.querySelector('.category-bar').style.display = 'none';
+    document.querySelector('.hero-banner').style.display = 'none';
+    document.querySelector('.content-area').style.display = 'none';
+
+    var cartPage = document.getElementById('cart-page');
+    if (cartPage) cartPage.style.display = 'block';
+
+    window.location.hash = 'cart';
+    window.scrollTo(0, 0); 
+    renderFullCartPage();
+
+    document.body.classList.add('on-cart-page');
     
-    window.scrollTo(0, 0);
+    renderFullCartPage();
+}
+
+function renderFullCartPage() {
+    var container = document.getElementById("full-cart-items-container");
+    var summarySection = document.getElementById("cart-summary-section");
+    var headerActions = document.getElementById("cart-header-actions");
+    var subtotalEl = document.getElementById("full-cart-subtotal");
+    var totalEl = document.getElementById("full-cart-total");
+
+    if (!container) return;
+
+    let pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
+
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 80px 20px; background: transparent; box-shadow: none;">
+                <p style="color: #888; margin-bottom: 25px; font-size: 1rem;">There are no items in this cart</p>
+                <button onclick="showShop()" style="background: transparent; color: #f57224; border: 1px solid #f57224; padding: 10px 40px; cursor: pointer; font-size: 0.9rem;">CONTINUE SHOPPING</button>
+            </div>
+        `;
+        container.style.background = "transparent";
+        container.style.boxShadow = "none";
+        
+        if (summarySection) summarySection.style.display = "none";
+        if (headerActions) headerActions.style.display = "none";
+    } 
+    else {
+        container.style.background = "white";
+        container.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
+        if (summarySection) summarySection.style.display = "block";
+        if (headerActions) headerActions.style.display = "flex";  
+
+        var html = "";
+        var cartTotal = 0;
+
+        for (var i = 0; i < cart.length; i++) {
+            var watch = watchData[cart[i].name];
+            var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
+            var itemTotal = watch.price * cart[i].quantity;
+            cartTotal += itemTotal;
+
+            html += `
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #f0f0f0;">
+                    
+                    <div style="display: flex; align-items: center; gap: 15px; flex: 2;">
+                        <input type="checkbox" class="cart-item-cb" onchange="updateSelectAllUI()" style="width: 16px; height: 16px; cursor: pointer;">
+                        <img src="${imgSrc}" style="width: 70px; height: 70px; object-fit: contain; border: 1px solid #eee; border-radius: 4px;">
+                        <div>
+                            <span style="font-weight: 600; color: #333; font-size: 0.95rem;">${cart[i].name}</span><br>
+                            <span style="font-size: 0.8rem; color: #999;">${watch.specs.split('|')[0] || 'Brand'}</span>
+                        </div>
+                    </div>
+
+                    <div style="flex: 1; text-align: center; color: #333; font-size: 0.95rem;">
+                        ${pesoFormat.format(watch.price)}
+                    </div>
+
+                    <div style="flex: 1; display: flex; justify-content: center;">
+                        <div style="display: flex; border: 1px solid #ddd; border-radius: 2px;">
+                            <button onclick="updateCartQuantity(${i}, -1)" style="border: none; background: #f8f8f8; padding: 5px 12px; cursor: pointer; color: #666;">-</button>
+                            <input type="text" value="${cart[i].quantity}" readonly style="width: 40px; text-align: center; border: none; border-left: 1px solid #ddd; border-right: 1px solid #ddd; outline: none;">
+                            <button onclick="updateCartQuantity(${i}, 1)" style="border: none; background: #f8f8f8; padding: 5px 12px; cursor: pointer; color: #666;">+</button>
+                        </div>
+                    </div>
+
+                    <div style="flex: 0.5; text-align: right;">
+                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #999; font-size: 1.2rem;" title="Delete item">🗑️</button>
+                    </div>
+
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+        if (subtotalEl) subtotalEl.innerText = pesoFormat.format(cartTotal);
+        if (totalEl) totalEl.innerText = pesoFormat.format(cartTotal);
+    }
+}
+
+function updateCartQuantity(index, change) {
+    if (index < 0 || index >= cart.length) return;
+    
+    cart[index].quantity += change;
+    
+    if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+    }
+    
+    total = 0;
+    for (var i = 0; i < cart.length; i++) {
+        total += watchData[cart[i].name].price * cart[i].quantity;
+    }
+
+    updateCartDisplay();     
+    renderCartItems();       
+    renderFullCartPage();    
+}
+
+function toggleAllCheckboxes(isChecked) {
+    var itemCheckboxes = document.querySelectorAll('.cart-item-cb');
+    for (var i = 0; i < itemCheckboxes.length; i++) {
+        itemCheckboxes[i].checked = isChecked;
+    }
+}
+
+function updateSelectAllUI() {
+    var selectAllBox = document.getElementById('select-all-cb');
+    var itemCheckboxes = document.querySelectorAll('.cart-item-cb');
+    
+    var allAreChecked = true;
+    
+    for (var i = 0; i < itemCheckboxes.length; i++) {
+        if (!itemCheckboxes[i].checked) {
+            allAreChecked = false;
+            break;
+        }
+    }
+    
+    if (selectAllBox) {
+        selectAllBox.checked = allAreChecked;
+    }
+}
+
+function deleteCartItem(index) {
+    if (index < 0 || index >= cart.length) return;
+    
+    cart.splice(index, 1); 
+    
+    total = 0;
+    for (var i = 0; i < cart.length; i++) {
+        total += watchData[cart[i].name].price * cart[i].quantity;
+    }
+
+    updateCartDisplay();
+    renderCartItems();
+    renderFullCartPage();
+    showNotification("Item removed from cart 🗑️");
+}
+
+function deleteSelectedItems() {
+    var checkboxes = document.querySelectorAll('.cart-item-cb');
+    var itemsDeleted = false;
+    
+    for (var i = checkboxes.length - 1; i >= 0; i--) {
+        if (checkboxes[i].checked) {
+            cart.splice(i, 1);
+            itemsDeleted = true;
+        }
+    }
+    
+    if (!itemsDeleted) {
+        showNotification("Please select an item to delete! 🛑");
+        return;
+    }
+    
+    total = 0;
+    for (var j = 0; j < cart.length; j++) {
+        total += watchData[cart[j].name].price * cart[j].quantity;
+    }
+
+    var selectAllBox = document.getElementById('select-all-cb');
+    if (selectAllBox) selectAllBox.checked = false;
+
+    updateCartDisplay();
+    renderCartItems();
+    renderFullCartPage();
+    
+    showNotification("Selected items removed 🗑️");
 }

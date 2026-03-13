@@ -142,8 +142,8 @@
             </div>
             <div class="header-actions" style="display: flex; gap: 20px; align-items: center;">
             <div class="cart-wrapper">
-                <span style="cursor: pointer; font-size: 1.1rem;">
-                    🛒 <span id="cart-count" style="background: #ff4757; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; font-weight: bold;">0</span>
+                <span onclick="showCartPage()" style="cursor: pointer; font-size: 1.1rem;">
+                    🛒 <span id="cart-count" style="background: indigo; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.8rem; font-weight: bold;">0</span>
                 </span>
                 
                 <div id="cart-dropdown">
@@ -169,45 +169,6 @@
                     </div>
                 </div>
             </div>
-
-            <div id="cart-page" style="display: none; padding: 40px 10%; background-color: #f5f5f5; min-height: 60vh;">
-    
-                <h2 style="margin-bottom: 20px; color: var(--indigo-dark);">Shopping Cart</h2>
-                
-                <div class="cart-layout">
-                    <div class="cart-items-section">
-                        <div style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
-                            <input type="checkbox" checked style="margin-right: 10px; cursor: pointer;"> 
-                            <span style="font-weight: bold; color: #555;">SELECT ALL ITEMS</span>
-                        </div>
-                        
-                        <div id="full-cart-items-container">
-                            <p style="color: #888; font-style: italic;">Loading your luxury pieces...</p>
-                        </div>
-                    </div>
-
-                    <div class="cart-summary-section">
-                        <h3 style="margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px;">Order Summary</h3>
-                        
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #555;">
-                            <span>Subtotal</span>
-                            <span id="summary-subtotal">₱0.00</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #555;">
-                            <span>Shipping Fee</span>
-                            <span>Calculated at checkout</span>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; margin-top: 20px; font-weight: bold; font-size: 1.2rem;">
-                            <span>Total</span>
-                            <span id="summary-total" style="color: #f57224;">₱0.00</span>
-                        </div>
-                        
-                        <button class="lazada-checkout-btn">PROCEED TO CHECKOUT</button>
-                    </div>
-                </div>
-            </div>
-            
         </header>
 
         <nav class="category-bar">
@@ -511,6 +472,56 @@
                 </div>
         </main>
 
+
+           <div id="cart-page" style="display: none; padding: 130px 10% 40px; background-color: #f5f5f5; min-height: 100vh;">
+                <div style="display: flex; gap: 20px; align-items: flex-start; max-width: 1200px; margin: 0 auto;">
+                    
+                    <div style="flex: 2;">
+                        <div id="cart-header-actions" style="background: white; padding: 15px 25px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #666; font-size: 0.9rem;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                               <input type="checkbox" id="select-all-cb" onchange="toggleAllCheckboxes(this.checked)" style="width: 16px; height: 16px; cursor: pointer;">
+                                <label for="select-all-cb" style="cursor: pointer;">SELECT ALL</label>
+                            </div>
+                            <div onclick="deleteSelectedItems()" style="cursor: pointer; color: indigo;">🗑️ DELETE</div>
+                        </div>
+                        
+                        <div id="full-cart-items-container" style="background: white; padding: 0 25px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                            </div>
+                    </div>
+
+                    <div id="cart-summary-section" style="flex: 1; background: white; padding: 25px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); position: sticky; top: 120px;">
+                        <h3 style="margin-top: 0; font-size: 1.1rem; color: #333;">Order Summary</h3>
+                        
+                        <div style="display: flex; justify-content: space-between; margin: 15px 0; color: #666; font-size: 0.95rem;">
+                            <span>Subtotal</span>
+                            <span id="full-cart-subtotal">₱0.00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 15px 0; color: #666; font-size: 0.95rem;">
+                            <span>Shipping Fee</span>
+                            <span>₱0.00</span>
+                        </div>
+                        
+                        <div style="display: flex; margin: 20px 0;">
+                            <input type="text" placeholder="Enter Voucher Code" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-right: none; outline: none;">
+                            <button style="background: #17a2b8; color: white; border: none; padding: 0 20px; font-weight: bold; cursor: pointer;">APPLY</button>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 20px;">
+                            <span style="color: #333;">Subtotal</span>
+                            <div style="text-align: right;">
+                                <span id="full-cart-total" style="color: indigo; font-size: 1.5rem; font-weight: bold;">₱0.00</span><br>
+                                <span style="font-size: 0.75rem; color: #999;">VAT included, where applicable</span>
+                            </div>
+                        </div>
+                        
+                        <button onclick="openCheckout()" style="width: 100%; background: indigo; color: white; border: none; padding: 15px; font-weight: bold; border-radius: 2px; cursor: pointer; margin-top: 20px; font-size: 1rem;">
+                            PROCEED TO CHECKOUT
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
         <div id="cart-modal" class="modal"> 
             <div class="modal-content">
                 <span class="close-btn" onclick="closeCart()">&times;</span>
@@ -554,13 +565,6 @@
                     </div>
 
                     <button onclick="handleAuth(event)" style="width: 100%; padding: 14px; background-color: #2e004f; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">Login</button>
-
-                    <div style="text-align: center; margin: 15px 0; color: #888; font-size: 14px;">OR</div>
-
-                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                        <button style="flex: 1; padding: 10px; background: white; border: 1px solid #ddd; border-radius: 5px; cursor: pointer;">Facebook</button>
-                        <button style="flex: 1; padding: 10px; background: white; border: 1px solid #ddd; border-radius: 5px; cursor: pointer;">Google</button>
-                    </div>
 
                     <p style="text-align: center; font-size: 14px; color: #666;">Don't have an account? <a href="#" onclick="toggleAuth(); return false;" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Register here</a></p>
                 </div>

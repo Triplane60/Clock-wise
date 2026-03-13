@@ -1237,3 +1237,10 @@ input::-webkit-credentials-auto-fill-button {
     position: relative;
     z-index: 10000 !important; 
 }
+
+body.on-cart-page #cart-dropdown {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
