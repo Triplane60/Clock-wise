@@ -923,87 +923,66 @@ document.addEventListener("keydown", function(event) {
 
 // ==================== CART PAGE FUNCTIONS ====================
 function renderFullCartPage() {
-    var container = document.getElementById("full-cart-items-container");
-    var summarySection = document.getElementById("cart-summary-section");
-    var headerActions = document.getElementById("cart-header-actions");
-    var subtotalEl = document.getElementById("full-cart-subtotal");
-    var totalEl = document.getElementById("full-cart-total");
+    const container = document.getElementById("full-cart-items-container");
+    const summarySection = document.getElementById("cart-summary-section");
+    const headerActions = document.getElementById("cart-header-actions");
 
     if (!container) return;
 
-    let pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
+    let pesoFormat = new Intl.NumberFormat('en-PH', { 
+        style: 'currency', 
+        currency: 'PHP', 
+        minimumFractionDigits: 2 
+    });
 
     if (cart.length === 0) {
         container.innerHTML = `
-            <div style="text-align: center; padding: 80px 20px; background: transparent; box-shadow: none;">
-                <p style="color: #888; margin-bottom: 25px; font-size: 1rem;">There are no items in this cart</p>
-                <button onclick="showShop()" style="background: transparent; color: #f57224; border: 1px solid #f57224; padding: 10px 40px; cursor: pointer; font-size: 0.9rem;">CONTINUE SHOPPING</button>
-            </div>
-        `;
-        container.style.background = "transparent";
-        container.style.boxShadow = "none";
-
+            <div style="text-align: center; padding: 80px 20px;">
+                <p style="color: #888; margin-bottom: 25px;">Your cart is currently empty.</p>
+                <button onclick="showShop()" style="background: transparent; color: #7e57c2; border: 1px solid #7e57c2; padding: 10px 40px; cursor: pointer;">CONTINUE SHOPPING</button>
+            </div>`;
         if (summarySection) summarySection.style.display = "none";
         if (headerActions) headerActions.style.display = "none";
     } else {
-        container.style.background = "white";
-        container.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
         if (summarySection) summarySection.style.display = "block";
         if (headerActions) headerActions.style.display = "flex";
 
-        var html = "";
-        var cartTotal = 0;
-
-        for (var i = 0; i < cart.length; i++) {
-            var watch = watchData[cart[i].name];
-            var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
-            var itemTotal = watch.price * cart[i].quantity;
-            cartTotal += itemTotal;
+        let html = "";
+        for (let i = 0; i < cart.length; i++) {
+            const watch = watchData[cart[i].name];
+            const imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
+            const itemTotal = watch.price * cart[i].quantity;
 
             html += `
-                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; background: white; border-bottom: 1px solid #f0f0f0; margin-bottom: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                    
-                    <div style="width: 50px; display: flex; justify-content: center;">
+                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <div style="width: 50px;">
                         <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
                     </div>
-
                     <div style="flex: 3; display: flex; align-items: center; gap: 15px;">
-                        <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px;">
+                        <img src="${imgSrc}" style="width: 60px; height: 60px; object-fit: contain;">
                         <div>
-                            <span style="display: block; font-weight: bold; font-size: 1rem; color: #333;">${cart[i].name}</span>
-                            <span style="font-size: 0.8rem; color: #999;">Brand: ${watch.brand || 'Rolex'}</span>
+                            <span style="display: block; font-weight: bold;">${cart[i].name}</span>
+                            <span style="font-size: 0.8rem; color: #999;">${watch.specs}</span>
                         </div>
                     </div>
-
-                    <div style="flex: 1.5; text-align: center; color: #666;">
-                        ${pesoFormat.format(watch.price)}
-                    </div>
-
+                    <div style="flex: 1.5; text-align: center;">${pesoFormat.format(watch.price)}</div>
                     <div style="flex: 1.5; display: flex; justify-content: center;">
-                        <div style="display: flex; border: 1px solid #ddd; border-radius: 2px;">
+                        <div style="display: flex; border: 1px solid #ddd;">
                             <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">-</button>
-                            <input type="text" value="${cart[i].quantity}" readonly style="width: 40px; text-align: center; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: none; border-bottom: none;">
+                            <input type="text" value="${cart[i].quantity}" readonly style="width: 30px; text-align: center; border: none;">
                             <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">+</button>
                         </div>
                     </div>
-
-                    <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">
-                        ${pesoFormat.format(itemTotal)}
-                    </div>
-
+                    <div style="flex: 1.5; text-align: center; font-weight: bold; color: var(--indigo-dark);">${pesoFormat.format(itemTotal)}</div>
                     <div style="flex: 0.5; text-align: right;">
-                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #ccc; font-size: 1.2rem;">🗑️</button>
+                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer;">🗑️</button>
                     </div>
-                </div>
-            `;
+                </div>`;
         }
         container.innerHTML = html;
 
-        // Update select all checkbox based on current state
-        var selectAllCb = document.getElementById('select-all-cb');
-        if (selectAllCb) {
-            updateSelectAllUI();
-        }
+        updateSelectAllUI();      
+        calculateSelectedTotal(); 
     }
 }
 
@@ -1103,38 +1082,33 @@ function updateSelectAllUI() {
 }
 
 function calculateSelectedTotal() {
-    var selectedSubtotal = 0;
-    var checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
+    let selectedSubtotal = 0;
+    const checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
 
-    checkedBoxes.forEach(function(box) {
-        var cartIndex = parseInt(box.value);
-        if (!isNaN(cartIndex) && cartIndex >= 0 && cartIndex < cart.length) {
-            var item = cart[cartIndex];
-            var watch = watchData[item.name];
-            if (watch) {
-                selectedSubtotal += watch.price * item.quantity;
-            }
+    checkedBoxes.forEach(box => {
+        const cartIndex = parseInt(box.value);
+        const item = cart[cartIndex];
+        if (item) {
+            const watch = watchData[item.name];
+            selectedSubtotal += watch.price * item.quantity;
         }
     });
 
-    var shipping = selectedSubtotal > 0 ? SHIPPING_FEE : 0;
-    var totalWithShipping = selectedSubtotal + shipping;
+    const shipping = (selectedSubtotal > 0) ? SHIPPING_FEE : 0;
+    const grandTotal = selectedSubtotal + shipping;
 
-    let pesoFormat = new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP',
-        minimumFractionDigits: 2
+    let pesoFormat = new Intl.NumberFormat('en-PH', { 
+        style: 'currency', 
+        currency: 'PHP' 
     });
 
-    var subtotalDisplay = document.getElementById('full-cart-subtotal');
-    var shippingDisplay = document.getElementById('cart-shipping-fee');
-    var totalDisplay = document.getElementById('full-cart-total');
+    const subtotalEl = document.getElementById('full-cart-subtotal');
+    const shippingEl = document.getElementById('cart-shipping-fee');
+    const totalEl = document.getElementById('full-cart-total');
 
-    if (subtotalDisplay) subtotalDisplay.innerText = pesoFormat.format(selectedSubtotal);
-    if (shippingDisplay) shippingDisplay.innerText = pesoFormat.format(shipping);
-    if (totalDisplay) totalDisplay.innerText = pesoFormat.format(totalWithShipping);
-
-    updateSelectAllUI();
+    if (subtotalEl) subtotalEl.innerText = pesoFormat.format(selectedSubtotal);
+    if (shippingEl) shippingEl.innerText = pesoFormat.format(shipping);
+    if (totalEl) totalEl.innerText = pesoFormat.format(grandTotal);
 }
 
 // ==================== CHECKOUT FUNCTIONS ====================
