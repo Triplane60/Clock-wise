@@ -778,14 +778,34 @@ function goToSlide(index) {
 
 // ==================== NOTIFICATION ====================
 function showNotification(message) {
-    var toast = document.getElementById("toast");
-    if (!toast) return;
+    var container = document.getElementById("toast-container");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "toast-container";
+        container.style.cssText = "position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 99999; pointer-events: none; align-items: center;";
+        document.body.appendChild(container);
+    }
 
+    var toast = document.createElement("div");
+    toast.style.cssText = "background-color: #7e57c2; color: white; padding: 12px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 10px 30px rgba(0,0,0,0.3); opacity: 0; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center;";
     toast.innerText = message;
-    toast.classList.add("show");
+
+    container.appendChild(toast);
 
     setTimeout(function() {
-        toast.classList.remove("show");
+        toast.style.opacity = "1";
+        toast.style.transform = "translateY(0)";
+    }, 10);
+
+    setTimeout(function() {
+        toast.style.opacity = "0"; 
+        toast.style.transform = "translateY(-20px)"; 
+        
+        setTimeout(function() {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 400); 
     }, 3000);
 }
 
@@ -941,7 +961,7 @@ function renderFullCartPage() {
         container.innerHTML = `
             <div style="text-align: center; padding: 80px 20px; background: transparent; box-shadow: none;">
                 <p style="color: #888; margin-bottom: 25px; font-size: 1rem;">There are no items in this cart</p>
-                <button onclick="showShop()" style="background: transparent; color: #f57224; border: 1px solid #f57224; padding: 10px 40px; cursor: pointer; font-size: 0.9rem;">CONTINUE SHOPPING</button>
+                <button onclick="showShop()" style="background: transparent; color: var(--indigo-dark); border: 1px solid var(--indigo-dark); padding: 10px 40px; cursor: pointer; font-size: 0.9rem; font-weight: bold; border-radius: 4px; transition: all 0.3s;">CONTINUE SHOPPING</button>
             </div>
         `;
         container.style.background = "transparent";
@@ -1165,9 +1185,7 @@ function openCheckout() {
 
     document.getElementById('checkout-page').style.display = 'block';
 
-    document.body.classList.add('static-header');
-
-    var total = 0;
+    var totalMerchandise = 0;
     var totalShipping = 0; 
     var itemsHTML = "";
     var container = document.getElementById('checkout-items-container');
@@ -1179,20 +1197,20 @@ function openCheckout() {
     });
 
     checkedBoxes.forEach(function(box) {
-        var cartIndex = box.value;
+        var cartIndex = parseInt(box.value);
         var item = cart[cartIndex];
         var watch = watchData[item.name];
 
         if (watch) {
             var itemSubtotal = watch.price * item.quantity;
-            total += itemSubtotal;
-
+            totalMerchandise += itemSubtotal;
+            
             totalShipping += (SHIPPING_FEE * item.quantity);
 
             itemsHTML += `
                 <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <img src="${watch.images[0]}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain; background: #f4f4f4; border-radius: 4px;">
+                        <img src="${watch.images[0]}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain; background: #f4f4f4; border-radius: 4px;"> 
                         <span style="font-weight: 500;">${item.name}</span>
                     </div>
                     <span style="text-align: center; color: #666;">${pesoFormat.format(watch.price)}</span>
@@ -1202,13 +1220,45 @@ function openCheckout() {
             `;
         }
     });
-
+    
     if (container) container.innerHTML = itemsHTML;
 
-    document.getElementById('checkout-subtotal').innerText = pesoFormat.format(total);
-    document.getElementById('checkout-grand-total').innerText = pesoFormat.format(total + totalShipping);
+    var grandTotal = totalMerchandise + totalShipping;
 
+    document.getElementById('checkout-shipping-fee-display').innerText = pesoFormat.format(totalShipping);
+    document.getElementById('checkout-subtotal').innerText = pesoFormat.format(totalMerchandise);
+    document.getElementById('checkout-shipping-total').innerText = pesoFormat.format(totalShipping);
+    document.getElementById('checkout-grand-total').innerText = pesoFormat.format(grandTotal);
+    
     window.scrollTo(0, 0);
+}
+
+function updateCheckoutTotal() {
+    var totalMerchandise = 0;
+    var totalQuantity = 0;
+    var checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
+
+    checkedBoxes.forEach(function(box) {
+        var cartIndex = parseInt(box.value);
+        var item = cart[cartIndex];
+        var watch = watchData[item.name];
+        if (watch) {
+            totalMerchandise += (watch.price * item.quantity);
+            totalQuantity += item.quantity;
+        }
+    });
+
+    var shippingDropdown = document.getElementById('shipping-method');
+    var shippingRate = shippingDropdown ? parseInt(shippingDropdown.value) : 150; 
+    
+    var totalShipping = shippingRate * totalQuantity;
+    var grandTotal = totalMerchandise + totalShipping;
+
+    let pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
+
+    document.getElementById('checkout-subtotal').innerText = pesoFormat.format(totalMerchandise);
+    document.getElementById('checkout-shipping-total').innerText = pesoFormat.format(totalShipping);
+    document.getElementById('checkout-grand-total').innerText = pesoFormat.format(grandTotal);
 }
 
 function placeShopeeOrder() {

@@ -476,7 +476,7 @@
         </main>
 
 
-           <div id="cart-page" style="display: none; padding: 130px 10% 40px; background-color: #f5f5f5; min-height: 100vh;">
+           <div id="cart-page" style="display: none; padding: 130px 10% 40px; background-color: #f5f5f5;">
                 <div style="display: flex; gap: 20px; align-items: flex-start; max-width: 1200px; margin: 0 auto;">
                     
                     <div style="flex: 2;">
@@ -537,23 +537,6 @@
                         ← Back to Cart
                     </button>
 
-                    <section style="background: white; padding: 25px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px;">
-                        <h3 style="color: var(--indigo-dark); margin-top: 0; margin-bottom: 20px;">📍 Delivery Address</h3>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <div style="display: flex; gap: 15px; align-items: center;">
-                                <label style="min-width: 80px; font-weight: bold; color: #333;">Full Name:</label>
-                                <input type="text" id="checkout-fullname" placeholder="Juan Dela Cruz" 
-                                    style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.95rem;">
-                            </div>
-                            
-                            <div style="display: flex; gap: 15px; align-items: flex-start;">
-                                <label style="min-width: 80px; font-weight: bold; color: #333;">Address:</label>
-                                <textarea id="checkout-address" rows="3" placeholder="123 Luxury Ave, Bonifacio Global City, Taguig, Metro Manila" 
-                                        style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; font-size: 0.95rem;"></textarea>
-                            </div>
-                        </div>
-                    </section>
                     <section style="background: white; padding: 25px; border-radius: 3px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); margin-bottom: 20px;">
                         <h3 style="margin-top: 0; color: #333;">Products Ordered</h3>
                         
@@ -567,27 +550,20 @@
                         <div id="checkout-items-container"></div>
                         
                         <div style="display: flex; justify-content: space-between; align-items: center; background: #fafdff; padding: 15px; border-top: 1px dashed #ddd; margin-top: 15px;">
-                            <span style="font-weight: bold; color: #00bfa5;">Shipping Option:</span>
-                            <span>Standard Delivery - <strong>₱150.00</strong></span>
+                            <span style="font-weight: bold; color: purple;">Shipping Fee:</span>
+                            <span>Standard Delivery - <strong id="checkout-shipping-fee-display">₱0.00</strong></span>
                         </div>
                     </section>
 
                     <section style="background: white; padding: 25px; border-radius: 3px; box-shadow: 0 1px 1px rgba(0,0,0,0.05);">
-                        <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
-                            <h3 style="margin: 0;">Payment Method</h3>
-                            <button style="padding: 8px 15px; border: 1px solid var(--indigo-dark); background: white; color: var(--indigo-dark); cursor: pointer; border-radius: 2px;">Cash on Delivery</button>
-                            <button style="padding: 8px 15px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 2px;">Credit Card</button>
-                            <button style="padding: 8px 15px; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 2px;">GCash</button>
-                        </div>
-
                         <div style="text-align: right; background: #fffcf5; padding: 20px; border: 1px dashed #f6e6b4;">
                             <p>Merchandise Subtotal: <span id="checkout-subtotal" style="display: inline-block; width: 120px;">₱0.00</span></p>
-                            <p>Shipping Total: <span style="display: inline-block; width: 120px;">₱150.00</span></p>
+                            <p>Shipping Total: <span id="checkout-shipping-total" style="display: inline-block; width: 120px;">₱0.00</span></p>
                             <h2 style="color: indigo; margin-top: 20px;">Total Payment: <span id="checkout-grand-total">₱0.00</span></h2>
                         </div>
                         
                         <div style="text-align: right; margin-top: 20px;">
-                            <button onclick="placeShopeeOrder()" style="background: #ee4d2d; color: white; border: none; padding: 15px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 2px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">Place Order</button>
+                            <button onclick="placeShopeeOrder()" style="background: indigo; color: white; border: none; padding: 15px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 2px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">Place Order</button>
                         </div>
                     </section>
                 </main>
