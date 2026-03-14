@@ -229,27 +229,23 @@ var total = 0;
 function showHome() {
     document.getElementById('homepage').style.display = 'block';
     document.getElementById('shop-page').style.display = 'none';
-    window.location.hash = '';
+    document.getElementById('checkout-page').style.display = 'none';
+    var cartPage = document.getElementById('cart-page');
+    if (cartPage) cartPage.style.display = 'none';
 
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
 
     document.body.classList.add('static-header');
-    document.body.classList.remove('on-cart-page');
+    document.body.classList.remove('on-cart-page', 'shop-active');
 
-    window.location.hash = '';
+    history.pushState({ page: 'home' }, null, '#home');
 }
 
 function showShop() {
-    var homePage = document.getElementById('homepage');
-    if (homePage) homePage.style.display = 'none';
-
-    var checkoutPage = document.getElementById('checkout-page');
-    if (checkoutPage) checkoutPage.style.display = 'none';
-
-    document.querySelector('.category-bar').style.display = 'flex';
-    document.querySelector('.hero-banner').style.display = 'block';
-    document.querySelector('.content-area').style.display = 'block';
+    document.getElementById('homepage').style.display = 'none';
+    document.getElementById('shop-page').style.display = 'block';
+    document.getElementById('checkout-page').style.display = 'none';
 
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
@@ -258,12 +254,16 @@ function showShop() {
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
 
     document.body.classList.remove('static-header');
+    document.body.classList.remove('on-cart-page');
 
-    window.location.hash = 'shop';
+    document.querySelector('.category-bar').style.display = 'flex';
+    document.querySelector('.hero-banner').style.display = 'block';
+    document.querySelector('.content-area').style.display = 'block';
+
+    history.pushState({ page: 'shop' }, null, '#shop');
+
     if (typeof filterCategory === 'function') filterCategory('all');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    document.body.classList.remove('on-cart-page');
 }
 
 function showShopWithCategory(category) {
@@ -275,11 +275,9 @@ function showShopWithCategory(category) {
 }
 
 function showCartPage() {
-    var homePage = document.getElementById('homepage');
-    if (homePage) homePage.style.display = 'none';
-
-    var shopPage = document.getElementById('shop-page');
-    if (shopPage) shopPage.style.display = 'block';
+    document.getElementById('homepage').style.display = 'none';
+    document.getElementById('shop-page').style.display = 'block'; 
+    document.getElementById('checkout-page').style.display = 'none';
 
     document.querySelector('.category-bar').style.display = 'none';
     document.querySelector('.hero-banner').style.display = 'none';
@@ -288,32 +286,34 @@ function showCartPage() {
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'block';
 
-    window.location.hash = 'cart';
-    window.scrollTo(0, 0);
-
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'none';
 
     document.body.classList.add('static-header');
     document.body.classList.add('on-cart-page');
 
-    renderFullCartPage();
+    history.pushState({ page: 'cart' }, null, '#cart');
+
+    if (typeof renderFullCartPage === 'function') renderFullCartPage();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==================== AUTHENTICATION ====================
+console.log("Script loaded");
+
 window.onload = function() {
+    history.replaceState({ page: 'home' }, null, window.location.href);
+
     var activeUser = localStorage.getItem("currentUser");
     if (activeUser) {
         isLoggedIn = true;
         var userDisplay = document.getElementById("user-display");
         if (userDisplay) userDisplay.innerText = "👤 " + activeUser;
+    } else {
+        isLoggedIn = false;
     }
 
-    if (window.location.hash === '#shop') {
-        showShop();
-    } else {
-        if (typeof showHome === "function") showHome();
-    }
+    showHome();
 };
 
 function openLoginModal() {
@@ -363,9 +363,14 @@ function toggleAuth() {
 function handleRegister(event) {
     event.preventDefault();
 
-    var username = document.getElementById("reg-username").value;
+    var username = document.getElementById("reg-username").value.trim();
     var password = document.getElementById("reg-password").value;
     var confirm = document.getElementById("reg-confirm-password").value;
+
+    if (username === "") {
+        showNotification("Please enter a username! 👤");
+        return;
+    }
 
     if (password.length < 8 || !/[a-zA-Z]/.test(password)) {
         showNotification("Password must be at least 8 characters and contain a letter! 🛑");
@@ -382,12 +387,20 @@ function handleRegister(event) {
     }
 
     localStorage.setItem("user_" + username, password);
-    showNotification("Account created! Please login.");
+
+    isLoggedIn = true;
+    localStorage.setItem("currentUser", username);
+
+    var userDisplay = document.getElementById("user-display");
+    if (userDisplay) userDisplay.innerText = "👤 " + username;
 
     document.getElementById("reg-username").value = "";
     document.getElementById("reg-password").value = "";
     document.getElementById("reg-confirm-password").value = "";
-    toggleAuth();
+
+    closeLogin();
+
+    showNotification("Account created! Welcome, " + username + "! 🎉");
 }
 
 function handleAuth(event) {
@@ -415,6 +428,9 @@ function handleAuth(event) {
         document.getElementById("auth-password").type = "password";
 
         closeLogin();
+        renderCartItems();      
+        updateCartDisplay();
+        showShop();    
         showNotification("Welcome back, " + user + "! ✨");
     } else {
         showNotification("Invalid username or password! ❌");
@@ -422,32 +438,29 @@ function handleAuth(event) {
 }
 
 function handleForgotPassword() {
-    var username = document.getElementById("auth-username").value;
+    document.getElementById("reset-username").value = "";
+    document.getElementById("reset-new-password").value = "";
+    document.getElementById("reset-confirm-password").value = "";
+
+    closeLogin(); 
+    document.getElementById("reset-modal").style.display = "block";
+}
+
+function saveNewPassword() {
+    var username = document.getElementById("reset-username").value.trim();
+    var newPassword = document.getElementById("reset-new-password").value;
+    var confirmPassword = document.getElementById("reset-confirm-password").value;
+
     if (username === "") {
-        showNotification("Please enter your username first! 📧");
+        showNotification("Please enter a username! 👤");
         return;
     }
+
     var savedPass = localStorage.getItem("user_" + username);
     if (!savedPass) {
         showNotification("Account not found! Please check the username. ❌");
         return;
     }
-    userToReset = username;
-    document.getElementById("reset-username-display").innerText = username;
-    document.getElementById("new-reset-password").value = "";
-    document.getElementById("confirm-reset-password").value = "";
-
-    closeLogin();
-    document.getElementById("forgot-password-modal").style.display = "block";
-}
-
-function closeForgotPasswordModal() {
-    document.getElementById("forgot-password-modal").style.display = "none";
-}
-
-function executePasswordReset() {
-    var newPassword = document.getElementById("new-reset-password").value;
-    var confirmPassword = document.getElementById("confirm-reset-password").value;
 
     if (newPassword.length < 8 || newPassword.length > 10) {
         showNotification("Password must be between 8 and 10 characters! 🛑");
@@ -459,12 +472,18 @@ function executePasswordReset() {
         return;
     }
 
-    localStorage.setItem("user_" + userToReset, newPassword);
+    localStorage.setItem("user_" + username, newPassword);
 
-    closeForgotPasswordModal();
-    showNotification("Password updated! Please log in. 🔐");
-
+    closeResetModal();
+    showNotification("Password updated! Please log in. 🔓");
     openLoginModal();
+}
+
+function closeResetModal() {
+    document.getElementById("reset-username").value = "";
+    document.getElementById("reset-new-password").value = "";
+    document.getElementById("reset-confirm-password").value = "";
+    document.getElementById("reset-modal").style.display = "none";
 }
 
 function handleUserClick() {
@@ -503,13 +522,10 @@ function executeLogout() {
     showNotification("Logged out successfully! 👋");
 
     cart = [];
-    if (typeof updateCartDisplay === "function") updateCartDisplay();
-    if (typeof renderCartItems === "function") renderCartItems();
+    renderCartItems();      
+    updateCartDisplay();    
 
-    document.getElementById('shop-page').style.display = 'none';
-    document.getElementById('homepage').style.display = 'block';
-    window.location.hash = '#home';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showHome();
 }
 
 // ==================== PASSWORD TOGGLE ====================
@@ -581,8 +597,7 @@ function removeFromCart(event, index) {
 function renderCartItems() {
     var list = document.getElementById("cart-items-list");
     var totalDisplay = document.getElementById("cart-total-price");
-
-    var checkoutBtn = document.querySelector("#cart-dropdown button");
+    var checkoutBtn = document.getElementById('cart-checkout-btn');
 
     if (!list) return;
 
@@ -592,31 +607,43 @@ function renderCartItems() {
         minimumFractionDigits: 2
     });
 
+    if (!isLoggedIn) {
+        list.innerHTML = `
+            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 10px; background: #f9f9f9; text-align: center;">
+                <p style="color: #666; margin: 0;">Please log in to view your cart.</p>
+            </div>
+        `;
+        if (checkoutBtn) checkoutBtn.style.display = "none";
+        if (totalDisplay) totalDisplay.innerText = pesoFormat.format(0);
+        return;
+    }
+
     if (cart.length === 0) {
         list.innerHTML = "<p style='color: #888; padding: 20px; text-align: center; font-style: italic;'>Your cart is empty.</p>";
         if (checkoutBtn) checkoutBtn.style.display = "none";
-    } else {
-        if (checkoutBtn) checkoutBtn.style.display = "block";
-
-        var cartHTML = "";
-        for (var i = 0; i < cart.length; i++) {
-            var watch = watchData[cart[i].name];
-            var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
-
-            var qtyText = cart[i].quantity > 1 ? " <span style='color: #4CAF50; font-weight: bold;'>(x" + cart[i].quantity + ")</span>" : "";
-            var itemTotal = cart[i].price * cart[i].quantity;
-
-            cartHTML += "<div class='cart-item-row' style='display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee'>";
-            cartHTML += "<img src='" + imgSrc + "' style='width: 40px; height: 40px; object-fit: contain; border-radius: 4px; background: white;'>";
-            cartHTML += "<div style='flex-grow: 1; line-height: 1.2;'>";
-            cartHTML += "<span class='item-name' style='font-size: 0.85rem; font-weight: bold; color: #2e004f; display: block;'>" + cart[i].name + qtyText + "</span>";
-            cartHTML += "</div>";
-            cartHTML += "<div style='display: flex; align-items: center; gap: 10px;'>";
-            cartHTML += "<span style='font-weight: bold; font-size: 0.9rem; color: #2e004f;'>" + pesoFormat.format(itemTotal) + "</span>";
-            cartHTML += "</div></div>";
-        }
-        list.innerHTML = cartHTML;
+        if (totalDisplay) totalDisplay.innerText = pesoFormat.format(0);
+        return;
     }
+
+    if (checkoutBtn) checkoutBtn.style.display = "block";
+
+    var cartHTML = "";
+    for (var i = 0; i < cart.length; i++) {
+        var watch = watchData[cart[i].name];
+        var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
+        var qtyText = cart[i].quantity > 1 ? " <span style='color: #4CAF50; font-weight: bold;'>(x" + cart[i].quantity + ")</span>" : "";
+        var itemTotal = cart[i].price * cart[i].quantity;
+
+        cartHTML += "<div class='cart-item-row' style='display: flex; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid #eee'>";
+        cartHTML += "<img src='" + imgSrc + "' style='width: 40px; height: 40px; object-fit: contain; border-radius: 4px; background: white;'>";
+        cartHTML += "<div style='flex-grow: 1; line-height: 1.2;'>";
+        cartHTML += "<span class='item-name' style='font-size: 0.85rem; font-weight: bold; color: #2e004f; display: block;'>" + cart[i].name + qtyText + "</span>";
+        cartHTML += "</div>";
+        cartHTML += "<div style='display: flex; align-items: center; gap: 10px;'>";
+        cartHTML += "<span style='font-weight: bold; font-size: 0.9rem; color: #2e004f;'>" + pesoFormat.format(itemTotal) + "</span>";
+        cartHTML += "</div></div>";
+    }
+    list.innerHTML = cartHTML;
 
     if (totalDisplay) {
         totalDisplay.innerText = pesoFormat.format(total);
@@ -871,13 +898,13 @@ window.onclick = function(event) {
 };
 
 // ==================== HASH CHANGE ====================
-window.addEventListener('hashchange', function() {
-    if (window.location.hash === '' || window.location.hash === '#home') {
-        document.getElementById('shop-page').style.display = 'none';
-        document.getElementById('homepage').style.display = 'block';
-    } else if (window.location.hash === '#shop') {
-        document.getElementById('homepage').style.display = 'none';
-        document.getElementById('shop-page').style.display = 'block';
+window.addEventListener('hashchange', function(event) {
+    if (window.location.hash === '#shop') {
+        showShop();
+    } else if (window.location.hash === '#cart') {
+        showCartPage();
+    } else {
+        showHome();
     }
 });
 
@@ -951,93 +978,92 @@ function renderFullCartPage() {
 
     if (!container) return;
 
-    let pesoFormat = new Intl.NumberFormat('en-PH', { 
-        style: 'currency', 
-        currency: 'PHP', 
-        minimumFractionDigits: 2 
-    });
+    let pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
 
-    if (cart.length === 0) {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 80px 20px; background: transparent; box-shadow: none;">
-                <p style="color: #888; margin-bottom: 25px; font-size: 1rem;">There are no items in this cart</p>
-                <button onclick="showShop()" style="background: transparent; color: var(--indigo-dark); border: 1px solid var(--indigo-dark); padding: 10px 40px; cursor: pointer; font-size: 0.9rem; font-weight: bold; border-radius: 4px; transition: all 0.3s;">CONTINUE SHOPPING</button>
-            </div>
-        `;
+    // 1. GUEST STATE: User is not logged in
+    if (!isLoggedIn) {
         container.style.background = "transparent";
         container.style.boxShadow = "none";
+        container.style.border = "none";
 
+        container.innerHTML = `
+            <div style="text-align: center; padding: 100px 20px;">
+                <p style="color: #888; margin-bottom: 25px; font-size: 1.1rem;">Please log in to view your cart</p>
+                <button onclick="openLoginModal()" style="background: transparent; color: #4B0082; border: 1px solid #4B0082; padding: 12px 40px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: 0.3s;">
+                    LOGIN / SIGN UP
+                </button>
+            </div>
+        `;
         if (summarySection) summarySection.style.display = "none";
         if (headerActions) headerActions.style.display = "none";
-    } else {
-        container.style.background = "white";
-        container.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-        if (summarySection) summarySection.style.display = "block";
-        if (headerActions) headerActions.style.display = "flex";
+        return;
+    }
 
-        var html = "";
+    // 2. EMPTY STATE: User is logged in, but cart has 0 items
+    if (cart.length === 0) {
+        container.style.background = "transparent";
+        container.style.boxShadow = "none";
+        container.style.border = "none";
 
-        for (var i = 0; i < cart.length; i++) {
-            var watch = watchData[cart[i].name];
-            var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
-            var itemTotal = watch.price * cart[i].quantity;
-            
-            var brandName = watch.specs ? watch.specs.replace('Brand: ', '') : 'Rolex';
+        container.innerHTML = `
+            <div style="text-align: center; padding: 100px 20px;">
+                <p style="color: #888; margin-bottom: 25px; font-size: 1.1rem;">Your cart is empty</p>
+                <button onclick="showShop()" style="background: transparent; color: #4B0082; border: 1px solid #4B0082; padding: 12px 40px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: 0.3s;">
+                    CONTINUE SHOPPING
+                </button>
+            </div>
+        `;
+        if (summarySection) summarySection.style.display = "none";
+        if (headerActions) headerActions.style.display = "none";
+        return;
+    }
 
-            html += `
-                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; background: white; border-bottom: 1px solid #f0f0f0; margin-bottom: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); min-height: 110px; box-sizing: border-box;">
-                    
-                    <div style="width: 50px; display: flex; justify-content: center;">
-                        <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
-                    </div>
+    // 3. ACTIVE STATE: User is logged in and has items
+    container.style.background = "white";
+    container.style.boxShadow = "0 2px 10px rgba(0,0,0,0.05)";
+    container.style.borderRadius = "8px";
 
-                    <div style="flex: 3; display: flex; align-items: center; gap: 15px; min-width: 0;">
-                        <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; flex-shrink: 0;">
-                        
-                        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
-                            <span style="
-                                display: -webkit-box; 
-                                -webkit-line-clamp: 2; 
-                                -webkit-box-orient: vertical; 
-                                overflow: hidden; 
-                                font-weight: bold; 
-                                font-size: 1rem; 
-                                color: #333; 
-                                line-height: 1.2em; 
-                                text-overflow: ellipsis;
-                            ">${cart[i].name}</span>
-                            
-                            <span style="display: block; font-size: 0.8rem; color: #999; margin-top: 4px;">Brand: ${brandName}</span>
-                        </div>
-                    </div>
+    if (summarySection) summarySection.style.display = "block";
+    if (headerActions) headerActions.style.display = "flex";
 
-                    <div style="flex: 1.5; text-align: center; color: #666;">
-                        ${pesoFormat.format(watch.price)}
-                    </div>
+    var html = "";
+    for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        var watch = watchData[item.name];
+        var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
+        var itemTotal = watch.price * item.quantity;
 
-                    <div style="flex: 1.5; display: flex; justify-content: center;">
-                        <div style="display: flex; border: 1px solid #ddd; border-radius: 2px;">
-                            <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">-</button>
-                            <input type="text" value="${cart[i].quantity}" readonly style="width: 40px; text-align: center; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: none; border-bottom: none;">
-                            <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">+</button>
-                        </div>
-                    </div>
-
-                    <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">
-                        ${pesoFormat.format(itemTotal)}
-                    </div>
-
-                    <div style="flex: 0.5; text-align: right;">
-                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #ccc; font-size: 1.2rem;">🗑️</button>
+        html += `
+            <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                <div style="width: 50px; display: flex; justify-content: center;">
+                    <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
+                </div>
+                <div style="flex: 3; display: flex; align-items: center; gap: 15px;">
+                    <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border-radius: 4px;">
+                    <div>
+                        <span style="display: block; font-weight: bold; color: #333;">${item.name}</span>
+                        <span style="font-size: 0.8rem; color: #999;">${watch.specs || 'Brand: Rolex'}</span>
                     </div>
                 </div>
-            `;
-        }
-        container.innerHTML = html;
-
-        updateSelectAllUI();
-        calculateSelectedTotal();
+                <div style="flex: 1.5; text-align: center; color: #666;">${pesoFormat.format(watch.price)}</div>
+                <div style="flex: 1.5; display: flex; justify-content: center;">
+                    <div style="display: flex; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                        <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">-</button>
+                        <input type="text" value="${item.quantity}" readonly style="width: 40px; text-align: center; border: none; background: #fafafa;">
+                        <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">+</button>
+                    </div>
+                </div>
+                <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">${pesoFormat.format(itemTotal)}</div>
+                <div style="flex: 0.5; text-align: right;">
+                    <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #ff4757; font-size: 1.2rem;">🗑️</button>
+                </div>
+            </div>
+        `;
     }
+    container.innerHTML = html;
+    
+    updateSelectAllUI();
+    calculateSelectedTotal();
 }
 
 function updateCartQuantity(index, change) {
@@ -1077,34 +1103,27 @@ function deleteCartItem(index) {
 
 function deleteSelectedItems() {
     var checkboxes = document.querySelectorAll('.cart-item-chk');
-    var itemsDeleted = false;
-
-    for (var i = checkboxes.length - 1; i >= 0; i--) {
-        if (checkboxes[i].checked) {
-            var index = parseInt(checkboxes[i].value);
-            if (!isNaN(index) && index >= 0 && index < cart.length) {
-                cart.splice(index, 1);
-                itemsDeleted = true;
-            }
+    
+    var indicesToDelete = [];
+    checkboxes.forEach(function(box) {
+        if (box.checked) {
+            indicesToDelete.push(parseInt(box.value));
         }
-    }
+    });
 
-    if (!itemsDeleted) {
+    if (indicesToDelete.length === 0) {
         showNotification("Please select an item to delete! 🛑");
         return;
     }
 
-    total = 0;
-    for (var j = 0; j < cart.length; j++) {
-        total += watchData[cart[j].name].price * cart[j].quantity;
-    }
-
-    var selectAllBox = document.getElementById('select-all-cb');
-    if (selectAllBox) selectAllBox.checked = false;
+    cart = cart.filter(function(item, index) {
+        return !indicesToDelete.includes(index);
+    });
 
     updateCartDisplay();
     renderCartItems();
     renderFullCartPage();
+    calculateSelectedTotal(); 
 
     showNotification("Selected items removed 🗑️");
 }
@@ -1140,8 +1159,14 @@ function calculateSelectedTotal() {
     var totalShipping = 0; 
     var checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
 
+    let pesoFormat = new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+        minimumFractionDigits: 2
+    });
+
     checkedBoxes.forEach(function(box) {
-        var cartIndex = parseInt(box.value);
+        var cartIndex = parseInt(box.value); 
         if (!isNaN(cartIndex) && cartIndex >= 0 && cartIndex < cart.length) {
             var item = cart[cartIndex];
             var watch = watchData[item.name];
@@ -1153,12 +1178,6 @@ function calculateSelectedTotal() {
     });
 
     var totalWithShipping = selectedSubtotal + totalShipping;
-
-    let pesoFormat = new Intl.NumberFormat('en-PH', {
-        style: 'currency',
-        currency: 'PHP',
-        minimumFractionDigits: 2
-    });
 
     var subtotalDisplay = document.getElementById('full-cart-subtotal');
     var shippingDisplay = document.getElementById('cart-shipping-fee');
@@ -1290,5 +1309,15 @@ document.addEventListener('click', function(e) {
     if (e.target && e.target.id === 'cart-checkout-btn') {
         console.log("Force-loading cart page...");
         showCartPage();
+    }
+});
+
+window.addEventListener('popstate', function(event) {
+    if (window.location.hash === '#shop') {
+        showShop();
+    } else if (window.location.hash === '#cart') {
+        showCartPage();
+    } else {
+        showHome();
     }
 });

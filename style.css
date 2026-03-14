@@ -1214,7 +1214,7 @@ input::-webkit-credentials-auto-fill-button {
 
 .lazada-checkout-btn {
     width: 100%;
-    background: #f57224; 
+    background: indigo; 
     color: white;
     border: none;
     padding: 15px;
@@ -1417,4 +1417,8 @@ body.static-header #checkout-page {
 
 body.static-header #cart-summary-section {
     top: 20px !important;      
+}
+
+#homepage {
+    min-height: 500px;
 }
