@@ -58,7 +58,7 @@
                         <img src="women-images/oys.png" alt="Watch 4" style="transform: scale(1.1);">
                     </div>
 
-                    <div class="moving-pill" onclick="goToProduct('Professional Endurance Pro 44')" style="cursor: pointer;">
+                    <div class="moving-pill" onclick="goToProduct('Professional Endurance Pro 38')" style="cursor: pointer;">
                         <img src="women-images/end.png" alt="Watch 5" style="transform: scale(1.1);">
                     </div>
 
@@ -358,7 +358,7 @@
                 </div>
 
                 <div class="watch-card ladies">
-                    <img src="women-images/oys.png" alt="Oyster Perpetual 36 Candy Pink Dial" class="image-placeholder size-md" onclick="openDetails('Oyster Perpetual 36 Candy Pink Dia')" style="cursor: pointer;">
+                    <img src="women-images/oys.png" alt="Oyster Perpetual 36 Candy Pink Dial" class="image-placeholder size-md" onclick="openDetails('Oyster Perpetual 36 Candy Pink Dial')" style="cursor: pointer;">
                     <h3>Oyster Perpetual 36 Candy Pink Dial</h3>
                     <p class="category-tag">Ladies' Collection</p>
                     <p class="price">₱950,000.00</p>
@@ -481,6 +481,12 @@
                     
                     <div style="flex: 2;">
                         <div id="cart-header-actions" style="background: white; padding: 15px 25px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: #666; font-size: 0.9rem;">
+                            <div style="margin-bottom: 10px;">
+                                <button onclick="showShop()" style="background: transparent; border: none; color: var(--indigo-dark); font-size: 1.1rem; cursor: pointer; font-weight: bold; padding: 8px 0; display: flex; align-items: center; transition: color 0.3s;">
+                                    ← Continue Shopping
+                                </button>
+                            </div>
+
                             <div style="display: flex; align-items: center; gap: 10px;">
                                <input type="checkbox" id="select-all-cb" onchange="toggleSelectAll(this)" style="width: 16px; height: 16px; cursor: pointer;">
                                 <label for="select-all-cb" style="cursor: pointer;">SELECT ALL</label>
@@ -499,10 +505,10 @@
                             <span>Subtotal</span>
                             <span id="full-cart-subtotal">₱0.00</span>
                         </div>
-                        <div style="display: flex; justify-content: space-between; margin: 15px 0; color: #666; font-size: 0.95rem;">
-                            <span>Shipping Fee</span>
-                            <span>₱0.00</span>
-                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 15px 0;">
+                        <span>Shipping Fee</span>
+                        <span id="cart-shipping-fee">₱0.00</span>
+                    </div>
                         
                         <div style="display: flex; margin: 20px 0;">
                             <input type="text" placeholder="Enter Voucher Code" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-right: none; outline: none;">
@@ -531,16 +537,23 @@
                         ← Back to Cart
                     </button>
 
-                    <section style="background: white; padding: 25px; border-radius: 3px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); margin-bottom: 20px; position: relative; overflow: hidden;">
-                        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: repeating-linear-gradient(45deg, #6fa6d6, #6fa6d6 33px, transparent 0, transparent 41px, #f18d9b 0, #f18d9b 74px, transparent 0, transparent 82px);"></div>
-                        <h3 style="color: var(--indigo-dark); margin-top: 0;">📍 Delivery Address</h3>
-                        <div style="display: flex; gap: 20px; align-items: center;">
-                            <b id="checkout-name">Juan Dela Cruz (+63) 912 345 6789</b>
-                            <span id="checkout-address">123 Luxury Ave, Bonifacio Global City, Taguig, Metro Manila</span>
-                            <button style="background: none; border: none; color: blue; cursor: pointer;">Change</button>
+                    <section style="background: white; padding: 25px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px;">
+                        <h3 style="color: var(--indigo-dark); margin-top: 0; margin-bottom: 20px;">📍 Delivery Address</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div style="display: flex; gap: 15px; align-items: center;">
+                                <label style="min-width: 80px; font-weight: bold; color: #333;">Full Name:</label>
+                                <input type="text" id="checkout-fullname" placeholder="Juan Dela Cruz" 
+                                    style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.95rem;">
+                            </div>
+                            
+                            <div style="display: flex; gap: 15px; align-items: flex-start;">
+                                <label style="min-width: 80px; font-weight: bold; color: #333;">Address:</label>
+                                <textarea id="checkout-address" rows="3" placeholder="123 Luxury Ave, Bonifacio Global City, Taguig, Metro Manila" 
+                                        style="flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 4px; resize: vertical; font-size: 0.95rem;"></textarea>
+                            </div>
                         </div>
                     </section>
-
                     <section style="background: white; padding: 25px; border-radius: 3px; box-shadow: 0 1px 1px rgba(0,0,0,0.05); margin-bottom: 20px;">
                         <h3 style="margin-top: 0; color: #333;">Products Ordered</h3>
                         
