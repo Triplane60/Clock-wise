@@ -1267,3 +1267,34 @@ body.on-cart-page #cart-dropdown {
     text-align: justify;
     text-align-last: center;
 }
+
+input[type="checkbox"] {
+    appearance: none; 
+    -webkit-appearance: none;
+    width: 22px !important;
+    height: 22px !important;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #4B0082;
+    border-color: #4B0082;
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✔';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cart-item-row:hover {
+    background-color: #fafafa;
+}

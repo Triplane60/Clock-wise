@@ -232,8 +232,8 @@ function showShop() {
     var homePage = document.getElementById('homepage');
     if (homePage) homePage.style.display = 'none';
 
-    var shopPage = document.getElementById('shop-page');
-    if (shopPage) shopPage.style.display = 'block';
+    var checkoutPage = document.getElementById('checkout-page');
+    if (checkoutPage) checkoutPage.style.display = 'none';
 
     document.querySelector('.category-bar').style.display = 'flex';
     document.querySelector('.hero-banner').style.display = 'block';
@@ -714,27 +714,17 @@ function closeDetails() {
 
 
 function showNotification(message) {
-    var toast = document.getElementById("toast-notification");
-    
-    if (!toast) {
-        toast = document.createElement("div");
-        toast.id = "toast-notification";
-        toast.className = "toast";
-        document.body.appendChild(toast);
-    }
+    var toast = document.getElementById("toast");
+    if (!toast) return; // Failsafe
 
-    toast.classList.remove("show");
-    if (toast.hideTimeout) {
-        clearTimeout(toast.hideTimeout);
-    }
-
+    // Set the message text
     toast.innerText = message;
 
-    void toast.offsetWidth; 
-
+    // Slide it up into view
     toast.classList.add("show");
 
-    toast.hideTimeout = setTimeout(function() {
+    // Hide it automatically after 3 seconds
+    setTimeout(function() {
         toast.classList.remove("show");
     }, 3000);
 }
@@ -841,49 +831,69 @@ window.addEventListener('hashchange', function() {
 });
 
 function openCheckout() {
-    if (cart.length === 0) {
+    var checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
+
+   if (checkedBoxes.length === 0) {
+        showNotification("Please select at least one item to checkout! 🛒");
         return;
     }
 
-    var total = 0;
-    for (var i = 0; i < cart.length; i++) {
-        var watch = watchData[cart[i].name];
-        if (watch) {
-            total += watch.price * cart[i].quantity;
-        }
-    }
+    var cartPage = document.getElementById('cart-page');
+    if (cartPage) cartPage.style.display = 'none';
+    
+    document.getElementById('checkout-page').style.display = 'block';
 
+    var total = 0;
+    var itemsHTML = "";
+    var container = document.getElementById('checkout-items-container');
+    
     let pesoFormat = new Intl.NumberFormat('en-PH', {
-        style: 'currency',
+        style: 'currency', 
         currency: 'PHP',
         minimumFractionDigits: 2
     });
 
-    document.getElementById("checkout-total-display").innerText = "Total to Pay: " + pesoFormat.format(total);
+    checkedBoxes.forEach(function(box) {
+        var cartIndex = box.value;
+        var item = cart[cartIndex];
+        var watch = watchData[item.name];
 
-    var dropdown = document.getElementById("cart-dropdown");
-    if(dropdown) dropdown.style.display = "none";
-    
-    document.getElementById("checkout-modal").style.display = "block";
+        if (watch) {
+            var itemSubtotal = watch.price * item.quantity;
+            total += itemSubtotal;
+
+            itemsHTML += `
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <img src="${watch.images[0]}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain; background: #f4f4f4; border-radius: 4px;"> 
+                        <span style="font-weight: 500;">${item.name}</span>
+                    </div>
+                    <span style="text-align: center; color: #666;">${pesoFormat.format(watch.price)}</span>
+                    <span style="text-align: center;">${item.quantity}</span>
+                    <span style="text-align: right; font-weight: bold; color: var(--indigo-dark);">${pesoFormat.format(itemSubtotal)}</span>
+                </div>
+            `;
+        }
+    });
+    if (container) container.innerHTML = itemsHTML;
+
+    var shippingFee = 150; 
+    document.getElementById('checkout-subtotal').innerText = pesoFormat.format(total);
+    document.getElementById('checkout-grand-total').innerText = pesoFormat.format(total + shippingFee);
+
+    window.scrollTo(0,0);
 }
 
-function closeCheckout() {
-    document.getElementById("checkout-modal").style.display = "none";
-}
-
-function processOrder(event) {
-    event.preventDefault(); 
-    
-    let name = document.getElementById("cust-name").value;
-    
-    alert("Thank you, " + name + "! Your order has been placed successfully. We will contact you shortly for payment details.");
+function placeShopeeOrder() {
+    alert("Order successfully placed! Thank you for trusting Clock-wise. 🥂");
     
     cart = [];
-    updateCartDisplay();
-    renderCartItems();
     
-    closeCheckout();
-    document.getElementById("checkout-form").reset();
+    if (typeof updateCartDisplay === "function") updateCartDisplay();
+    if (typeof renderCartItems === "function") renderCartItems();
+    
+    document.getElementById('checkout-page').style.display = 'none';
+    showHome();
 }
 
 function startInfiniteLoop() {
@@ -1019,43 +1029,61 @@ function renderFullCartPage() {
             var itemTotal = watch.price * cart[i].quantity;
             cartTotal += itemTotal;
 
-            html += `
-                <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid #f0f0f0;">
+           html += `
+                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; background: white; border-bottom: 1px solid #f0f0f0; margin-bottom: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                     
-                    <div style="display: flex; align-items: center; gap: 15px; flex: 2;">
-                        <input type="checkbox" class="cart-item-cb" onchange="updateSelectAllUI()" style="width: 16px; height: 16px; cursor: pointer;">
-                        <img src="${imgSrc}" style="width: 70px; height: 70px; object-fit: contain; border: 1px solid #eee; border-radius: 4px;">
+                    <div style="width: 50px; display: flex; justify-content: center;">
+                        <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
+                    </div>
+
+                    <div style="flex: 3; display: flex; align-items: center; gap: 15px;">
+                        <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px;">
                         <div>
-                            <span style="font-weight: 600; color: #333; font-size: 0.95rem;">${cart[i].name}</span><br>
-                            <span style="font-size: 0.8rem; color: #999;">${watch.specs.split('|')[0] || 'Brand'}</span>
+                            <span style="display: block; font-weight: bold; font-size: 1rem; color: #333;">${cart[i].name}</span>
+                            <span style="font-size: 0.8rem; color: #999;">Brand: ${watch.brand || 'Rolex'}</span>
                         </div>
                     </div>
 
-                    <div style="flex: 1; text-align: center; color: #333; font-size: 0.95rem;">
+                    <div style="flex: 1.5; text-align: center; color: #666;">
                         ${pesoFormat.format(watch.price)}
                     </div>
 
-                    <div style="flex: 1; display: flex; justify-content: center;">
+                    <div style="flex: 1.5; display: flex; justify-content: center;">
                         <div style="display: flex; border: 1px solid #ddd; border-radius: 2px;">
-                            <button onclick="updateCartQuantity(${i}, -1)" style="border: none; background: #f8f8f8; padding: 5px 12px; cursor: pointer; color: #666;">-</button>
-                            <input type="text" value="${cart[i].quantity}" readonly style="width: 40px; text-align: center; border: none; border-left: 1px solid #ddd; border-right: 1px solid #ddd; outline: none;">
-                            <button onclick="updateCartQuantity(${i}, 1)" style="border: none; background: #f8f8f8; padding: 5px 12px; cursor: pointer; color: #666;">+</button>
+                            <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">-</button>
+                            <input type="text" value="${cart[i].quantity}" readonly style="width: 40px; text-align: center; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: none; border-bottom: none;">
+                            <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">+</button>
                         </div>
                     </div>
 
-                    <div style="flex: 0.5; text-align: right;">
-                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #999; font-size: 1.2rem;" title="Delete item">🗑️</button>
+                    <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">
+                        ${pesoFormat.format(itemTotal)}
                     </div>
 
+                    <div style="flex: 0.5; text-align: right;">
+                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #ccc; font-size: 1.2rem;">🗑️</button>
+                    </div>
                 </div>
             `;
         }
         container.innerHTML = html;
-        if (subtotalEl) subtotalEl.innerText = pesoFormat.format(cartTotal);
-        if (totalEl) totalEl.innerText = pesoFormat.format(cartTotal);
+
+        var selectAllCb = document.getElementById('select-all-cb');
+        
+        if (selectAllCb) {
+            selectAllCb.checked = true; 
+            
+            if (typeof toggleSelectAll === 'function') {
+                toggleSelectAll(selectAllCb);
+            } else {
+                var allBoxes = document.querySelectorAll('.cart-item-chk');
+                allBoxes.forEach(function(box) { box.checked = true; });
+                calculateSelectedTotal();
+            }
+        } 
+
     }
 }
-
 function updateCartQuantity(index, change) {
     if (index < 0 || index >= cart.length) return;
     
@@ -1145,4 +1173,96 @@ function deleteSelectedItems() {
     renderFullCartPage();
     
     showNotification("Selected items removed 🗑️");
+}
+
+function goToShopeeCheckout() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    document.getElementById('cart-page').style.display = 'none'; 
+    document.getElementById('checkout-page').style.display = 'block';
+
+    const container = document.getElementById('checkout-items-container');
+    let subtotal = 0;
+    const shippingFee = 150;
+
+    container.innerHTML = cart.map(item => {
+        subtotal += item.price;
+        return `
+            <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: center; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 50px; height: 50px; background: #eee;"></div> 
+                    <span>${item.name}</span>
+                </div>
+                <span style="text-align: center;">₱${item.price.toLocaleString()}</span>
+                <span style="text-align: center;">1</span>
+                <span style="text-align: right;">₱${item.price.toLocaleString()}</span>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('checkout-subtotal').innerText = `₱${subtotal.toLocaleString()}`;
+    
+    const grandTotal = subtotal + shippingFee;
+    document.getElementById('checkout-grand-total').innerText = `₱${grandTotal.toLocaleString()}`;
+    
+    window.scrollTo(0,0);
+}
+
+function placeShopeeOrder() {
+    alert("Order successfully placed! Thank you for trusting Clock-wise.");
+    cart = []; 
+    updateCartUI();
+    document.getElementById('checkout-page').style.display = 'none';
+    showHome(); 
+}
+
+function backToCart() {
+    document.getElementById('checkout-page').style.display = 'none';
+    
+    var cartPage = document.getElementById('cart-page');
+    if (cartPage) {
+        cartPage.style.display = 'block';
+    } else {
+        showShop();
+    }
+}
+
+function calculateSelectedTotal() {
+    var total = 0;
+    var checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
+    
+    checkedBoxes.forEach(function(box) {
+        var cartIndex = box.value; 
+        var item = cart[cartIndex];
+        var watch = watchData[item.name];
+        
+        if (watch) {
+            total += (watch.price * item.quantity); 
+        }
+    });
+
+    let pesoFormat = new Intl.NumberFormat('en-PH', {
+        style: 'currency', 
+        currency: 'PHP',
+        minimumFractionDigits: 2
+    });
+
+    var subtotalDisplay = document.getElementById('full-cart-subtotal');
+    var totalDisplay = document.getElementById('full-cart-total');
+    
+    if (subtotalDisplay) subtotalDisplay.innerText = pesoFormat.format(total);
+    if (totalDisplay) totalDisplay.innerText = pesoFormat.format(total);
+}
+
+function toggleSelectAll(selectAllCheckbox) {
+    var allItemCheckboxes = document.querySelectorAll('.cart-item-chk');
+    
+    allItemCheckboxes.forEach(function(box) {
+        box.checked = selectAllCheckbox.checked;
+    });
+
+    calculateSelectedTotal();
 }
