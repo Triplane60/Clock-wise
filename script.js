@@ -231,11 +231,12 @@ function showHome() {
     document.getElementById('shop-page').style.display = 'none';
     window.location.hash = '';
 
-    // Show cart icon
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
 
+    document.body.classList.add('static-header');
     document.body.classList.remove('on-cart-page');
+
     window.location.hash = '';
 }
 
@@ -253,9 +254,10 @@ function showShop() {
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
 
-    // Show cart icon
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
+
+    document.body.classList.remove('static-header');
 
     window.location.hash = 'shop';
     if (typeof filterCategory === 'function') filterCategory('all');
@@ -289,10 +291,10 @@ function showCartPage() {
     window.location.hash = 'cart';
     window.scrollTo(0, 0);
 
-    // Hide cart icon on cart page
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'none';
 
+    document.body.classList.add('static-header');
     document.body.classList.add('on-cart-page');
 
     renderFullCartPage();
@@ -923,9 +925,9 @@ document.addEventListener("keydown", function(event) {
 
 // ==================== CART PAGE FUNCTIONS ====================
 function renderFullCartPage() {
-    const container = document.getElementById("full-cart-items-container");
-    const summarySection = document.getElementById("cart-summary-section");
-    const headerActions = document.getElementById("cart-header-actions");
+    var container = document.getElementById("full-cart-items-container");
+    var summarySection = document.getElementById("cart-summary-section");
+    var headerActions = document.getElementById("cart-header-actions");
 
     if (!container) return;
 
@@ -937,52 +939,84 @@ function renderFullCartPage() {
 
     if (cart.length === 0) {
         container.innerHTML = `
-            <div style="text-align: center; padding: 80px 20px;">
-                <p style="color: #888; margin-bottom: 25px;">Your cart is currently empty.</p>
-                <button onclick="showShop()" style="background: transparent; color: #7e57c2; border: 1px solid #7e57c2; padding: 10px 40px; cursor: pointer;">CONTINUE SHOPPING</button>
-            </div>`;
+            <div style="text-align: center; padding: 80px 20px; background: transparent; box-shadow: none;">
+                <p style="color: #888; margin-bottom: 25px; font-size: 1rem;">There are no items in this cart</p>
+                <button onclick="showShop()" style="background: transparent; color: #f57224; border: 1px solid #f57224; padding: 10px 40px; cursor: pointer; font-size: 0.9rem;">CONTINUE SHOPPING</button>
+            </div>
+        `;
+        container.style.background = "transparent";
+        container.style.boxShadow = "none";
+
         if (summarySection) summarySection.style.display = "none";
         if (headerActions) headerActions.style.display = "none";
     } else {
+        container.style.background = "white";
+        container.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
         if (summarySection) summarySection.style.display = "block";
         if (headerActions) headerActions.style.display = "flex";
 
-        let html = "";
-        for (let i = 0; i < cart.length; i++) {
-            const watch = watchData[cart[i].name];
-            const imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
-            const itemTotal = watch.price * cart[i].quantity;
+        var html = "";
+
+        for (var i = 0; i < cart.length; i++) {
+            var watch = watchData[cart[i].name];
+            var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
+            var itemTotal = watch.price * cart[i].quantity;
+            
+            var brandName = watch.specs ? watch.specs.replace('Brand: ', '') : 'Rolex';
 
             html += `
-                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0;">
-                    <div style="width: 50px;">
+                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; background: white; border-bottom: 1px solid #f0f0f0; margin-bottom: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); min-height: 110px; box-sizing: border-box;">
+                    
+                    <div style="width: 50px; display: flex; justify-content: center;">
                         <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
                     </div>
-                    <div style="flex: 3; display: flex; align-items: center; gap: 15px;">
-                        <img src="${imgSrc}" style="width: 60px; height: 60px; object-fit: contain;">
-                        <div>
-                            <span style="display: block; font-weight: bold;">${cart[i].name}</span>
-                            <span style="font-size: 0.8rem; color: #999;">${watch.specs}</span>
+
+                    <div style="flex: 3; display: flex; align-items: center; gap: 15px; min-width: 0;">
+                        <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; flex-shrink: 0;">
+                        
+                        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+                            <span style="
+                                display: -webkit-box; 
+                                -webkit-line-clamp: 2; 
+                                -webkit-box-orient: vertical; 
+                                overflow: hidden; 
+                                font-weight: bold; 
+                                font-size: 1rem; 
+                                color: #333; 
+                                line-height: 1.2em; 
+                                text-overflow: ellipsis;
+                            ">${cart[i].name}</span>
+                            
+                            <span style="display: block; font-size: 0.8rem; color: #999; margin-top: 4px;">Brand: ${brandName}</span>
                         </div>
                     </div>
-                    <div style="flex: 1.5; text-align: center;">${pesoFormat.format(watch.price)}</div>
+
+                    <div style="flex: 1.5; text-align: center; color: #666;">
+                        ${pesoFormat.format(watch.price)}
+                    </div>
+
                     <div style="flex: 1.5; display: flex; justify-content: center;">
-                        <div style="display: flex; border: 1px solid #ddd;">
+                        <div style="display: flex; border: 1px solid #ddd; border-radius: 2px;">
                             <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">-</button>
-                            <input type="text" value="${cart[i].quantity}" readonly style="width: 30px; text-align: center; border: none;">
+                            <input type="text" value="${cart[i].quantity}" readonly style="width: 40px; text-align: center; border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-top: none; border-bottom: none;">
                             <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 10px; border: none; background: white; cursor: pointer;">+</button>
                         </div>
                     </div>
-                    <div style="flex: 1.5; text-align: center; font-weight: bold; color: var(--indigo-dark);">${pesoFormat.format(itemTotal)}</div>
-                    <div style="flex: 0.5; text-align: right;">
-                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer;">🗑️</button>
+
+                    <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">
+                        ${pesoFormat.format(itemTotal)}
                     </div>
-                </div>`;
+
+                    <div style="flex: 0.5; text-align: right;">
+                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #ccc; font-size: 1.2rem;">🗑️</button>
+                    </div>
+                </div>
+            `;
         }
         container.innerHTML = html;
 
-        updateSelectAllUI();      
-        calculateSelectedTotal(); 
+        updateSelectAllUI();
+        calculateSelectedTotal();
     }
 }
 
@@ -1082,33 +1116,39 @@ function updateSelectAllUI() {
 }
 
 function calculateSelectedTotal() {
-    let selectedSubtotal = 0;
-    const checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
+    var selectedSubtotal = 0;
+    var totalShipping = 0; 
+    var checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
 
-    checkedBoxes.forEach(box => {
-        const cartIndex = parseInt(box.value);
-        const item = cart[cartIndex];
-        if (item) {
-            const watch = watchData[item.name];
-            selectedSubtotal += watch.price * item.quantity;
+    checkedBoxes.forEach(function(box) {
+        var cartIndex = parseInt(box.value);
+        if (!isNaN(cartIndex) && cartIndex >= 0 && cartIndex < cart.length) {
+            var item = cart[cartIndex];
+            var watch = watchData[item.name];
+            if (watch) {
+                selectedSubtotal += watch.price * item.quantity;
+                totalShipping += (SHIPPING_FEE * item.quantity);
+            }
         }
     });
 
-    const shipping = (selectedSubtotal > 0) ? SHIPPING_FEE : 0;
-    const grandTotal = selectedSubtotal + shipping;
+    var totalWithShipping = selectedSubtotal + totalShipping;
 
-    let pesoFormat = new Intl.NumberFormat('en-PH', { 
-        style: 'currency', 
-        currency: 'PHP' 
+    let pesoFormat = new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+        minimumFractionDigits: 2
     });
 
-    const subtotalEl = document.getElementById('full-cart-subtotal');
-    const shippingEl = document.getElementById('cart-shipping-fee');
-    const totalEl = document.getElementById('full-cart-total');
+    var subtotalDisplay = document.getElementById('full-cart-subtotal');
+    var shippingDisplay = document.getElementById('cart-shipping-fee');
+    var totalDisplay = document.getElementById('full-cart-total');
 
-    if (subtotalEl) subtotalEl.innerText = pesoFormat.format(selectedSubtotal);
-    if (shippingEl) shippingEl.innerText = pesoFormat.format(shipping);
-    if (totalEl) totalEl.innerText = pesoFormat.format(grandTotal);
+    if (subtotalDisplay) subtotalDisplay.innerText = pesoFormat.format(selectedSubtotal);
+    if (shippingDisplay) shippingDisplay.innerText = pesoFormat.format(totalShipping);
+    if (totalDisplay) totalDisplay.innerText = pesoFormat.format(totalWithShipping);
+
+    updateSelectAllUI();
 }
 
 // ==================== CHECKOUT FUNCTIONS ====================
@@ -1125,7 +1165,10 @@ function openCheckout() {
 
     document.getElementById('checkout-page').style.display = 'block';
 
+    document.body.classList.add('static-header');
+
     var total = 0;
+    var totalShipping = 0; 
     var itemsHTML = "";
     var container = document.getElementById('checkout-items-container');
 
@@ -1144,10 +1187,12 @@ function openCheckout() {
             var itemSubtotal = watch.price * item.quantity;
             total += itemSubtotal;
 
+            totalShipping += (SHIPPING_FEE * item.quantity);
+
             itemsHTML += `
                 <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <img src="${watch.images[0]}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain; background: #f4f4f4; border-radius: 4px;"> 
+                        <img src="${watch.images[0]}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: contain; background: #f4f4f4; border-radius: 4px;">
                         <span style="font-weight: 500;">${item.name}</span>
                     </div>
                     <span style="text-align: center; color: #666;">${pesoFormat.format(watch.price)}</span>
@@ -1157,11 +1202,11 @@ function openCheckout() {
             `;
         }
     });
+
     if (container) container.innerHTML = itemsHTML;
 
-    var shippingFee = SHIPPING_FEE;
     document.getElementById('checkout-subtotal').innerText = pesoFormat.format(total);
-    document.getElementById('checkout-grand-total').innerText = pesoFormat.format(total + shippingFee);
+    document.getElementById('checkout-grand-total').innerText = pesoFormat.format(total + totalShipping);
 
     window.scrollTo(0, 0);
 }
@@ -1184,8 +1229,9 @@ function backToCart() {
     var cartPage = document.getElementById('cart-page');
     if (cartPage) {
         cartPage.style.display = 'block';
+        document.body.classList.add('static-header');
     } else {
-        showShop();
+        showShop(); 
     }
 }
 
