@@ -1417,17 +1417,55 @@ function showContact() {
 }
 
 function showPrivacy(){
-alert("Privacy Policy Page");
+hideAllPages();
+document.getElementById("privacy-page").style.display="block";
 }
 
 function showTerms(){
-alert("Terms of Service Page");
+hideAllPages();
+document.getElementById("terms-page").style.display="block";
 }
 
 function showReturn(){
-alert("Return & Exchange Policy Page");
+hideAllPages();
+document.getElementById("return-page").style.display="block";
 }
 
 function showWarranty(){
-alert("Warranty Policy Page");
+hideAllPages();
+document.getElementById("warranty-page").style.display="block";
+}
+
+function hideAllPages() {
+
+document.getElementById("homepage").style.display = "none";
+document.getElementById("about-page").style.display = "none";
+document.getElementById("contact-page").style.display = "none";
+document.getElementById("shop-page").style.display = "none";
+
+document.getElementById("privacy-page").style.display = "none";
+document.getElementById("terms-page").style.display = "none";
+document.getElementById("return-page").style.display = "none";
+document.getElementById("warranty-page").style.display = "none";
+
+}
+
+function showAbout(){
+hideAllPages();
+document.getElementById("about-page").style.display="block";
+}
+
+function showContact(){
+hideAllPages();
+document.getElementById("contact-page").style.display="block";
+}
+
+function showShop(){
+hideAllPages();
+document.getElementById("shop-page").style.display="block";
+}
+
+function showHome(){
+hideAllPages();
+document.getElementById("homepage").style.display="block";
 }
