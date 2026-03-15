@@ -1387,3 +1387,31 @@ window.addEventListener('popstate', function(event) {
         showHome();
     }
 });
+
+function showHome() {
+    document.getElementById("homepage").style.display = "block";
+    document.getElementById("shop-page").style.display = "none";
+    document.getElementById("about-page").style.display = "none";
+    document.getElementById("contact-page").style.display = "none";
+}
+
+function showShop() {
+    document.getElementById("homepage").style.display = "none";
+    document.getElementById("shop-page").style.display = "block";
+    document.getElementById("about-page").style.display = "none";
+    document.getElementById("contact-page").style.display = "none";
+}
+
+function showAbout() {
+    document.getElementById("homepage").style.display = "none";
+    document.getElementById("shop-page").style.display = "none";
+    document.getElementById("about-page").style.display = "block";
+    document.getElementById("contact-page").style.display = "none";
+}
+
+function showContact() {
+    document.getElementById("homepage").style.display = "none";
+    document.getElementById("shop-page").style.display = "none";
+    document.getElementById("about-page").style.display = "none";
+    document.getElementById("contact-page").style.display = "block";
+}
