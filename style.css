@@ -1495,3 +1495,53 @@ font-weight:500;
 color:#d4af37;
 }
 
+body.homepage-active .main-header {
+    position: static !important;
+}
+
+@keyframes premiumFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(15px); 
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);    
+    }
+}
+
+#about-page, 
+#contact-page {
+    animation: premiumFadeIn 0.6s ease-out forwards;
+}
+
+.user-dropdown {
+    top: 45px !important; 
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15) !important; 
+    animation: dropFade 0.3s ease-out forwards;
+    overflow: hidden !important; 
+}
+
+.dropdown-item {
+    transition: all 0.2s ease !important;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5 !important;
+    color: #2e004f !important; 
+    padding-left: 25px !important; 
+}
+
+@keyframes dropFade {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dropFadeOut {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.user-dropdown.fade-out-active {
+    animation: dropFadeOut 0.3s ease-in forwards !important;
+}

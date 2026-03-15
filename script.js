@@ -213,6 +213,104 @@ var watchData = {
         stock: 10,
         images: ["women-images/pro.png", "women-images/pro1.png", "women-images/pro2.png"]
     },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
 };
 
 // ==================== GLOBAL VARIABLES ====================
@@ -243,18 +341,22 @@ function showHome() {
 }
 
 function showShop() {
-    document.getElementById('homepage').style.display = 'none';
-    document.getElementById('shop-page').style.display = 'block';
-    document.getElementById('checkout-page').style.display = 'none';
-
+    if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
+    if (document.getElementById('about-page')) document.getElementById('about-page').style.display = 'none';
+    if (document.getElementById('contact-page')) document.getElementById('contact-page').style.display = 'none';
+    if (document.getElementById('checkout-page')) document.getElementById('checkout-page').style.display = 'none';
+    
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
+
+    document.getElementById('shop-page').style.display = 'block';
 
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
 
     document.body.classList.remove('static-header');
     document.body.classList.remove('on-cart-page');
+    document.body.classList.add('shop-active'); 
 
     document.querySelector('.category-bar').style.display = 'flex';
     document.querySelector('.hero-banner').style.display = 'block';
@@ -505,18 +607,43 @@ function closeResetModal() {
     document.getElementById("reset-modal").style.display = "none";
 }
 
-function handleUserClick() {
-    if (!isLoggedIn) {
-        openLoginModal();
+function handleUserClick(event) {
+    if (event) event.stopPropagation();
+
+    var dropdown = document.getElementById('user-dropdown');
+    if (!dropdown) return;
+
+    if (dropdown.style.display === 'block') {
+        closeProfileDropdown();
     } else {
-        var dropdown = document.getElementById("user-dropdown");
-        if (dropdown.style.display === "block") {
-            dropdown.style.display = "none";
-        } else {
-            dropdown.style.display = "block";
-        }
+        dropdown.classList.remove('fade-out-active');
+        dropdown.style.display = 'block';
     }
 }
+
+function closeProfileDropdown() {
+    var dropdown = document.getElementById('user-dropdown');
+    
+    if (dropdown && dropdown.style.display === 'block') {
+        dropdown.classList.add('fade-out-active');
+
+        setTimeout(function() {
+            dropdown.style.display = 'none';
+            dropdown.classList.remove('fade-out-active'); 
+        }, 300);
+    }
+}
+
+window.addEventListener('click', function(event) {
+    var dropdown = document.getElementById('user-dropdown');
+    var userDisplay = document.getElementById('user-display');
+
+    if (dropdown && dropdown.style.display === 'block') {
+        if (!dropdown.contains(event.target) && !userDisplay.contains(event.target)) {
+            closeProfileDropdown(); 
+        }
+    }
+});
 
 function handleLogout() {
     document.getElementById("user-dropdown").style.display = "none";
@@ -1388,46 +1515,45 @@ window.addEventListener('popstate', function(event) {
     }
 });
 
-function showHome() {
-    document.getElementById("homepage").style.display = "block";
-    document.getElementById("shop-page").style.display = "none";
-    document.getElementById("about-page").style.display = "none";
-    document.getElementById("contact-page").style.display = "none";
+function navigateTo(pageId, headerClass = 'static-header') {
+    const pages = [
+        'homepage', 'shop-page', 'about-page', 'contact-page', 
+        'privacy-page', 'terms-page', 'return-page', 'warranty-page'
+    ];
+
+    pages.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = 'none';
+            el.style.paddingTop = "0"; 
+        }
+    });
+
+    const target = document.getElementById(pageId);
+    if (target) target.style.display = 'block';
+
+    document.body.classList.remove('static-header', 'shop-active', 'on-cart-page');
+    document.body.classList.add(headerClass);
+
+    window.scrollTo(0, 0);
 }
 
-function showShop() {
-    document.getElementById("homepage").style.display = "none";
-    document.getElementById("shop-page").style.display = "block";
-    document.getElementById("about-page").style.display = "none";
-    document.getElementById("contact-page").style.display = "none";
-}
+function showHome() { navigateTo('homepage', 'static-header'); }
+function showAbout() { navigateTo('about-page', 'static-header'); }
+function showContact() { navigateTo('contact-page', 'static-header'); }
+function showPrivacy() { navigateTo('privacy-page', 'static-header'); }
+function showTerms() { navigateTo('terms-page', 'static-header'); }
+function showReturn() { navigateTo('return-page', 'static-header'); }
+function showWarranty() { navigateTo('warranty-page', 'static-header'); }
 
-function showAbout() {
-    document.getElementById("homepage").style.display = "none";
-    document.getElementById("shop-page").style.display = "none";
-    document.getElementById("about-page").style.display = "block";
-    document.getElementById("contact-page").style.display = "none";
-}
-
-function showContact() {
-    document.getElementById("homepage").style.display = "none";
-    document.getElementById("shop-page").style.display = "none";
-    document.getElementById("about-page").style.display = "none";
-    document.getElementById("contact-page").style.display = "block";
-}
-
-function showPrivacy(){
-alert("Privacy Policy Page");
-}
-
-function showTerms(){
-alert("Terms of Service Page");
-}
-
-function showReturn(){
-alert("Return & Exchange Policy Page");
-}
-
-function showWarranty(){
-alert("Warranty Policy Page");
+function updateUserName(loggedInName) {
+    const userDisplay = document.getElementById('user-display');
+    
+    if (userDisplay) {
+        if (loggedInName === 'none' || !loggedInName) {
+            userDisplay.innerHTML = '👤 Login';
+        } else {
+            userDisplay.innerHTML = `👤 ${loggedInName}`;
+        }
+    }
 }
