@@ -796,7 +796,14 @@ function openDetails(name) {
     html += '</div>';
 
     modalContent.innerHTML = html;
-    document.getElementById("details-modal").style.display = "block";
+    var detailsModal = document.getElementById("details-modal");
+    detailsModal.style.display = "block";
+
+    modalContent.classList.remove("modal-fade-in");
+    
+    void modalContent.offsetWidth; 
+    
+    modalContent.classList.add("modal-fade-in");
 }
 
 function closeDetails() {
