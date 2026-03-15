@@ -342,21 +342,35 @@ function closeLogin() {
 }
 
 function toggleAuth() {
-    var loginForm = document.getElementById("login-form-content");
-    var registerForm = document.getElementById("register-form-content");
-    var title = document.getElementById("login-title");
-    var subtitle = document.getElementById("login-subtitle");
+    try {
+        var loginForm = document.getElementById("login-form-content");
+        var registerForm = document.getElementById("register-form-content");
+        var title = document.getElementById("login-title");
+        var subtitle = document.getElementById("login-subtitle");
 
-    if (loginForm.style.display === "none") {
-        loginForm.style.display = "block";
-        registerForm.style.display = "none";
-        title.innerText = "Welcome Back";
-        subtitle.innerText = "Please login to start shopping";
-    } else {
-        loginForm.style.display = "none";
-        registerForm.style.display = "block";
-        title.innerText = "Create Account";
-        subtitle.innerText = "Join us to explore premium timepieces";
+        if (loginForm.style.display === "none") {
+            loginForm.style.display = "block";
+            registerForm.style.display = "none";
+            title.innerText = "WELCOME BACK";
+            subtitle.innerText = "Please login to start shopping";
+        } else {
+            loginForm.style.display = "none";
+            registerForm.style.display = "block";
+            title.innerText = "CREATE ACCOUNT";
+            subtitle.innerText = "Join us to explore premium timepieces";
+        }
+
+        var modalBox = document.querySelector("#login-modal .modal-content");
+        
+        if (modalBox) {
+            modalBox.style.animation = "none"; 
+            void modalBox.offsetHeight;        
+            
+            modalBox.style.setProperty("animation", "fadeIn 0.6s ease-out");
+        }
+
+    } catch (e) {
+        console.log("Animation Trigger Error:", e);
     }
 }
 
@@ -477,6 +491,11 @@ function saveNewPassword() {
     closeResetModal();
     showNotification("Password updated! Please log in. 🔓");
     openLoginModal();
+}
+
+function backToLoginFromReset() {
+    closeResetModal(); 
+    openLoginModal();  
 }
 
 function closeResetModal() {
@@ -601,6 +620,10 @@ function renderCartItems() {
 
     if (!list) return;
 
+    var cartHeader = list.previousElementSibling;
+    if (cartHeader && cartHeader.tagName === 'H3') {
+        cartHeader.style.cssText = "font-family: serif; color: #2e004f; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; padding-bottom: 10px; border-bottom: 1px solid #eee; margin-bottom: 10px; font-weight: 400;";
+}
     let pesoFormat = new Intl.NumberFormat('en-PH', {
         style: 'currency',
         currency: 'PHP',
@@ -609,8 +632,11 @@ function renderCartItems() {
 
     if (!isLoggedIn) {
         list.innerHTML = `
-            <div style="border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 10px; background: #f9f9f9; text-align: center;">
-                <p style="color: #666; margin: 0;">Please log in to view your cart.</p>
+            <div style="padding: 30px 15px; text-align: center; animation: fadeIn 0.5s ease-out;">
+                <p style="color: #888; margin-bottom: 15px; font-size: 0.85rem; letter-spacing: 0.5px;">Please log in to view your cart.</p>
+                <button onclick="openLoginModal()" style="background: #4B0082; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; font-size: 0.75rem;">
+                    Login to Account
+                </button>
             </div>
         `;
         if (checkoutBtn) checkoutBtn.style.display = "none";
@@ -619,7 +645,11 @@ function renderCartItems() {
     }
 
     if (cart.length === 0) {
-        list.innerHTML = "<p style='color: #888; padding: 20px; text-align: center; font-style: italic;'>Your cart is empty.</p>";
+        list.innerHTML = `
+            <div style="padding: 40px 15px; text-align: center; animation: fadeIn 0.5s ease-out;">
+                <p style="color: #aaa; font-size: 0.85rem; font-style: italic; letter-spacing: 0.5px;">Your cart is currently empty.</p>
+            </div>
+        `;
         if (checkoutBtn) checkoutBtn.style.display = "none";
         if (totalDisplay) totalDisplay.innerText = pesoFormat.format(0);
         return;
@@ -980,90 +1010,119 @@ function renderFullCartPage() {
 
     let pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
 
-    // 1. GUEST STATE: User is not logged in
     if (!isLoggedIn) {
+        if (summarySection) summarySection.style.setProperty("display", "none", "important");
+        if (headerActions) headerActions.style.setProperty("display", "none", "important");
+
         container.style.background = "transparent";
         container.style.boxShadow = "none";
         container.style.border = "none";
 
         container.innerHTML = `
-            <div style="text-align: center; padding: 100px 20px;">
-                <p style="color: #888; margin-bottom: 25px; font-size: 1.1rem;">Please log in to view your cart</p>
-                <button onclick="openLoginModal()" style="background: transparent; color: #4B0082; border: 1px solid #4B0082; padding: 12px 40px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: 0.3s;">
-                    LOGIN / SIGN UP
+            <div style="text-align: center; padding: 80px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; animation: fadeIn 0.8s ease-out;">
+                
+                <div style="margin-bottom: 10px; opacity: 0.8;">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#4B0082" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <h2 style="font-family: serif; color: #2e004f; font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0;">Your Bag is Empty</h2>
+                    <p style="color: #888; font-size: 0.9rem; margin-top: 10px; letter-spacing: 0.5px;">Log in to access your saved timepieces.</p>
+                </div>
+                
+                <button onclick="openLoginModal()" style="background: #4B0082; color: white; border: none; padding: 14px 0; width: 280px; cursor: pointer; font-size: 0.9rem; border-radius: 4px; font-weight: 600; transition: 0.3s; letter-spacing: 1.5px; text-transform: uppercase;">
+                    Sign in / Sign up
                 </button>
+
+                <button onclick="showShop()" style="background: white; color: #4B0082; border: 1.5px solid #4B0082; padding: 12px 0; width: 280px; cursor: pointer; font-size: 0.9rem; border-radius: 4px; font-weight: 600; transition: 0.3s; letter-spacing: 1.5px; text-transform: uppercase;">
+                    Go Shopping
+                </button>
+
             </div>
         `;
-        if (summarySection) summarySection.style.display = "none";
-        if (headerActions) headerActions.style.display = "none";
         return;
     }
 
-    // 2. EMPTY STATE: User is logged in, but cart has 0 items
-    if (cart.length === 0) {
+    if (cart.length > 0) {
+        if (summarySection) summarySection.style.display = "block";
+        if (headerActions) headerActions.style.display = "flex";
+        
+        container.style.background = "white";
+        container.style.boxShadow = "0 2px 10px rgba(0,0,0,0.05)";
+        container.style.borderRadius = "8px";
+        
+        var html = "";
+        for (var i = 0; i < cart.length; i++) {
+            var item = cart[i];
+            var watch = watchData[item.name];
+            var imgSrc = (watch && watch.images) ? watch.images[0] : "https://via.placeholder.com/150";
+            var itemTotal = watch.price * item.quantity;
+
+            html += `
+                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <div style="width: 50px; display: flex; justify-content: center;">
+                        <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
+                    </div>
+                    <div style="flex: 3; display: flex; align-items: center; gap: 15px;">
+                        <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border-radius: 4px;">
+                        <div>
+                            <span style="display: block; font-weight: bold; color: #333;">${item.name}</span>
+                            <span style="font-size: 0.8rem; color: #999;">${watch.specs || 'Brand: Rolex'}</span>
+                        </div>
+                    </div>
+                    <div style="flex: 1.5; text-align: center; color: #666;">${pesoFormat.format(watch.price)}</div>
+                    <div style="flex: 1.5; display: flex; justify-content: center;">
+                        <div style="display: flex; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                            <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">-</button>
+                            <input type="text" value="${item.quantity}" readonly style="width: 40px; text-align: center; border: none; background: #fafafa;">
+                            <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">+</button>
+                        </div>
+                    </div>
+                    <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">${pesoFormat.format(itemTotal)}</div>
+                    <div style="flex: 0.5; text-align: right;">
+                        <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #ff4757; font-size: 1.2rem;">🗑️</button>
+                    </div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+        updateSelectAllUI();
+        calculateSelectedTotal();
+    } else {
+        if (summarySection) summarySection.style.display = "none";
+        if (headerActions) headerActions.style.display = "none";
+        
         container.style.background = "transparent";
         container.style.boxShadow = "none";
         container.style.border = "none";
 
         container.innerHTML = `
-            <div style="text-align: center; padding: 100px 20px;">
-                <p style="color: #888; margin-bottom: 25px; font-size: 1.1rem;">Your cart is empty</p>
-                <button onclick="showShop()" style="background: transparent; color: #4B0082; border: 1px solid #4B0082; padding: 12px 40px; cursor: pointer; font-size: 0.9rem; font-weight: bold; transition: 0.3s;">
-                    CONTINUE SHOPPING
+            <div style="text-align: center; padding: 100px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; animation: fadeIn 0.8s ease-out;">
+                
+                <div style="margin-bottom: 10px; opacity: 0.8;">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#4B0082" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="7"></circle>
+                        <polyline points="12 9 12 12 13.5 13.5"></polyline>
+                        <path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.84a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 0 1 9.84 1h4.32a2 2 0 0 1 2 1.82l.35 3.83"></path>
+                    </svg>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <h2 style="font-family: serif; color: #2e004f; font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0;">Your Collection is Empty</h2>
+                    <p style="color: #888; font-size: 0.9rem; margin-top: 10px; letter-spacing: 0.5px;">Discover the perfect timepiece to define your style.</p>
+                </div>
+                
+                <button onclick="showShop()" style="background: white; color: #4B0082; border: 1.5px solid #4B0082; padding: 14px 0; width: 300px; cursor: pointer; font-size: 0.9rem; border-radius: 4px; font-weight: 600; transition: 0.3s; letter-spacing: 2px; text-transform: uppercase;">
+                    Explore Collection
                 </button>
-            </div>
-        `;
-        if (summarySection) summarySection.style.display = "none";
-        if (headerActions) headerActions.style.display = "none";
-        return;
-    }
 
-    // 3. ACTIVE STATE: User is logged in and has items
-    container.style.background = "white";
-    container.style.boxShadow = "0 2px 10px rgba(0,0,0,0.05)";
-    container.style.borderRadius = "8px";
-
-    if (summarySection) summarySection.style.display = "block";
-    if (headerActions) headerActions.style.display = "flex";
-
-    var html = "";
-    for (var i = 0; i < cart.length; i++) {
-        var item = cart[i];
-        var watch = watchData[item.name];
-        var imgSrc = watch ? watch.images[0] : "images/placeholder.jpg";
-        var itemTotal = watch.price * item.quantity;
-
-        html += `
-            <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0;">
-                <div style="width: 50px; display: flex; justify-content: center;">
-                    <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
-                </div>
-                <div style="flex: 3; display: flex; align-items: center; gap: 15px;">
-                    <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border-radius: 4px;">
-                    <div>
-                        <span style="display: block; font-weight: bold; color: #333;">${item.name}</span>
-                        <span style="font-size: 0.8rem; color: #999;">${watch.specs || 'Brand: Rolex'}</span>
-                    </div>
-                </div>
-                <div style="flex: 1.5; text-align: center; color: #666;">${pesoFormat.format(watch.price)}</div>
-                <div style="flex: 1.5; display: flex; justify-content: center;">
-                    <div style="display: flex; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
-                        <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">-</button>
-                        <input type="text" value="${item.quantity}" readonly style="width: 40px; text-align: center; border: none; background: #fafafa;">
-                        <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">+</button>
-                    </div>
-                </div>
-                <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">${pesoFormat.format(itemTotal)}</div>
-                <div style="flex: 0.5; text-align: right;">
-                    <button onclick="deleteCartItem(${i})" style="background: none; border: none; cursor: pointer; color: #ff4757; font-size: 1.2rem;">🗑️</button>
-                </div>
             </div>
         `;
     }
-    container.innerHTML = html;
-    
-    updateSelectAllUI();
-    calculateSelectedTotal();
 }
 
 function updateCartQuantity(index, change) {
