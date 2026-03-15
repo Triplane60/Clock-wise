@@ -610,14 +610,23 @@ function closeResetModal() {
 function handleUserClick(event) {
     if (event) event.stopPropagation();
 
+    if (!isLoggedIn) {
+        if (typeof openLoginModal === 'function') {
+            openLoginModal(); 
+        } else {
+            console.log("Trying to open login modal...");
+        }
+        return; 
+    }
+
     var dropdown = document.getElementById('user-dropdown');
     if (!dropdown) return;
 
     if (dropdown.style.display === 'block') {
-        closeProfileDropdown();
+        closeProfileDropdown(); 
     } else {
         dropdown.classList.remove('fade-out-active');
-        dropdown.style.display = 'block';
+        dropdown.style.display = 'block'; 
     }
 }
 
