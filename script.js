@@ -1415,3 +1415,19 @@ function showContact() {
     document.getElementById("about-page").style.display = "none";
     document.getElementById("contact-page").style.display = "block";
 }
+
+function showPrivacy(){
+alert("Privacy Policy Page");
+}
+
+function showTerms(){
+alert("Terms of Service Page");
+}
+
+function showReturn(){
+alert("Return & Exchange Policy Page");
+}
+
+function showWarranty(){
+alert("Warranty Policy Page");
+}

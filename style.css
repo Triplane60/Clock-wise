@@ -1474,3 +1474,24 @@ body.static-header #cart-summary-section {
         transform: translate(-50%, -50%) scale(1);
     }
 }
+
+.footer-links{
+display:flex;
+justify-content:space-between;
+align-items:center;
+max-width:900px;
+margin:0 auto 30px auto;
+padding-top:10px;
+}
+
+.footer-links a{
+color:white;
+text-decoration:none;
+font-size:18px;
+font-weight:500;
+}
+
+.footer-links a:hover{
+color:#d4af37;
+}
+
