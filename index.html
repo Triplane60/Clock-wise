@@ -14,6 +14,10 @@
                 <img src="logo.png" alt="Clock-wise Logo" class="nav-logo">
             </div>
             
+            <div style="position: absolute; left: 50%; transform: translateX(-50%); color: #D4AF37; font-family: 'Georgia', serif; letter-spacing: 3px; font-size: 1.1rem; font-weight: bold; white-space: nowrap;">
+                ✧ WELCOME TO CLOCK-WISE ✧
+            </div>
+
             <nav class="home-nav">
                 
                 <a href="#" onclick="showShop(); return false;" style="color: white; margin-right: 25px; text-decoration: none; font-weight: bold; font-size: 1.1rem;">Shop</a>
@@ -703,7 +707,7 @@
         </main>
 
 
-           <div id="cart-page" style="display: none; padding: 130px 10% 40px; background-color: #f5f5f5;">
+           <div id="cart-page" style="display: none; padding: 50px 10% 40px; background-color: #f5f5f5;">
                 <div style="display: flex; gap: 20px; align-items: flex-start; max-width: 1200px; margin: 0 auto;">
                     
                     <div style="flex: 2;">
@@ -758,7 +762,7 @@
                 </div>
             </div>
 
-            <div id="checkout-page" style="display: none; background-color: #f5f5f5; padding-bottom: 50px; padding-top: 120px;">
+            <div id="checkout-page" style="display: none; background-color: #f5f5f5; padding-bottom: 50px; padding-top: 220px;">
                 <main style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">                   
                     <button onclick="backToCart()" style="background: transparent; border: none; color: var(--indigo-dark); font-size: 1.1rem; cursor: pointer; font-weight: bold; margin-bottom: 20px; padding: 0; display: flex; align-items: center; transition: color 0.3s;">
                         ← Back to Cart
@@ -813,88 +817,85 @@
                     </section>
                 </main>
             </div>
-
-        <div id="cart-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                
-                <h2>Your Cart</h2>
-
-                <button onclick="showShop()" style="background: transparent; border: none; color: var(--indigo-dark); font-size: 1rem; cursor: pointer; font-weight: bold; margin-bottom: 20px; padding: 0; display: flex; align-items: center;">
-                    ← Continue Shopping
-                </button>
-                <div id="cart-items-list-modal"></div>
-                <hr style="border: 0; border-top: 1px solid #303056; margin: 20px 0;">
-                <p style="font-size: 1.2rem; font-weight: bold;">Total: ₱<span id="cart-total-price">0.00</span></p>
-                <button class="add-btn" style="background-color: #4caf50;" onclick="alert('Proceeding to checkout!')">Checkout</button>
-            </div>
-        </div>
-
-        <div id="details-modal" class="modal">
-            <div class="modal-content">
-                <div id="new-advance-content"></div>
-            </div>
-        </div>
-
-       <div id="login-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn" onclick="closeLogin()">&times;</span>
-                <h2 id="login-title" style="text-align: center; color: #2e004f; margin-top: 0;">Welcome Back</h2>
-                <p id="login-subtitle" style="text-align: center; color: #666; margin-bottom: 20px;">Please login to start shopping</p>
-
-                <div id="login-form-content">
-                    <input type="text" 
-                        id="auth-username" 
-                        maxlength="16" 
-                        autocomplete="off" 
-                        placeholder="Username" 
-                        style="width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    <div style="width: 100%; margin-bottom: 15px; position: relative;">
-                        <input type="password" id="auth-password" maxlength="10" placeholder="Password" required style="width: 100%; padding: 14px; padding-right: 45px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                        
-                        <span onclick="togglePasswordVisibility('auth-password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                        </span>
-                    </div>
-
-                    <div style="text-align: right; margin-bottom: 15px;">
-                        <a href="javascript:void(0);" onclick="handleForgotPassword();" style="color: #7e57c2; font-size: 14px; text-decoration: none; font-weight: bold;">Forgot Password?</a>
-                    </div>
-
-                    <button onclick="handleAuth(event)" style="width: 100%; padding: 14px; background-color: #2e004f; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">Login</button>
-
-                    <p style="text-align: center; font-size: 14px; color: #666;">Don't have an account? <a href="#" onclick="toggleAuth(); return false;" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Register here</a></p>
-                </div>
-
-                <div id="register-form-content" style="display: none;">
-                    <input type="text" 
-                        id="reg-username" 
-                        maxlength="16" 
-                        autocomplete="off" 
-                        placeholder="Username" 
-                        style="width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                    <div style="width: 100%; margin-bottom: 15px; position: relative;">
-                        <input type="password" id="reg-password" maxlength="10" placeholder="Create Password" required style="width: 100%; padding: 14px; padding-right: 45px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                        
-                        <span onclick="togglePasswordVisibility('reg-password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                        </span>
-                    </div>
-
-                    <div style="width: 100%; margin-bottom: 20px; position: relative;">
-                        <input type="password" id="reg-confirm-password" maxlength="10" placeholder="Confirm Password" required style="width: 100%; padding: 14px; padding-right: 45px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
-                        
-                        <span onclick="togglePasswordVisibility('reg-confirm-password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                        </span>
-                    </div>
-
-                    <button onclick="handleRegister(event)" style="width: 100%; padding: 14px; background-color: #2e004f; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">Create Account</button>
-
-                    <p style="text-align: center; font-size: 14px; color: #666;">Already have an account? <a href="#" onclick="toggleAuth(); return false;" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Login here</a></p>
+            <div id="cart-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>                   
+                    <h2>Your Cart</h2>
+                    <button onclick="showShop()" style="background: transparent; border: none; color: var(--indigo-dark); font-size: 1rem; cursor: pointer; font-weight: bold; margin-bottom: 20px; padding: 0; display: flex; align-items: center;">
+                        ← Continue Shopping
+                    </button>
+                    <div id="cart-items-list-modal"></div>
+                    <hr style="border: 0; border-top: 1px solid #303056; margin: 20px 0;">
+                    <p style="font-size: 1.2rem; font-weight: bold;">Total: ₱<span id="cart-total-price">0.00</span></p>
+                    <button class="add-btn" style="background-color: #4caf50;" onclick="alert('Proceeding to checkout!')">Checkout</button>
                 </div>
             </div>
-        </div>
+
+            <div id="details-modal" class="modal">
+                <div class="modal-content">
+                    <div id="new-advance-content"></div>
+                </div>
+            </div>
+
+            <div id="login-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="closeLogin()">&times;</span>
+                    <h2 id="login-title" style="text-align: center; color: #2e004f; margin-top: 0;">Welcome Back</h2>
+                    <p id="login-subtitle" style="text-align: center; color: #666; margin-bottom: 20px;">Please login to start shopping</p>
+
+                    <div id="login-form-content">
+                        <input type="text" 
+                            id="auth-username" 
+                            maxlength="16" 
+                            autocomplete="off" 
+                            placeholder="Username" 
+                            style="width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                        <div style="width: 100%; margin-bottom: 15px; position: relative;">
+                            <input type="password" id="auth-password" maxlength="10" placeholder="Password" required style="width: 100%; padding: 14px; padding-right: 45px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                            
+                            <span onclick="togglePasswordVisibility('auth-password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                            </span>
+                        </div>
+
+                        <div style="text-align: right; margin-bottom: 15px;">
+                            <a href="javascript:void(0);" onclick="handleForgotPassword();" style="color: #7e57c2; font-size: 14px; text-decoration: none; font-weight: bold;">Forgot Password?</a>
+                        </div>
+
+                        <button onclick="handleAuth(event)" style="width: 100%; padding: 14px; background-color: #2e004f; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">Login</button>
+
+                        <p style="text-align: center; font-size: 14px; color: #666;">Don't have an account? <a href="#" onclick="toggleAuth(); return false;" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Register here</a></p>
+                    </div>
+
+                    <div id="register-form-content" style="display: none;">
+                        <input type="text" 
+                            id="reg-username" 
+                            maxlength="16" 
+                            autocomplete="off" 
+                            placeholder="Username" 
+                            style="width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                        <div style="width: 100%; margin-bottom: 15px; position: relative;">
+                            <input type="password" id="reg-password" maxlength="10" placeholder="Create Password" required style="width: 100%; padding: 14px; padding-right: 45px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                            
+                            <span onclick="togglePasswordVisibility('reg-password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                            </span>
+                        </div>
+
+                        <div style="width: 100%; margin-bottom: 20px; position: relative;">
+                            <input type="password" id="reg-confirm-password" maxlength="10" placeholder="Confirm Password" required style="width: 100%; padding: 14px; padding-right: 45px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+                            
+                            <span onclick="togglePasswordVisibility('reg-confirm-password', this)" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                            </span>
+                        </div>
+
+                        <button onclick="handleRegister(event)" style="width: 100%; padding: 14px; background-color: #2e004f; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-bottom: 15px;">Create Account</button>
+
+                        <p style="text-align: center; font-size: 14px; color: #666;">Already have an account? <a href="#" onclick="toggleAuth(); return false;" style="color: #7e57c2; font-weight: bold; text-decoration: none;">Login here</a></p>
+                    </div>
+                </div>
+            </div>
 
         <div id="reset-modal" class="modal" style="display: none;">
             <div class="modal-content" style="max-width: 400px; padding: 30px; border-radius: 8px; text-align: center;">
@@ -1170,14 +1171,37 @@
                     <textarea id="cust-address" rows="3" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; resize: none; box-sizing: border-box;"></textarea>
                 </div>
                 
-                <button type="submit" style="width: 100%; padding: 15px; font-size: 1.1rem; background-color: #2e004f; border: none; color: white; border-radius: 4px; cursor: pointer; font-weight: bold; text-transform: uppercase;">Confirm Order</button>
-            </form>
+                <form id="checkout-form" onsubmit="processOrder(event)">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #555; font-weight: bold;">Full Name</label>
+                        <input type="text" id="cust-name" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #555; font-weight: bold;">Phone Number</label>
+                        
+                        <div style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 4px; overflow: hidden; width: 100%; background: white;">
+                            
+                            <span style="background-color: #f3f3f3; padding: 12px; font-weight: bold; color: #333; border-right: 1px solid #ccc;">+63</span>
+                            
+                            <input type="tel" id="cust-phone" autocomplete="off" required pattern="^9\d{9}$" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '')" title="Please enter your 10-digit mobile number starting with 9" style="width: 100%; padding: 12px; border: none; outline: none; box-sizing: border-box;">
+                            
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <label style="display: block; font-size: 0.9rem; margin-bottom: 5px; color: #555; font-weight: bold;">Delivery Address</label>
+                        <textarea id="cust-address" rows="3" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; resize: none; box-sizing: border-box;"></textarea>
+                    </div>
+                    
+                    <button type="submit" style="width: 100%; padding: 15px; font-size: 1.1rem; background-color: #2e004f; border: none; color: white; border-radius: 4px; cursor: pointer; font-weight: bold; text-transform: uppercase;">Confirm Order</button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div id="toast" class="toast">Message goes here</div>
+        <div id="toast" class="toast">Message goes here</div>
 
-    <script src="script.js"></script>
+        <script src="script.js"></script>
 
 </body>
 </html>

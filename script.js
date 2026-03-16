@@ -331,7 +331,7 @@ function showHome() {
     document.getElementById('checkout-page').style.display = 'none';
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
-
+    
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
 
@@ -367,6 +367,12 @@ function showShop() {
 
     if (typeof filterCategory === 'function') filterCategory('all');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const searchContainer = document.querySelector('#shop-page .search-container');
+    if (searchContainer) searchContainer.style.display = 'flex'; 
+
+    const luxeDesign = document.querySelector('.cart-luxe-design');
+    if (luxeDesign) luxeDesign.style.display = 'none';
 }
 
 function showShopWithCategory(category) {
@@ -395,6 +401,28 @@ function showCartPage() {
         cartPage.classList.add('cart-fade-in');
     }
 
+    const searchContainer = document.querySelector('#shop-page .search-container');
+    
+    if (searchContainer) {
+        searchContainer.style.display = 'none'; 
+        
+        const oldSpacer = document.querySelector('.cart-header-spacer');
+        if (oldSpacer) oldSpacer.remove();
+        
+        let luxeDesign = document.querySelector('.cart-luxe-design');
+        if (!luxeDesign) {
+            luxeDesign = document.createElement('div');
+            luxeDesign.className = 'cart-luxe-design';
+            
+            luxeDesign.style.cssText = 'position: absolute; left: 50%; transform: translateX(-50%); color: #D4AF37; font-family: "Georgia", serif; letter-spacing: 3px; font-size: 1.1rem; font-weight: bold; white-space: nowrap;';
+            luxeDesign.innerHTML = '✧ SECURE CHECKOUT ✧';
+            
+            searchContainer.parentElement.insertBefore(luxeDesign, searchContainer);
+        } else {
+            luxeDesign.style.display = 'block';
+        }
+    }
+
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'none';
 
@@ -402,6 +430,8 @@ function showCartPage() {
     document.body.classList.add('on-cart-page');
 
     history.pushState({ page: 'cart' }, null, '#cart');
+
+    
 
     if (typeof renderFullCartPage === 'function') renderFullCartPage();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -776,10 +806,7 @@ function renderCartItems() {
     if (!isLoggedIn) {
         list.innerHTML = `
             <div style="padding: 30px 15px; text-align: center; animation: fadeIn 0.5s ease-out;">
-                <p style="color: #888; margin-bottom: 15px; font-size: 0.85rem; letter-spacing: 0.5px;">Please log in to view your cart.</p>
-                <button onclick="openLoginModal()" style="background: #4B0082; color: white; border: none; padding: 12px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; letter-spacing: 1.5px; text-transform: uppercase; font-size: 0.75rem;">
-                    Login to Account
-                </button>
+                <p style="color: #888; margin-bottom: 15px; font-size: 0.85rem; letter-spacing: 0.5px;">Your cart is empty.</p>
             </div>
         `;
         if (checkoutBtn) checkoutBtn.style.display = "none";
