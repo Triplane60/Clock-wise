@@ -322,6 +322,7 @@ var currentDetailsImages = [];
 var currentSlideIndex = 0;
 var cart = [];
 var total = 0;
+var currentCategory = 'all';
 
 // ==================== PAGE NAVIGATION ====================
 function showHome() {
@@ -1011,14 +1012,8 @@ function showNotification(message) {
 
 // ==================== FILTER & SEARCH ====================
 function filterCategory(category) {
-    var cards = document.querySelectorAll('.watch-card');
-    for (var i = 0; i < cards.length; i++) {
-        if (category === 'all' || cards[i].classList.contains(category)) {
-            cards[i].style.display = 'flex';
-        } else {
-            cards[i].style.display = 'none';
-        }
-    }
+    currentCategory = category;
+
     var buttons = document.querySelectorAll('.nav-item');
     for (var j = 0; j < buttons.length; j++) {
         buttons[j].classList.remove('active');
@@ -1027,22 +1022,29 @@ function filterCategory(category) {
             buttons[j].classList.add('active');
         }
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    searchWatches();
 }
 
 function searchWatches() {
-    var input = document.getElementById('search-input');
-    if (!input) return;
-    var query = input.value.toLowerCase();
-    var cards = document.querySelectorAll('.watch-card');
-    for (var i = 0; i < cards.length; i++) {
-        var title = cards[i].querySelector('h3').innerText.toLowerCase();
-        if (title.includes(query)) {
-            cards[i].style.display = 'flex'; // FIXED: use flex instead of block
+    const searchBox = document.getElementById('search-input');
+    const query = searchBox.value.toLowerCase();
+    const watches = document.querySelectorAll('.watch-card'); 
+
+    watches.forEach(function(watch) {
+        const watchText = watch.innerText.toLowerCase();
+        
+        const matchesText = watchText.includes(query);
+        
+        const matchesCategory = currentCategory === 'all' || watch.classList.contains(currentCategory);
+
+        if (matchesText && matchesCategory) {
+            watch.style.display = 'flex'; 
         } else {
-            cards[i].style.display = 'none';
+            watch.style.display = 'none';
         }
-    }
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==================== AUTO SLIDESHOW (SHOP BANNER) ====================
@@ -1482,16 +1484,96 @@ function updateCheckoutTotal() {
     document.getElementById('checkout-grand-total').innerText = pesoFormat.format(grandTotal);
 }
 
-function placeShopeeOrder() {
-    alert("Order successfully placed! Thank you for trusting Clock-wise. 🥂");
+function placeShopeeOrder(event) {
+    if (event) event.preventDefault(); 
 
-    cart = [];
+    const nameBox = document.getElementById('checkout-name-input') || document.getElementById('cust-name');
+    const addressBox = document.getElementById('checkout-address-input') || document.getElementById('cust-address');
+    const grandTotal = document.getElementById('checkout-grand-total').innerText;
+
+    nameBox.style.border = "1px solid #ccc";
+    addressBox.style.border = "1px solid #ccc";
+
+    const rawName = nameBox.value.trim();
+    const rawAddress = addressBox.value.trim();
+
+    if (rawName === "" || /\d/.test(rawName) || !rawName.includes(' ')) {
+        showNotification("Please enter your full First and Last Name.");
+        nameBox.style.border = "2px solid #ff4757";
+        return; 
+    }
+
+    if (/\b[a-z]/.test(rawName)) {
+        showNotification("Error: Please capitalize the first letter of your names.");
+        nameBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    if (rawAddress.length < 10 || !rawAddress.toLowerCase().includes('city')) {
+        showNotification("Please enter a complete address, including your City.");
+        addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    if (/\b[a-z]/.test(rawAddress)) {
+        showNotification("Error: Please capitalize the first letter of every word in your address.");
+        addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    if (!rawAddress.includes(',')) {
+        showNotification("Error: Please include a comma (,) after the Barangay or Street.");
+        addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    let itemsHTML = `<div style="margin: 20px 0; border-top: 1px solid #eee; padding-top: 15px;">
+                        <h4 style="margin-bottom: 15px; color: #2e004f; text-align: left;">Order Summary:</h4>`;
+
+    const checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
+    checkedBoxes.forEach(function(box) {
+        const cartIndex = parseInt(box.value);
+        const item = cart[cartIndex];
+        const watch = watchData[item.name];
+
+        if (watch) {
+            itemsHTML += `
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <img src="${watch.images[0]}" style="width: 60px; height: 60px; object-fit: contain; background: #f9f9f9; border-radius: 6px; border: 1px solid #eee;">
+                    <div style="text-align: left;">
+                        <p style="margin: 0; font-weight: bold; font-size: 0.95rem;">${item.name}</p>
+                        <p style="margin: 2px 0 0 0; color: #666; font-size: 0.85rem;">Qty: ${item.quantity}</p>
+                    </div>
+                </div>
+            `;
+        }
+    });
+    itemsHTML += `</div>`;
+
+    const receiptDetails = document.getElementById('receipt-details');
+    if (receiptDetails) {
+        receiptDetails.innerHTML = `
+            <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
+                <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
+                <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
+                <p style="margin: 5px 0;"><strong>Amount Paid:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
+            </div>
+            ${itemsHTML} 
+            <p style="font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 20px;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
+        `;
+    }
+
+    nameBox.value = "";
+    addressBox.value = "";
+    const indicesToRemove = [];
+    checkedBoxes.forEach(box => indicesToRemove.push(parseInt(box.value)));
+    indicesToRemove.sort((a,b) => b - a).forEach(idx => cart.splice(idx, 1));
 
     if (typeof updateCartDisplay === "function") updateCartDisplay();
     if (typeof renderCartItems === "function") renderCartItems();
 
-    document.getElementById('checkout-page').style.display = 'none';
-    showHome();
+    navigateTo('receipt-page');
+    window.scrollTo(0, 0);
 }
 
 function backToCart() {
@@ -1527,7 +1609,8 @@ window.addEventListener('popstate', function(event) {
 function navigateTo(pageId, headerClass = 'static-header') {
     const pages = [
         'homepage', 'shop-page', 'about-page', 'contact-page', 
-        'privacy-page', 'terms-page', 'return-page', 'warranty-page'
+        'privacy-page', 'terms-page', 'return-page', 'warranty-page',
+        'receipt-page'
     ];
 
     pages.forEach(id => {
@@ -1547,7 +1630,7 @@ function navigateTo(pageId, headerClass = 'static-header') {
     window.scrollTo(0, 0);
 }
 
-function showHome() { navigateTo('homepage', 'static-header'); }
+function showHome() { navigateTo('homepage', ''); }
 function showAbout() { navigateTo('about-page', 'static-header'); }
 function showContact() { navigateTo('contact-page', 'static-header'); }
 function showPrivacy() { navigateTo('privacy-page', 'static-header'); }
@@ -1565,4 +1648,80 @@ function updateUserName(loggedInName) {
             userDisplay.innerHTML = `👤 ${loggedInName}`;
         }
     }
+}   
+
+let lastScrollTop = 0;
+let ticking = false;
+
+function handleScroll() {
+    const header = document.querySelector('.main-header');
+    if (!header) return;
+
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (!document.body.classList.contains('static-header')) {
+        if (currentScroll > lastScrollTop && currentScroll > 100) {
+            header.classList.add('header-hidden');
+        } else {
+            header.classList.remove('header-hidden');
+        }
+    } else {
+        header.classList.remove('header-hidden');
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    ticking = false;
+}
+
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('.main-header');
+    
+    if (!header) return; 
+
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop && currentScroll > 50) {
+        header.classList.add('header-hidden');
+    } 
+    else {
+        header.classList.remove('header-hidden');
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+});
+
+function processOrder(event) {
+    event.preventDefault(); 
+
+    const nameBox = document.getElementById('cust-name');
+    const addressBox = document.getElementById('cust-address');
+    const total = document.getElementById('checkout-total-display').innerText;
+
+    if (nameBox.value.trim() === "" || addressBox.value.trim() === "") {
+        alert("Please fill in both your Name and Delivery Address to complete your order.");
+        
+        if (nameBox.value.trim() === "") nameBox.style.border = "2px solid #ff4757";
+        else nameBox.style.border = "1px solid #ccc";
+        
+        if (addressBox.value.trim() === "") addressBox.style.border = "2px solid #ff4757";
+        else addressBox.style.border = "1px solid #ccc";
+        
+        return; 
+    }
+
+    const receiptDetails = document.getElementById('receipt-details');
+    receiptDetails.innerHTML = `
+        <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px;">
+            <p style="margin: 5px 0;"><strong>Customer:</strong> ${nameBox.value}</p>
+            <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${addressBox.value}</p>
+            <p style="margin: 5px 0;"><strong>Amount Paid:</strong> <span style="color: #4CAF50; font-weight: bold;">${total}</span></p>
+        </div>
+        <p style="font-size: 0.75rem; color: #aaa; text-align: center;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
+    `;
+
+    closeCheckoutModal(); 
+    navigateTo('receipt-page', 'static-header');
+    
+    cart = [];
+    if (typeof updateCartUI === 'function') updateCartUI();
 }

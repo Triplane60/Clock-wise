@@ -24,8 +24,7 @@ body {
     left: 0;
     width: 100vw !important; 
     height: 130px !important; 
-    z-index: 9999 !important; 
-    
+    z-index: 9999 !important;    
     background-color: var(--indigo-dark);
     color: var(--white);
     padding: 0 10%; 
@@ -34,6 +33,7 @@ body {
     align-items: center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     box-sizing: border-box;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .logo, .cart-icon {
@@ -399,7 +399,7 @@ body {
     flex-wrap: wrap;
     max-width: 85%; 
     margin: 0 auto;    
-    padding: 60px 0; 
+    padding: 25px 0; 
 }
 
 .footer-column {
@@ -1429,6 +1429,7 @@ body.static-header #cart-summary-section {
 }
 
 #homepage {
+    padding-top: 100px;
     min-height: 500px;
 }
 
@@ -1519,7 +1520,11 @@ body.homepage-active .main-header {
 }
 
 #about-page, 
-#contact-page {
+#contact-page,
+#privacy-page,
+#terms-page,
+#return-page,
+#warranty-page {
     animation: premiumFadeIn 0.6s ease-out forwards;
 }
 
@@ -1554,3 +1559,15 @@ body.homepage-active .main-header {
     animation: dropFadeOut 0.3s ease-in forwards !important;
 }
 
+.main-header.header-hidden {
+transform: translateY(-100%);
+transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.hero-text {
+    margin-top: 100px !important;
+}
+
+.hero-visuals {
+    margin-top: 100px !important;
+}
