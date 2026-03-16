@@ -213,6 +213,104 @@ var watchData = {
         stock: 10,
         images: ["women-images/pro.png", "women-images/pro1.png", "women-images/pro2.png"]
     },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
+    "":{
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
 };
 
 // ==================== GLOBAL VARIABLES ====================
@@ -224,6 +322,7 @@ var currentDetailsImages = [];
 var currentSlideIndex = 0;
 var cart = [];
 var total = 0;
+var currentCategory = 'all';
 
 // ==================== PAGE NAVIGATION ====================
 function showHome() {
@@ -243,18 +342,22 @@ function showHome() {
 }
 
 function showShop() {
-    document.getElementById('homepage').style.display = 'none';
-    document.getElementById('shop-page').style.display = 'block';
-    document.getElementById('checkout-page').style.display = 'none';
-
+    if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
+    if (document.getElementById('about-page')) document.getElementById('about-page').style.display = 'none';
+    if (document.getElementById('contact-page')) document.getElementById('contact-page').style.display = 'none';
+    if (document.getElementById('checkout-page')) document.getElementById('checkout-page').style.display = 'none';
+    
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
+
+    document.getElementById('shop-page').style.display = 'block';
 
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
 
     document.body.classList.remove('static-header');
     document.body.classList.remove('on-cart-page');
+    document.body.classList.add('shop-active'); 
 
     document.querySelector('.category-bar').style.display = 'flex';
     document.querySelector('.hero-banner').style.display = 'block';
@@ -284,7 +387,13 @@ function showCartPage() {
     document.querySelector('.content-area').style.display = 'none';
 
     var cartPage = document.getElementById('cart-page');
-    if (cartPage) cartPage.style.display = 'block';
+    if (cartPage) {
+        cartPage.style.display = 'block';
+        
+        cartPage.classList.remove('cart-fade-in');
+        void cartPage.offsetWidth; 
+        cartPage.classList.add('cart-fade-in');
+    }
 
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'none';
@@ -505,18 +614,52 @@ function closeResetModal() {
     document.getElementById("reset-modal").style.display = "none";
 }
 
-function handleUserClick() {
+function handleUserClick(event) {
+    if (event) event.stopPropagation();
+
     if (!isLoggedIn) {
-        openLoginModal();
-    } else {
-        var dropdown = document.getElementById("user-dropdown");
-        if (dropdown.style.display === "block") {
-            dropdown.style.display = "none";
+        if (typeof openLoginModal === 'function') {
+            openLoginModal(); 
         } else {
-            dropdown.style.display = "block";
+            console.log("Trying to open login modal...");
         }
+        return; 
+    }
+
+    var dropdown = document.getElementById('user-dropdown');
+    if (!dropdown) return;
+
+    if (dropdown.style.display === 'block') {
+        closeProfileDropdown(); 
+    } else {
+        dropdown.classList.remove('fade-out-active');
+        dropdown.style.display = 'block'; 
     }
 }
+
+function closeProfileDropdown() {
+    var dropdown = document.getElementById('user-dropdown');
+    
+    if (dropdown && dropdown.style.display === 'block') {
+        dropdown.classList.add('fade-out-active');
+
+        setTimeout(function() {
+            dropdown.style.display = 'none';
+            dropdown.classList.remove('fade-out-active'); 
+        }, 300);
+    }
+}
+
+window.addEventListener('click', function(event) {
+    var dropdown = document.getElementById('user-dropdown');
+    var userDisplay = document.getElementById('user-display');
+
+    if (dropdown && dropdown.style.display === 'block') {
+        if (!dropdown.contains(event.target) && !userDisplay.contains(event.target)) {
+            closeProfileDropdown(); 
+        }
+    }
+});
 
 function handleLogout() {
     document.getElementById("user-dropdown").style.display = "none";
@@ -875,13 +1018,13 @@ function showNotification(message) {
 
 // ==================== FILTER & SEARCH ====================
 function filterCategory(category) {
-    var cards = document.querySelectorAll('.watch-card');
-    for (var i = 0; i < cards.length; i++) {
-        if (category === 'all' || cards[i].classList.contains(category)) {
-            cards[i].style.display = 'flex';
-        } else {
-            cards[i].style.display = 'none';
-        }
+    currentCategory = category;
+
+        const watchGrid = document.querySelector('.content-area'); 
+    if (watchGrid) {
+        watchGrid.classList.remove('category-fade-in');
+        void watchGrid.offsetWidth; 
+        watchGrid.classList.add('category-fade-in');
     }
     var buttons = document.querySelectorAll('.nav-item');
     for (var j = 0; j < buttons.length; j++) {
@@ -891,22 +1034,29 @@ function filterCategory(category) {
             buttons[j].classList.add('active');
         }
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    searchWatches();
 }
 
 function searchWatches() {
-    var input = document.getElementById('search-input');
-    if (!input) return;
-    var query = input.value.toLowerCase();
-    var cards = document.querySelectorAll('.watch-card');
-    for (var i = 0; i < cards.length; i++) {
-        var title = cards[i].querySelector('h3').innerText.toLowerCase();
-        if (title.includes(query)) {
-            cards[i].style.display = 'flex'; // FIXED: use flex instead of block
+    const searchBox = document.getElementById('search-input');
+    const query = searchBox.value.toLowerCase();
+    const watches = document.querySelectorAll('.watch-card'); 
+
+    watches.forEach(function(watch) {
+        const watchText = watch.innerText.toLowerCase();
+        
+        const matchesText = watchText.includes(query);
+        
+        const matchesCategory = currentCategory === 'all' || watch.classList.contains(currentCategory);
+
+        if (matchesText && matchesCategory) {
+            watch.style.display = 'flex'; 
         } else {
-            cards[i].style.display = 'none';
+            watch.style.display = 'none';
         }
-    }
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==================== AUTO SLIDESHOW (SHOP BANNER) ====================
@@ -1265,10 +1415,19 @@ function openCheckout() {
         return;
     }
 
+    window.scrollTo(0, 0);
+    
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
 
-    document.getElementById('checkout-page').style.display = 'block';
+    var checkoutPage = document.getElementById('checkout-page');
+    if (checkoutPage) {
+        checkoutPage.style.display = 'block';
+        
+        checkoutPage.classList.remove('checkout-fade-in');
+        void checkoutPage.offsetWidth;
+        checkoutPage.classList.add('checkout-fade-in');
+    }
 
     var totalMerchandise = 0;
     var totalShipping = 0; 
@@ -1289,7 +1448,6 @@ function openCheckout() {
         if (watch) {
             var itemSubtotal = watch.price * item.quantity;
             totalMerchandise += itemSubtotal;
-            
             totalShipping += (SHIPPING_FEE * item.quantity);
 
             itemsHTML += `
@@ -1305,7 +1463,7 @@ function openCheckout() {
             `;
         }
     });
-    
+
     if (container) container.innerHTML = itemsHTML;
 
     var grandTotal = totalMerchandise + totalShipping;
@@ -1314,8 +1472,6 @@ function openCheckout() {
     document.getElementById('checkout-subtotal').innerText = pesoFormat.format(totalMerchandise);
     document.getElementById('checkout-shipping-total').innerText = pesoFormat.format(totalShipping);
     document.getElementById('checkout-grand-total').innerText = pesoFormat.format(grandTotal);
-    
-    window.scrollTo(0, 0);
 }
 
 function updateCheckoutTotal() {
@@ -1346,16 +1502,109 @@ function updateCheckoutTotal() {
     document.getElementById('checkout-grand-total').innerText = pesoFormat.format(grandTotal);
 }
 
-function placeShopeeOrder() {
-    alert("Order successfully placed! Thank you for trusting Clock-wise. 🥂");
+function placeShopeeOrder(event) {
+    if (event) event.preventDefault(); 
 
-    cart = [];
+    const nameBox = document.getElementById('checkout-name-input') || document.getElementById('cust-name');
+    const addressBox = document.getElementById('checkout-address-input') || document.getElementById('cust-address');
+    const grandTotal = document.getElementById('checkout-grand-total').innerText;
+
+    nameBox.style.border = "1px solid #ccc";
+    addressBox.style.border = "1px solid #ccc";
+
+    const rawName = nameBox.value.trim();
+    const rawAddress = addressBox.value.trim();
+
+    if (rawName === "" || /\d/.test(rawName) || !rawName.includes(' ')) {
+        showNotification("Please enter your full First and Last Name.");
+        nameBox.style.border = "2px solid #ff4757";
+        return; 
+    }
+
+    if (/\b[a-z]/.test(rawName)) {
+        showNotification("Error: Please capitalize the first letter of your names.");
+        nameBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    if (rawAddress.length < 10 || !rawAddress.toLowerCase().includes('city')) {
+        showNotification("Please enter a complete address, including your City.");
+        addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    if (/\b[a-z]/.test(rawAddress)) {
+        showNotification("Error: Please capitalize the first letter of every word in your address.");
+        addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    if (!rawAddress.includes(',')) {
+        showNotification("Error: Please include a comma (,) after the Barangay or Street.");
+        addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    if (/\bBrgy(?!\.)/i.test(rawAddress)) {
+        showNotification("Error: Please use the correct abbreviation 'Brgy.' with a period.");
+        addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    let itemsHTML = `<div style="margin: 20px 0; border-top: 1px solid #eee; padding-top: 15px;">
+                        <h4 style="margin-bottom: 15px; color: #2e004f; text-align: left;">Order Summary:</h4>`;
+
+    const checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
+    checkedBoxes.forEach(function(box) {
+        const cartIndex = parseInt(box.value);
+        const item = cart[cartIndex];
+        const watch = watchData[item.name];
+
+        if (watch) {
+            itemsHTML += `
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                    <img src="${watch.images[0]}" style="width: 60px; height: 60px; object-fit: contain; background: #f9f9f9; border-radius: 6px; border: 1px solid #eee;">
+                    <div style="text-align: left;">
+                        <p style="margin: 0; font-weight: bold; font-size: 0.95rem;">${item.name}</p>
+                        <p style="margin: 2px 0 0 0; color: #666; font-size: 0.85rem;">Qty: ${item.quantity}</p>
+                    </div>
+                </div>
+            `;
+        }
+    });
+    itemsHTML += `</div>`;
+
+    const receiptDetails = document.getElementById('receipt-details');
+    if (receiptDetails) {
+        receiptDetails.innerHTML = `
+            <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
+                <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
+                <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
+                <p style="margin: 5px 0;"><strong>Amount Paid:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
+            </div>
+            ${itemsHTML} 
+            <p style="font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 20px;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
+        `;
+    }
+
+    nameBox.value = "";
+    addressBox.value = "";
+    const indicesToRemove = [];
+    checkedBoxes.forEach(box => indicesToRemove.push(parseInt(box.value)));
+    indicesToRemove.sort((a,b) => b - a).forEach(idx => cart.splice(idx, 1));
 
     if (typeof updateCartDisplay === "function") updateCartDisplay();
     if (typeof renderCartItems === "function") renderCartItems();
 
-    document.getElementById('checkout-page').style.display = 'none';
-    showHome();
+    const receiptPage = document.getElementById('receipt-page');
+    if (receiptPage) {
+        receiptPage.classList.remove('receipt-fade-in');
+        void receiptPage.offsetWidth; 
+        receiptPage.classList.add('receipt-fade-in');
+    }
+
+    navigateTo('receipt-page');
+    window.scrollTo(0, 0);
 }
 
 function backToCart() {
@@ -1388,30 +1637,122 @@ window.addEventListener('popstate', function(event) {
     }
 });
 
-function showPrivacy() {
-    hideAllPages();
-    document.getElementById("privacy-page").style.display = "block";
-    document.body.classList.remove('on-cart-page', 'shop-active');
-    document.body.classList.add('static-header'); 
+function navigateTo(pageId, headerClass = 'static-header') {
+    const pages = [
+        'homepage', 'shop-page', 'about-page', 'contact-page', 
+        'privacy-page', 'terms-page', 'return-page', 'warranty-page',
+        'receipt-page'
+    ];
+
+    pages.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.style.display = 'none';
+            el.style.paddingTop = "0"; 
+        }
+    });
+
+    const target = document.getElementById(pageId);
+    if (target) target.style.display = 'block';
+
+    document.body.classList.remove('static-header', 'shop-active', 'on-cart-page');
+    document.body.classList.add(headerClass);
+
+    window.scrollTo(0, 0);
 }
 
-function showReturn() {
-    hideAllPages();
-    document.getElementById("return-page").style.display = "block";
-    document.body.classList.remove('on-cart-page', 'shop-active');
-    document.body.classList.add('static-header'); 
+function showHome() { navigateTo('homepage', ''); }
+function showAbout() { navigateTo('about-page', 'static-header'); }
+function showContact() { navigateTo('contact-page', 'static-header'); }
+function showPrivacy() { navigateTo('privacy-page', 'static-header'); }
+function showTerms() { navigateTo('terms-page', 'static-header'); }
+function showReturn() { navigateTo('return-page', 'static-header'); }
+function showWarranty() { navigateTo('warranty-page', 'static-header'); }
+
+function updateUserName(loggedInName) {
+    const userDisplay = document.getElementById('user-display');
+    
+    if (userDisplay) {
+        if (loggedInName === 'none' || !loggedInName) {
+            userDisplay.innerHTML = '👤 Login';
+        } else {
+            userDisplay.innerHTML = `👤 ${loggedInName}`;
+        }
+    }
+}   
+
+let lastScrollTop = 0;
+let ticking = false;
+
+function handleScroll() {
+    const header = document.querySelector('.main-header');
+    if (!header) return;
+
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (!document.body.classList.contains('static-header')) {
+        if (currentScroll > lastScrollTop && currentScroll > 100) {
+            header.classList.add('header-hidden');
+        } else {
+            header.classList.remove('header-hidden');
+        }
+    } else {
+        header.classList.remove('header-hidden');
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    ticking = false;
 }
 
-function showWarranty() {
-    hideAllPages();
-    document.getElementById("warranty-page").style.display = "block";
-    document.body.classList.remove('on-cart-page', 'shop-active');
-    document.body.classList.add('static-header'); 
-}
+window.addEventListener('scroll', function() {
+    const header = document.querySelector('.main-header');
+    
+    if (!header) return; 
 
-function showTerms() {
-    hideAllPages();
-    document.getElementById("terms-page").style.display = "block";
-    document.body.classList.remove('on-cart-page', 'shop-active');
-    document.body.classList.add('static-header'); 
+    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScroll > lastScrollTop && currentScroll > 50) {
+        header.classList.add('header-hidden');
+    } 
+    else {
+        header.classList.remove('header-hidden');
+    }
+
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+});
+
+function processOrder(event) {
+    event.preventDefault(); 
+
+    const nameBox = document.getElementById('cust-name');
+    const addressBox = document.getElementById('cust-address');
+    const total = document.getElementById('checkout-total-display').innerText;
+
+    if (nameBox.value.trim() === "" || addressBox.value.trim() === "") {
+        alert("Please fill in both your Name and Delivery Address to complete your order.");
+        
+        if (nameBox.value.trim() === "") nameBox.style.border = "2px solid #ff4757";
+        else nameBox.style.border = "1px solid #ccc";
+        
+        if (addressBox.value.trim() === "") addressBox.style.border = "2px solid #ff4757";
+        else addressBox.style.border = "1px solid #ccc";
+        
+        return; 
+    }
+
+    const receiptDetails = document.getElementById('receipt-details');
+    receiptDetails.innerHTML = `
+        <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px;">
+            <p style="margin: 5px 0;"><strong>Customer:</strong> ${nameBox.value}</p>
+            <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${addressBox.value}</p>
+            <p style="margin: 5px 0;"><strong>Amount Paid:</strong> <span style="color: #4CAF50; font-weight: bold;">${total}</span></p>
+        </div>
+        <p style="font-size: 0.75rem; color: #aaa; text-align: center;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
+    `;
+
+    closeCheckoutModal(); 
+    navigateTo('receipt-page', 'static-header');
+    
+    cart = [];
+    if (typeof updateCartUI === 'function') updateCartUI();
 }
