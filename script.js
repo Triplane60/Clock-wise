@@ -1387,3 +1387,31 @@ window.addEventListener('popstate', function(event) {
         showHome();
     }
 });
+
+function showPrivacy() {
+    hideAllPages();
+    document.getElementById("privacy-page").style.display = "block";
+    document.body.classList.remove('on-cart-page', 'shop-active');
+    document.body.classList.add('static-header'); 
+}
+
+function showReturn() {
+    hideAllPages();
+    document.getElementById("return-page").style.display = "block";
+    document.body.classList.remove('on-cart-page', 'shop-active');
+    document.body.classList.add('static-header'); 
+}
+
+function showWarranty() {
+    hideAllPages();
+    document.getElementById("warranty-page").style.display = "block";
+    document.body.classList.remove('on-cart-page', 'shop-active');
+    document.body.classList.add('static-header'); 
+}
+
+function showTerms() {
+    hideAllPages();
+    document.getElementById("terms-page").style.display = "block";
+    document.body.classList.remove('on-cart-page', 'shop-active');
+    document.body.classList.add('static-header'); 
+}
