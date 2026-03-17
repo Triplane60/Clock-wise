@@ -1044,24 +1044,34 @@ function showNotification(message) {
 }
 
 // ==================== FILTER & SEARCH ====================
+// Variable para i-track ang current category (Default: all)
+let currentCategory = 'all';
+
 function filterCategory(category) {
     currentCategory = category;
 
-    const watchGrid = document.querySelector('.content-area'); 
+    // 1. Animation Reset (Optional pero maganda para sa transition)
+    const watchGrid = document.querySelector('.product-grid'); 
     if (watchGrid) {
-        watchGrid.classList.remove('category-fade-in');
-        void watchGrid.offsetWidth; 
-        watchGrid.classList.add('category-fade-in');
+        watchGrid.style.opacity = '0';
+        setTimeout(() => {
+            watchGrid.style.opacity = '1';
+        }, 50);
     }
 
-    var buttons = document.querySelectorAll('.nav-item');
-    for (var j = 0; j < buttons.length; j++) {
-        buttons[j].classList.remove('active');
-        var targetClick = "filterCategory('" + category + "')";
-        if (buttons[j].getAttribute('onclick') === targetClick) {
-            buttons[j].classList.add('active');
+    // 2. I-update ang Active State ng Buttons
+    const buttons = document.querySelectorAll('.nav-item');
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        
+        // Kinukuha ang attribute string para i-check kung nandoon ang category name
+        const onClickAttr = btn.getAttribute('onclick') || "";
+        if (onClickAttr.includes(`'${category}'`)) {
+            btn.classList.add('active');
         }
-    }
+    });
+
+    // 3. Patakbuhin ang filtering logic
     searchWatches();
 }
 
@@ -1069,20 +1079,22 @@ function showSuggestions(query) {
     const suggestionBox = document.getElementById('search-suggestions');
     if (!suggestionBox) return;
 
-    suggestionBox.innerHTML = ''; // Linisin ang listahan
+    suggestionBox.innerHTML = ''; 
 
     if (query.length === 0) {
         suggestionBox.style.display = 'none';
         return;
     }
 
-    // Kinukuha ang mga pangalan mula sa iyong mga .watch-card
+    // Kinukuha ang mga pangalan mula sa lahat ng cards
     const watches = document.querySelectorAll('.watch-card');
     let matches = [];
 
     watches.forEach(watch => {
-        const name = watch.querySelector('h3') ? watch.querySelector('h3').innerText : watch.innerText;
-        if (name.toLowerCase().includes(query.toLowerCase())) {
+        const h3 = watch.querySelector('h3');
+        const name = h3 ? h3.innerText : "";
+        
+        if (name.toLowerCase().includes(query.toLowerCase()) && name !== "") {
             matches.push(name);
         }
     });
@@ -1091,14 +1103,14 @@ function showSuggestions(query) {
 
     if (uniqueMatches.length > 0) {
         suggestionBox.style.display = 'block';
-        uniqueMatches.slice(0, 5).forEach(itemName => { // Limit to 5 results
+        uniqueMatches.slice(0, 5).forEach(itemName => {
             const div = document.createElement('div');
             div.className = 'suggestion-item';
             div.innerText = itemName;
             div.onclick = function() {
                 document.getElementById('search-input').value = itemName;
                 suggestionBox.style.display = 'none';
-                searchWatches(); // Patakbuhin ang filter
+                searchWatches(); 
             };
             suggestionBox.appendChild(div);
         });
@@ -1112,12 +1124,14 @@ function searchWatches() {
     const query = searchBox.value.toLowerCase();
     const watches = document.querySelectorAll('.watch-card'); 
 
-    // Tawagin ang suggestions habang nag-eentry ang user
+    // Ipakita ang suggestions habang nag-eentry
     showSuggestions(query);
 
     watches.forEach(function(watch) {
         const watchText = watch.innerText.toLowerCase();
         const matchesText = watchText.includes(query);
+        
+        // Check kung ang card ay under sa piniling category
         const matchesCategory = currentCategory === 'all' || watch.classList.contains(currentCategory);
 
         if (matchesText && matchesCategory) {
@@ -1126,10 +1140,7 @@ function searchWatches() {
             watch.style.display = 'none';
         }
     });
-
-   // window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-
 // ==================== AUTO SLIDESHOW (SHOP BANNER) ====================
 setInterval(function() {
     if (document.getElementById('shop-page').style.display !== 'none') {
