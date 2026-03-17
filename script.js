@@ -1783,3 +1783,26 @@ function processOrder(event) {
     cart = [];
     if (typeof updateCartUI === 'function') updateCartUI();
 }
+
+function showHome() {
+    // 1. Itago lahat ng ibang sections
+    const sections = [
+        'about-page', 'contact-page', 'shop-page', 
+        'receipt-page', 'privacy-page', 'terms-page', 
+        'return-page', 'warranty-page'
+    ];
+    
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.style.display = 'none';
+    });
+
+    // 2. Ipakita ang homepage
+    document.getElementById('homepage').style.display = 'block';
+
+    // 3. BALIK SA TAAS (Scroll to Top)
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 'smooth' para swabe, 'instant' kung gusto mo mabilis
+    });
+}
