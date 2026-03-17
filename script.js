@@ -1047,12 +1047,13 @@ function showNotification(message) {
 function filterCategory(category) {
     currentCategory = category;
 
-        const watchGrid = document.querySelector('.content-area'); 
+    const watchGrid = document.querySelector('.content-area'); 
     if (watchGrid) {
         watchGrid.classList.remove('category-fade-in');
         void watchGrid.offsetWidth; 
         watchGrid.classList.add('category-fade-in');
     }
+
     var buttons = document.querySelectorAll('.nav-item');
     for (var j = 0; j < buttons.length; j++) {
         buttons[j].classList.remove('active');
@@ -1064,16 +1065,59 @@ function filterCategory(category) {
     searchWatches();
 }
 
+function showSuggestions(query) {
+    const suggestionBox = document.getElementById('search-suggestions');
+    if (!suggestionBox) return;
+
+    suggestionBox.innerHTML = ''; // Linisin ang listahan
+
+    if (query.length === 0) {
+        suggestionBox.style.display = 'none';
+        return;
+    }
+
+    // Kinukuha ang mga pangalan mula sa iyong mga .watch-card
+    const watches = document.querySelectorAll('.watch-card');
+    let matches = [];
+
+    watches.forEach(watch => {
+        const name = watch.querySelector('h3') ? watch.querySelector('h3').innerText : watch.innerText;
+        if (name.toLowerCase().includes(query.toLowerCase())) {
+            matches.push(name);
+        }
+    });
+
+    const uniqueMatches = [...new Set(matches)];
+
+    if (uniqueMatches.length > 0) {
+        suggestionBox.style.display = 'block';
+        uniqueMatches.slice(0, 5).forEach(itemName => { // Limit to 5 results
+            const div = document.createElement('div');
+            div.className = 'suggestion-item';
+            div.innerText = itemName;
+            div.onclick = function() {
+                document.getElementById('search-input').value = itemName;
+                suggestionBox.style.display = 'none';
+                searchWatches(); // Patakbuhin ang filter
+            };
+            suggestionBox.appendChild(div);
+        });
+    } else {
+        suggestionBox.style.display = 'none';
+    }
+}
+
 function searchWatches() {
     const searchBox = document.getElementById('search-input');
     const query = searchBox.value.toLowerCase();
     const watches = document.querySelectorAll('.watch-card'); 
 
+    // Tawagin ang suggestions habang nag-eentry ang user
+    showSuggestions(query);
+
     watches.forEach(function(watch) {
         const watchText = watch.innerText.toLowerCase();
-        
         const matchesText = watchText.includes(query);
-        
         const matchesCategory = currentCategory === 'all' || watch.classList.contains(currentCategory);
 
         if (matchesText && matchesCategory) {
@@ -1083,7 +1127,7 @@ function searchWatches() {
         }
     });
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+   // window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ==================== AUTO SLIDESHOW (SHOP BANNER) ====================
