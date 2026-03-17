@@ -112,6 +112,40 @@ body {
     pointer-events: none;
 }
 
+/* Container ng mga suggestions */
+.suggestions-box {
+    position: absolute;
+    top: 100%; /* Ibig sabihin, laging nasa ilalim ng input box */
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 9999; /* Para hindi matakpan ng ibang images */
+    
+    max-height: 250px;
+    overflow-y: auto;
+    display: none; /* Nakatago muna by default */
+}
+
+/* Style ng bawat item sa listahan */
+.suggestion-item {
+    padding: 12px 15px;
+    cursor: pointer;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    text-align: left;
+}
+
+/* Kapag itinapat ang mouse, magbabago ang kulay */
+.suggestion-item:hover {
+    background-color: #f8f0ff;
+    color: #2e004f; /* Match sa indigo theme mo */
+    font-weight: bold;
+}
+
 .category-bar {
     position: fixed !important;
     top: 130px !important; 
