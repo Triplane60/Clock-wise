@@ -303,14 +303,7 @@ var watchData = {
         price: .00,
         stock: 10,
         images: [""]
-    },
-    "":{
-        desc: "",
-        specs: "Brand: ",
-        price: .00,
-        stock: 10,
-        images: [""]
-    },
+    }
 };
 
 // ==================== GLOBAL VARIABLES ====================
@@ -737,6 +730,7 @@ function togglePasswordVisibility(inputId, iconElement) {
 
 // ==================== CART FUNCTIONS ====================
 function addToCart(watchName) {
+    
     if (!isLoggedIn) {
         showNotification("Please login first to add items to your cart! 🔐");
         openLoginModal();
@@ -745,8 +739,16 @@ function addToCart(watchName) {
 
     var watch = watchData[watchName];
     var existingItemIndex = cart.findIndex(item => item.name === watchName);
+    if (watch.stock <= 0) {
+        showNotification("Sorry! " + watchName + " is completely sold out. ❌");
+        return; 
+    }
 
     if (existingItemIndex > -1) {
+        if (cart[existingItemIndex].quantity >= watch.stock) {
+            showNotification("Limit reached! We only have " + watch.stock + " in stock. ⚠️");
+            return;
+        }
         cart[existingItemIndex].quantity += 1;
     } else {
         cart.push({ name: watchName, price: watch.price, quantity: 1 });
@@ -756,6 +758,20 @@ function addToCart(watchName) {
     updateCartDisplay();
     renderCartItems();
     showNotification(watchName + " added to cart! 🛒");
+
+    let stockDisplay = document.getElementById('modal-stock-count');
+    if (stockDisplay) {
+        let cartItem = cart.find(item => item.name === watchName);
+        let quantityInCart = cartItem ? cartItem.quantity : 0;
+        let availableStock = watch.stock - quantityInCart;
+        
+        stockDisplay.innerText = availableStock;
+        
+        if (availableStock <= 0) {
+            stockDisplay.parentElement.style.color = "red";
+            stockDisplay.innerText = "0 (Sold Out)";
+        }
+    }
 }
 
 function removeFromCart(event, index) {
@@ -938,27 +954,20 @@ function openDetails(name) {
     html += '</div>';
 
     html += '<div class="modal-text-panel">';
+
     html += '<h2 class="watch-name" style="font-weight: 800; font-size: 1.6rem; color: #2e004f; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">' + name + '</h2>';
 
     if (brand) {
-        html += '<p class="brand-line" style="font-weight: 790; font-size: 1.0rem; color: #2e004f; text-transform: uppercase; letter-spacing: 1.5px; font-style: normal !important; margin-bottom: 15px;">' + brand + '</p>';
+       html += '<p class="brand-line" style="font-weight: 700; font-size: 1.0rem; color: #2e004f; text-transform: uppercase; margin-bottom: 10px;">' + brand + '</p>';
     }
 
     html += '<p class="watch-description">' + data.desc + '</p>';
 
-    if (otherSpecs.length > 0) {
-        html += '<ul class="specs-list">';
-        for (var k = 0; k < otherSpecs.length; k++) {
-            html += '<li>' + otherSpecs[k] + '</li>';
-        }
-        html += '</ul>';
-    }
-
     var stockColor = data.stock < 5 ? "#ff4757" : "#2ed573";
-    html += '<p class="stock" style="color:' + stockColor + '; font-weight:bold;">In Stock: ' + data.stock + '</p>';
-
-    var formattedPrice = data.price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    html += '<p class="price" style="font-size:1.5rem; font-weight:bold; color:#2e004f;">₱' + formattedPrice + '</p>';
+    html += '<p class="stock" style="color: ' + stockColor + '; font-weight:bold; margin-top: 15px;">In Stock: <span id="modal-stock-count">' + data.stock + '</span></p>';
+    
+    var formattedPrice = data.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    html += '<p class="price" style="font-size: 1.3rem; font-weight: bold; color: #2e004f; margin-bottom: 15px;">₱' + formattedPrice + '</p>';
 
     html += '<button class="add-btn" onclick="addToCart(\'' + name + '\')">Add to Cart</button>';
 
@@ -1044,79 +1053,24 @@ function showNotification(message) {
 }
 
 // ==================== FILTER & SEARCH ====================
-// Variable para i-track ang current category (Default: all)
-let currentCategory = 'all';
-
 function filterCategory(category) {
     currentCategory = category;
 
-    // 1. Animation Reset (Optional pero maganda para sa transition)
-    const watchGrid = document.querySelector('.product-grid'); 
+        const watchGrid = document.querySelector('.content-area'); 
     if (watchGrid) {
-        watchGrid.style.opacity = '0';
-        setTimeout(() => {
-            watchGrid.style.opacity = '1';
-        }, 50);
+        watchGrid.classList.remove('category-fade-in');
+        void watchGrid.offsetWidth; 
+        watchGrid.classList.add('category-fade-in');
     }
-
-    // 2. I-update ang Active State ng Buttons
-    const buttons = document.querySelectorAll('.nav-item');
-    buttons.forEach(btn => {
-        btn.classList.remove('active');
-        
-        // Kinukuha ang attribute string para i-check kung nandoon ang category name
-        const onClickAttr = btn.getAttribute('onclick') || "";
-        if (onClickAttr.includes(`'${category}'`)) {
-            btn.classList.add('active');
+    var buttons = document.querySelectorAll('.nav-item');
+    for (var j = 0; j < buttons.length; j++) {
+        buttons[j].classList.remove('active');
+        var targetClick = "filterCategory('" + category + "')";
+        if (buttons[j].getAttribute('onclick') === targetClick) {
+            buttons[j].classList.add('active');
         }
-    });
-
-    // 3. Patakbuhin ang filtering logic
+    }
     searchWatches();
-}
-
-function showSuggestions(query) {
-    const suggestionBox = document.getElementById('search-suggestions');
-    if (!suggestionBox) return;
-
-    suggestionBox.innerHTML = ''; 
-
-    if (query.length === 0) {
-        suggestionBox.style.display = 'none';
-        return;
-    }
-
-    // Kinukuha ang mga pangalan mula sa lahat ng cards
-    const watches = document.querySelectorAll('.watch-card');
-    let matches = [];
-
-    watches.forEach(watch => {
-        const h3 = watch.querySelector('h3');
-        const name = h3 ? h3.innerText : "";
-        
-        if (name.toLowerCase().includes(query.toLowerCase()) && name !== "") {
-            matches.push(name);
-        }
-    });
-
-    const uniqueMatches = [...new Set(matches)];
-
-    if (uniqueMatches.length > 0) {
-        suggestionBox.style.display = 'block';
-        uniqueMatches.slice(0, 5).forEach(itemName => {
-            const div = document.createElement('div');
-            div.className = 'suggestion-item';
-            div.innerText = itemName;
-            div.onclick = function() {
-                document.getElementById('search-input').value = itemName;
-                suggestionBox.style.display = 'none';
-                searchWatches(); 
-            };
-            suggestionBox.appendChild(div);
-        });
-    } else {
-        suggestionBox.style.display = 'none';
-    }
 }
 
 function searchWatches() {
@@ -1124,14 +1078,11 @@ function searchWatches() {
     const query = searchBox.value.toLowerCase();
     const watches = document.querySelectorAll('.watch-card'); 
 
-    // Ipakita ang suggestions habang nag-eentry
-    showSuggestions(query);
-
     watches.forEach(function(watch) {
         const watchText = watch.innerText.toLowerCase();
+        
         const matchesText = watchText.includes(query);
         
-        // Check kung ang card ay under sa piniling category
         const matchesCategory = currentCategory === 'all' || watch.classList.contains(currentCategory);
 
         if (matchesText && matchesCategory) {
@@ -1140,7 +1091,10 @@ function searchWatches() {
             watch.style.display = 'none';
         }
     });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 // ==================== AUTO SLIDESHOW (SHOP BANNER) ====================
 setInterval(function() {
     if (document.getElementById('shop-page').style.display !== 'none') {
@@ -1662,7 +1616,7 @@ function placeShopeeOrder(event) {
             <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
                 <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
                 <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
-                <p style="margin: 5px 0;"><strong>Amount Paid:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
+                <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
             </div>
             ${itemsHTML} 
             <p style="font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 20px;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
@@ -1827,7 +1781,7 @@ function processOrder(event) {
         <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px;">
             <p style="margin: 5px 0;"><strong>Customer:</strong> ${nameBox.value}</p>
             <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${addressBox.value}</p>
-            <p style="margin: 5px 0;"><strong>Amount Paid:</strong> <span style="color: #4CAF50; font-weight: bold;">${total}</span></p>
+            <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${total}</span></p>
         </div>
         <p style="font-size: 0.75rem; color: #aaa; text-align: center;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
     `;
@@ -1839,25 +1793,32 @@ function processOrder(event) {
     if (typeof updateCartUI === 'function') updateCartUI();
 }
 
-function showHome() {
-    // 1. Itago lahat ng ibang sections
-    const sections = [
-        'about-page', 'contact-page', 'shop-page', 
-        'receipt-page', 'privacy-page', 'terms-page', 
-        'return-page', 'warranty-page'
-    ];
-    
-    sections.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.style.display = 'none';
-    });
+function increaseCartQuantity(cartIndex) {
+    let item = cart[cartIndex];
+    let watchName = item.name;
+    let masterStock = watchData[watchName].stock; 
 
-    // 2. Ipakita ang homepage
-    document.getElementById('homepage').style.display = 'block';
+    if (item.quantity >= masterStock) {
+        showNotification("Limit reached! We only have " + masterStock + " of those. ⚠️");
+        return; 
+    }
 
-    // 3. BALIK SA TAAS (Scroll to Top)
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth' // 'smooth' para swabe, 'instant' kung gusto mo mabilis
-    });
+    item.quantity += 1;
+    total += item.price; 
+
+    updateCartDisplay();
+    renderCartItems(); 
+}
+
+function decreaseCartQuantity(cartIndex) {
+    let item = cart[cartIndex];
+    let watchName = item.name;
+
+    if (item.quantity > 1) {
+        watchData[watchName].stock += 1; 
+        item.quantity -= 1;             
+    } else {
+        watchData[watchName].stock += item.quantity;
+        cart.splice(cartIndex, 1); 
+    }
 }
