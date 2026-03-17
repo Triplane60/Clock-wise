@@ -1043,62 +1043,124 @@ function showNotification(message) {
     }, 3000);
 }
 
-// ==================== FILTER & SEARCH ====================
+// 1. DATABASE NG ITEMS (Dito mo lang gagalawin pag may dagdag na relo)
+const watches = [
+    { name: "Submariner 41", price: 950000, category: "gentlemen", img: "men-images/sub.png", tag: "Gentlemen's Collection" },
+    { name: "Cosmograph Daytona Congo", price: 1850000, category: "gentlemen", img: "men-images/cos.png", tag: "Gentlemen's Collection" },
+    { name: "GMT-Master II Two Tone Everose Rootbeer", price: 1200000, category: "gentlemen", img: "men-images/gmt.png", tag: "Gentlemen's Collection" },
+    { name: "Explorer II 42 Polar", price: 680000, category: "gentlemen", img: "men-images/exp.png", tag: "Gentlemen's Collection" },
+    { name: "Submariner Date 41 Two Tone Yellow Gold Bluesy", price: 1150000, category: "gentlemen", img: "men-images/mar.png", tag: "Gentlemen's Collection" },
+    { name: "MRG-B5000", price: 220000, category: "gentlemen", img: "men-images/mrg.png", tag: "Gentlemen's Collection" },
+    { name: "MTG-B3000", price: 65000, category: "gentlemen", img: "men-images/mtg.png", tag: "Gentlemen's Collection" },
+    { name: "GMW-B5000", price: 35000, category: "gentlemen", img: "men-images/gmw.png", tag: "Gentlemen's Collection" },
+    { name: "GM-B2100", price: 35000, category: "gentlemen", img: "men-images/gm.png", tag: "Gentlemen's Collection" },
+    { name: "GWG-B1000", price: 50000, category: "gentlemen", img: "men-images/gwg.png", tag: "Gentlemen's Collection" },
+    { name: "Navitimer B01 Chronograph 46", price: 520000, category: "gentlemen", img: "men-images/nav.png", tag: "Gentlemen's Collection" },
+    { name: "Superocean Heritage B31 Automatic 44", price: 310000, category: "gentlemen", img: "men-images/sup.png", tag: "Gentlemen's Collection" },
+    { name: "Chronomat B01 42", price: 485000, category: "gentlemen", img: "men-images/chr.png", tag: "Gentlemen's Collection" },
+    { name: "Super Avenger B01 Chronograph 46", price: 340000, category: "gentlemen", img: "men-images/ave.png", tag: "Gentlemen's Collection" },
+    { name: "Professional Endurance Pro 44", price: 185000, category: "gentlemen", img: "men-images/end.png", tag: "Gentlemen's Collection" },
+    // Ladies' Collection
+    { name: "Lady Datejust 28 Two Tone Everose Aubergine Dial With Diamonds", price: 1350000, category: "ladies", img: "women-images/lad.png", tag: "Ladies' Collection" },
+    { name: "Datejust 31 Mother Of Pearl Dial With Diamonds", price: 1150000, category: "ladies", img: "women-images/dat.png", tag: "Ladies' Collection" },
+    { name: "Oyster Perpetual 36 Candy Pink Dial", price: 950000, category: "ladies", img: "women-images/oys.png", tag: "Ladies' Collection" },
+    { name: "Datejust 36 Wimbledon", price: 820000, category: "ladies", img: "women-images/daj.png", tag: "Ladies' Collection" },
+    { name: "Air-King 40", price: 650000, category: "ladies", img: "women-images/air.png", tag: "Ladies' Collection" },
+    { name: "Navitimer 32", price: 250000, category: "ladies", img: "women-images/nav.png", tag: "Ladies' Collection" },
+    { name: "Chronomat Automatic 36 South Sea", price: 480000, category: "ladies", img: "women-images/chr.png", tag: "Ladies' Collection" },
+    { name: "Superocean Automatic 36", price: 280000, category: "ladies", img: "women-images/sup.png", tag: "Ladies' Collection" },
+    { name: "Lady Premier 32", price: 260000, category: "ladies", img: "women-images/lap.png", tag: "Ladies' Collection" },
+    { name: "Professional Endurance Pro 38", price: 185000, category: "ladies", img: "women-images/end.png", tag: "Ladies' Collection" },
+    { name: "Ingenieur Automatic 35", price: 350000, category: "ladies", img: "women-images/ing.png", tag: "Ladies' Collection" },
+    { name: "Portofino Automatic 34", price: 320000, category: "ladies", img: "women-images/por.png", tag: "Ladies' Collection" },
+    { name: "Portofino Automatic Moon Phase 37", price: 490000, category: "ladies", img: "women-images/pot.png", tag: "Ladies' Collection" },
+    { name: "Portofino Perpetual Calendar", price: 1250000, category: "ladies", img: "women-images/prt.png", tag: "Ladies' Collection" },
+    { name: "Portofino Automatic Day & Night 34", price: 410000, category: "ladies", img: "women-images/pro.png", tag: "Ladies' Collection" }
+];
+
+let currentCategory = 'all';
+
+// 2. RENDER FUNCTION (Dito ginagawa yung HTML cards)
+function displayWatches(filteredList) {
+    const container = document.getElementById('watchContainer');
+    if (!container) return;
+    
+    container.innerHTML = ''; 
+
+    filteredList.forEach(watch => {
+        const card = `
+            <div class="watch-card ${watch.category}">
+                <img src="${watch.img}" alt="${watch.name}" class="image-placeholder" style="cursor: pointer;" onclick="openDetails('${watch.name}')">
+                <h3>${watch.name}</h3>
+                <p class="category-tag">${watch.tag}</p>
+                <p class="price">₱${watch.price.toLocaleString()}.00</p>
+                <div class="card-buttons">
+                    <button class="details-btn" onclick="openDetails('${watch.name}')">View Details</button>
+                    <button class="add-btn" onclick="addToCart('${watch.name}')">Add to Cart</button>
+                </div>
+            </div>
+        `;
+        container.innerHTML += card;
+    });
+}
+
+// 3. FILTER & SEARCH LOGIC
 function filterCategory(category) {
     currentCategory = category;
 
-    const watchGrid = document.querySelector('.content-area'); 
-    if (watchGrid) {
-        watchGrid.classList.remove('category-fade-in');
-        void watchGrid.offsetWidth; 
-        watchGrid.classList.add('category-fade-in');
-    }
-
-    var buttons = document.querySelectorAll('.nav-item');
-    for (var j = 0; j < buttons.length; j++) {
-        buttons[j].classList.remove('active');
-        var targetClick = "filterCategory('" + category + "')";
-        if (buttons[j].getAttribute('onclick') === targetClick) {
-            buttons[j].classList.add('active');
+    // Update active class sa buttons
+    const buttons = document.querySelectorAll('.nav-item');
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('onclick').includes(`'${category}'`)) {
+            btn.classList.add('active');
         }
-    }
+    });
+
     searchWatches();
 }
 
+function searchWatches() {
+    const searchInput = document.getElementById('search-input');
+    const query = searchInput ? searchInput.value.toLowerCase() : "";
+
+    const filteredResults = watches.filter(watch => {
+        const matchesText = watch.name.toLowerCase().includes(query);
+        const matchesCategory = currentCategory === 'all' || watch.category === currentCategory;
+        return matchesText && matchesCategory;
+    });
+
+    displayWatches(filteredResults);
+    showSuggestions(query); // I-update suggestions habang nagta-type
+}
+
+// 4. SUGGESTIONS SYSTEM
 function showSuggestions(query) {
     const suggestionBox = document.getElementById('search-suggestions');
     if (!suggestionBox) return;
-
-    suggestionBox.innerHTML = ''; // Linisin ang listahan
 
     if (query.length === 0) {
         suggestionBox.style.display = 'none';
         return;
     }
 
-    // Kinukuha ang mga pangalan mula sa iyong mga .watch-card
-    const watches = document.querySelectorAll('.watch-card');
-    let matches = [];
+    const matches = watches.filter(w => 
+        w.name.toLowerCase().includes(query) && 
+        (currentCategory === 'all' || w.category === currentCategory)
+    ).slice(0, 5);
 
-    watches.forEach(watch => {
-        const name = watch.querySelector('h3') ? watch.querySelector('h3').innerText : watch.innerText;
-        if (name.toLowerCase().includes(query.toLowerCase())) {
-            matches.push(name);
-        }
-    });
-
-    const uniqueMatches = [...new Set(matches)];
-
-    if (uniqueMatches.length > 0) {
+    if (matches.length > 0) {
+        suggestionBox.innerHTML = '';
         suggestionBox.style.display = 'block';
-        uniqueMatches.slice(0, 5).forEach(itemName => { // Limit to 5 results
+
+        matches.forEach(item => {
             const div = document.createElement('div');
             div.className = 'suggestion-item';
-            div.innerText = itemName;
+            div.innerText = item.name;
             div.onclick = function() {
-                document.getElementById('search-input').value = itemName;
+                document.getElementById('search-input').value = item.name;
                 suggestionBox.style.display = 'none';
-                searchWatches(); // Patakbuhin ang filter
+                searchWatches(); 
             };
             suggestionBox.appendChild(div);
         });
@@ -1107,28 +1169,11 @@ function showSuggestions(query) {
     }
 }
 
-function searchWatches() {
-    const searchBox = document.getElementById('search-input');
-    const query = searchBox.value.toLowerCase();
-    const watches = document.querySelectorAll('.watch-card'); 
+// 5. INITIAL LOAD
+document.addEventListener('DOMContentLoaded', () => {
+    displayWatches(watches);
+});
 
-    // Tawagin ang suggestions habang nag-eentry ang user
-    showSuggestions(query);
-
-    watches.forEach(function(watch) {
-        const watchText = watch.innerText.toLowerCase();
-        const matchesText = watchText.includes(query);
-        const matchesCategory = currentCategory === 'all' || watch.classList.contains(currentCategory);
-
-        if (matchesText && matchesCategory) {
-            watch.style.display = 'flex'; 
-        } else {
-            watch.style.display = 'none';
-        }
-    });
-
-   // window.scrollTo({ top: 0, behavior: 'smooth' });
-}
 
 // ==================== AUTO SLIDESHOW (SHOP BANNER) ====================
 setInterval(function() {
