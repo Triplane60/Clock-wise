@@ -1195,13 +1195,22 @@ function goToProduct(productName) {
 // ==================== KEYBOARD SHORTCUTS ====================
 document.addEventListener("keydown", function(event) {
     if (event.key === "Escape") {
-        if (typeof closeLogin === "function") closeLogin();
-        if (typeof closeForgotPasswordModal === "function") closeForgotPasswordModal();
+        var loginModal = document.getElementById('login-modal');
+        var forgotModal = document.getElementById('forgot-password-modal');
+        var detailsModal = document.getElementById('details-modal');
 
-        var modals = document.querySelectorAll('.modal');
-        modals.forEach(function(modal) {
-            modal.style.display = "none";
-        });
+        if (loginModal && (loginModal.style.display === "block" || loginModal.style.display === "flex")) {
+            if (typeof closeLogin === "function") closeLogin();
+            else loginModal.style.display = "none";
+        }
+        else if (forgotModal && (forgotModal.style.display === "block" || forgotModal.style.display === "flex")) {
+            if (typeof closeForgotPasswordModal === "function") closeForgotPasswordModal();
+            else forgotModal.style.display = "none";
+        }
+        else if (detailsModal && (detailsModal.style.display === "block" || detailsModal.style.display === "flex")) {
+            if (typeof closeDetails === "function") closeDetails();
+            else detailsModal.style.display = "none";
+        }
     }
 
     if (event.key === "Enter") {
