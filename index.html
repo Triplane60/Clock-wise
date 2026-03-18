@@ -119,8 +119,8 @@
             <div class="newsletter-content">
                 <h3>Stay Connected. Stay Stylish.</h3>
                 <p> Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
-                <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
-                    <input type="email" placeholder="Your Email" required>
+                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" id="newsletter-email" placeholder="Your Email" required>
                     <button type="submit">Join Now</button>
                 </form>
                 <div class="social-links">

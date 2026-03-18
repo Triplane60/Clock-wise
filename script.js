@@ -1871,3 +1871,18 @@ function decreaseCartQuantity(cartIndex) {
     renderCartItems();
     renderFullCartPage();
 }
+
+function subscribeNewsletter(event) {
+    event.preventDefault(); 
+
+    let emailBox = document.getElementById('newsletter-email');
+    let emailText = emailBox.value.trim(); 
+
+    if (!emailText.includes("@") || !emailText.includes(".")) {
+        showNotification("Please enter a valid email address. ❌");
+        return; 
+    }
+
+    showNotification("Thank you! Exclusive offers will be sent to " + emailText + " ✨");
+    emailBox.value = ""; 
+}
