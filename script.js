@@ -1,13 +1,12 @@
 // ==================== CONSTANTS ====================
-const SHIPPING_FEE = 150; // Flat shipping fee in PHP
-
+const SHIPPING_FEE = 150; 
 // ==================== WATCH DATA ====================
 var watchData = {
     "Submariner 41": {
         desc: "The ultimate archetype of the modern diver's watch. Forged in exceptionally durable Oystersteel, it seamlessly transitions from ocean exploration to the boardroom..",
         specs: "Brand: Rolex",
         price: 950000.00,
-        stock: 10,
+        stock: 15,
         images: ["men-images/sub1.png", "men-images/sub2.png", "men-images/sub3.png"]
     },
     "Cosmograph Daytona Congo": {
@@ -306,6 +305,16 @@ var watchData = {
     }
 };
 
+const savedStock = localStorage.getItem('watchStock');
+if (savedStock) {
+    const stockMap = JSON.parse(savedStock);
+    Object.keys(stockMap).forEach(name => {
+        if (watchData[name]) {
+            watchData[name].stock = stockMap[name];
+        }
+    });
+}
+
 // ==================== GLOBAL VARIABLES ====================
 var currentSlide = 0;
 var isLoggedIn = false;
@@ -322,6 +331,7 @@ function showHome() {
     document.getElementById('homepage').style.display = 'block';
     document.getElementById('shop-page').style.display = 'none';
     document.getElementById('checkout-page').style.display = 'none';
+    
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
     
@@ -331,7 +341,17 @@ function showHome() {
     document.body.classList.add('static-header');
     document.body.classList.remove('on-cart-page', 'shop-active');
 
+    let mainLogo = document.querySelector('.nav-logo');
+    if (mainLogo) {
+        mainLogo.style.pointerEvents = 'auto';
+        mainLogo.style.opacity = '1';
+    }
+
     history.pushState({ page: 'home' }, null, '#home');
+
+    setTimeout(() => {
+        window.scrollTo(0, 0); 
+    }, 10); 
 }
 
 function showShop() {
@@ -963,8 +983,12 @@ function openDetails(name) {
 
     html += '<p class="watch-description">' + data.desc + '</p>';
 
-    var stockColor = data.stock < 5 ? "#ff4757" : "#2ed573";
-    html += '<p class="stock" style="color: ' + stockColor + '; font-weight:bold; margin-top: 15px;">In Stock: <span id="modal-stock-count">' + data.stock + '</span></p>';
+    var cartItem = cart.find(item => item.name === name);
+    var quantityInCart = cartItem ? cartItem.quantity : 0;
+    var availableStock = data.stock - quantityInCart;
+    var stockColor = availableStock < 5 ? "#ff4757" : "#2ed573";
+    var stockText = availableStock <= 0 ? "0 (Sold Out)" : availableStock;
+    html += '<p class="stock" style="color: ' + stockColor + '; font-weight:bold; margin-top: 15px;">In Stock: <span id="modal-stock-count">' + stockText + '</span></p>';
     
     var formattedPrice = data.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     html += '<p class="price" style="font-size: 1.3rem; font-weight: bold; color: #2e004f; margin-bottom: 15px;">₱' + formattedPrice + '</p>';
@@ -1270,9 +1294,9 @@ function renderFullCartPage() {
                     <div style="flex: 1.5; text-align: center; color: #666;">${pesoFormat.format(watch.price)}</div>
                     <div style="flex: 1.5; display: flex; justify-content: center;">
                         <div style="display: flex; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
-                            <button onclick="updateCartQuantity(${i}, -1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">-</button>
+                            <button onclick="decreaseCartQuantity(${i}, -1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">-</button>
                             <input type="text" value="${item.quantity}" readonly style="width: 40px; text-align: center; border: none; background: #fafafa;">
-                            <button onclick="updateCartQuantity(${i}, 1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">+</button>
+                            <button onclick="increaseCartQuantity(${i}, 1)" style="padding: 5px 12px; border: none; background: white; cursor: pointer;">+</button>
                         </div>
                     </div>
                     <div style="flex: 1.5; text-align: center; font-weight: bold; color: #4B0082;">${pesoFormat.format(itemTotal)}</div>
@@ -1673,9 +1697,11 @@ window.addEventListener('popstate', function(event) {
     }
 });
 
-function navigateTo(pageId, headerClass = 'static-header') {
+function navigateTo(pageId, headerClass = '') {
+    window.scrollTo(0, 0);
+
     const pages = [
-        'homepage', 'shop-page', 'about-page', 'contact-page', 
+        'homepage', 'shop-page', 'about-page', 'contact-page',
         'privacy-page', 'terms-page', 'return-page', 'warranty-page',
         'receipt-page'
     ];
@@ -1684,7 +1710,7 @@ function navigateTo(pageId, headerClass = 'static-header') {
         const el = document.getElementById(id);
         if (el) {
             el.style.display = 'none';
-            el.style.paddingTop = "0"; 
+            el.style.paddingTop = "0";
         }
     });
 
@@ -1692,9 +1718,10 @@ function navigateTo(pageId, headerClass = 'static-header') {
     if (target) target.style.display = 'block';
 
     document.body.classList.remove('static-header', 'shop-active', 'on-cart-page');
-    document.body.classList.add(headerClass);
-
-    window.scrollTo(0, 0);
+    
+    if (headerClass && headerClass.trim() !== '') {
+        document.body.classList.add(headerClass);
+    }
 }
 
 function showHome() { navigateTo('homepage', ''); }
@@ -1789,6 +1816,18 @@ function processOrder(event) {
     closeCheckoutModal(); 
     navigateTo('receipt-page', 'static-header');
     
+    cart.forEach(item => {
+    if (watchData[item.name]) {
+        watchData[item.name].stock -= item.quantity;
+    }
+});
+
+    localStorage.setItem('watchStock', JSON.stringify(
+        Object.fromEntries(
+            Object.keys(watchData).map(name => [name, watchData[name].stock])
+    )
+));
+
     cart = [];
     if (typeof updateCartUI === 'function') updateCartUI();
 }
@@ -1796,29 +1835,30 @@ function processOrder(event) {
 function increaseCartQuantity(cartIndex) {
     let item = cart[cartIndex];
     let watchName = item.name;
-    let masterStock = watchData[watchName].stock; 
+    let masterStock = watchData[watchName].stock;
 
     if (item.quantity >= masterStock) {
         showNotification("Limit reached! We only have " + masterStock + " of those. ⚠️");
-        return; 
+        return;
     }
 
     item.quantity += 1;
-    total += item.price; 
-
+    total += item.price;
     updateCartDisplay();
-    renderCartItems(); 
+    renderCartItems();
+    renderFullCartPage();
 }
 
 function decreaseCartQuantity(cartIndex) {
     let item = cart[cartIndex];
-    let watchName = item.name;
 
     if (item.quantity > 1) {
-        watchData[watchName].stock += 1; 
-        item.quantity -= 1;             
+        item.quantity -= 1;
     } else {
-        watchData[watchName].stock += item.quantity;
-        cart.splice(cartIndex, 1); 
+        cart.splice(cartIndex, 1);
     }
+    total -= item.price;
+    updateCartDisplay();
+    renderCartItems();
+    renderFullCartPage();
 }
