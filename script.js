@@ -3,13 +3,15 @@ const SHIPPING_FEE = 150;
 // ==================== WATCH DATA ====================
 var watchData = {
     "Submariner 41": {
+        category: "Gentlemen",
         desc: "The ultimate archetype of the modern diver's watch. Forged in exceptionally durable Oystersteel, it seamlessly transitions from ocean exploration to the boardroom..",
         specs: "Brand: Rolex",
         price: 950000.00,
-        stock: 15,
+        stock: 10,
         images: ["men-images/sub1.png", "men-images/sub2.png", "men-images/sub3.png"]
     },
     "Cosmograph Daytona Congo": {
+        category: "Gentlemen",
         desc: "A motorsport legend built for unparalleled precision. This highly sought-after chronograph features a high-contrast dial and a tachymetric scale for tracking ultimate speeds.",
         specs: "Brand: Rolex",
         price: 1850000.00,
@@ -17,6 +19,7 @@ var watchData = {
         images: ["men-images/cos1.png", "men-images/cos2.png", "men-images/cos3.png"]
     },
     "GMT-Master II Two Tone Everose Rootbeer": {
+        category: "Gentlemen",
         desc: "A sophisticated travel companion wrapped in warm Everose gold and Oystersteel. The bi-color Cerachrom bezel allows frequent flyers to track multiple time zones with timeless elegance.",
         specs: "Brand: Rolex",
         price: 1250000.00,
@@ -24,6 +27,7 @@ var watchData = {
         images: ["men-images/gmt1.png", "men-images/gmt2.png", "men-images/gmt3.png"]
     },
     "Explorer II 42 Polar": {
+        category: "Gentlemen",
         desc: "Designed to push the boundaries of human endurance in extreme environments. The highly legible white dial and prominent orange 24-hour hand ensure clarity in the darkest conditions.",
         specs: "Brand: Rolex",
         price: 680000.00,
@@ -31,6 +35,7 @@ var watchData = {
         images: ["men-images/exp1.png", "men-images/exp2.png", "men-images/exp3.png"]
     },
     "Submariner Date 41 Two Tone Yellow Gold Bluesy": {
+        category: "Gentlemen",
         desc: "A captivating blend of deep marine blue and brilliant 18ct yellow gold. This striking two-tone variation brings an undeniable aura of luxury to the iconic diver profile.",
         specs: "Brand: Rolex",
         price: 1150000.00,
@@ -38,6 +43,7 @@ var watchData = {
         images: ["men-images/mar1.png", "men-images/mar2.png", "men-images/mar3.png"]
     },
     "MRG-B5000": {
+        category: "Gentlemen",
         desc: "The absolute pinnacle of G-Shock engineering and craftsmanship. Hand-assembled on Casio's elite \"Premium Production Line\" in Japan, this full-titanium masterpiece features flawless Sallaz polishing.",
         specs: "Brand: G-Shock",
         price: 220000.00,
@@ -45,6 +51,7 @@ var watchData = {
         images: ["men-images/mrg1.png", "men-images/mrg2.png", "men-images/mrg3.png"]
     },
     "MTG-B3000": {
+        category: "Gentlemen",
         desc: "A sleek marvel of structural innovation. Its ultra-slim dual-core guard structure combines the warmth of resin with the sharp, faceted brilliance of polished metal.",
         specs: "Brand: G-Shock",
         price: 65000.00,
@@ -52,6 +59,7 @@ var watchData = {
         images: ["men-images/mtg1.png", "men-images/mtg2.png", "men-images/mtg3.png"]
     },
     "GMW-B5000": {
+        category: "Gentlemen",
         desc: "The legendary 1983 origin story, reborn in full stainless steel. It pairs the classic digital square aesthetic with modern Bluetooth connectivity and Tough Solar power.",
         specs: "Brand: G-Shock",
         price: 35000.00,
@@ -59,6 +67,7 @@ var watchData = {
         images: ["men-images/gmw1.png", "men-images/gmw2.png", "men-images/gmw3.png"]
     },
     "GM-B2100": {
+        category: "Gentlemen",
         desc: "This octagonal design became a global phenomenon for its slim, wearable profile. The full-metal version is water-resistant to 200m and virtually indestructible.",
         specs: "Brand: G-Shock",
         price: 35000.00,
@@ -66,6 +75,7 @@ var watchData = {
         images: ["men-images/gm1.png", "men-images/gm2.png", "men-images/gm3.png"]
     },
     "GWG-B1000": {
+        category: "Gentlemen",
         desc: "An unstoppable force built to conquer the harshest terrain on Earth. Engineered with mud-resist construction, sapphire crystal, and forged carbon for extreme tactical durability.",
         specs: "Brand: G-Shock",
         price: 50000.00,
@@ -73,6 +83,7 @@ var watchData = {
         images: ["men-images/gwg1.png", "men-images/gwg2.png", "men-images/gwg3.png"]
     },
     "Navitimer B01 Chronograph 46": {
+        category: "Gentlemen",
         desc: "The definitive watch for aviation professionals. Its commanding 46mm presence showcases the legendary circular slide rule, powered by the masterful Breitling Manufacture Caliber 01.",
         specs: "Brand: Breitling",
         price: 520000.00,
@@ -80,6 +91,7 @@ var watchData = {
         images: ["men-images/nav.png", "men-images/nav1.png", "men-images/nav2.png"]
     },
     "Superocean Heritage B31 Automatic 44": {
+        category: "Gentlemen",
         desc: "A stunning tribute to Breitling's 1950s diving legacy. The combination of a high-tech ceramic bezel and a mesh-style bracelet offers the perfect blend of vintage charm and modern performance.",
         specs: "Brand: Breitling",
         price: 310000.00,
@@ -87,6 +99,7 @@ var watchData = {
         images: ["men-images/sup.png", "men-images/sup1.png", "men-images/sup2.png"]
     },
     "Chronomat B01 42":{
+        category: "Gentlemen",
         desc: "Breitling’s all-purpose sports watch in its most luxurious form. Featuring the signature \"Rouleaux\" bracelet, this piece makes a bold, unapologetic statement in solid gold.",
         specs: "Brand: Breitling",
         price: 485000.00,
@@ -94,6 +107,7 @@ var watchData = {
         images: ["men-images/chr.png", "men-images/chr1.png", "men-images/chr2.png"]
     },
     "Super Avenger B01 Chronograph 46":{
+        category: "Gentlemen",
         desc: "Built for those who demand maximum presence and extreme robustness. Shock-resistant and highly legible, it is the ultimate tool for demanding aerial and terrestrial missions.",
         specs: "Brand: Breitling",
         price: 340000.00,
@@ -101,13 +115,23 @@ var watchData = {
         images: ["men-images/ave.png", "men-images/ave1.png", "men-images/ave2.png"]
     },
     "Professional Endurance Pro 44":{
+        category: "Gentlemen",
         desc: "The ultimate luxury sports watch designed for rigorous physical activity. Its ultra-lightweight Breitlight case is 3.3 times lighter than titanium, offering peak comfort and vibrant style.",
         specs: "Brand: Breitling",
         price: 185000.00,
         stock: 10,
         images: ["men-images/end.png", "men-images/end1.png", "men-images/end2.png"]
     },
+    "":{
+        category: "Gentlemen",
+        desc: "",
+        specs: "Brand: ",
+        price: .00,
+        stock: 10,
+        images: [""]
+    },
     "Lady Datejust 28 Two Tone Everose Aubergine Dial With Diamonds":{
+        category: "Ladies",
         desc: "A breathtaking blend of Oystersteel and Everose gold. The rich aubergine dial, accented with brilliant-cut diamonds, offers unmatched evening elegance.",
         specs: "Brand: Rolex",
         price: 1350000.00,
@@ -115,6 +139,7 @@ var watchData = {
         images: ["women-images/lad1.png", "women-images/lad2.png", "women-images/lad3.png"]
     },
     "Datejust 31 Mother Of Pearl Dial With Diamonds":{
+        category: "Ladies",
         desc: "Nature's beauty captured on your wrist. The iridescent mother-of-pearl dial ensures no two watches are exactly alike, elevated by stunning diamond hour markers.",
         specs: "Brand: Rolex",
         price: 1150000.00,
@@ -122,6 +147,7 @@ var watchData = {
         images: ["women-images/dat1.png", "women-images/dat2.png", "women-images/dat3.png"]
     },
     "Oyster Perpetual 36 Candy Pink Dial":{
+        category: "Ladies",
         desc: "A vibrant pop of color backed by legendary Rolex reliability. The candy pink dial brings a playful yet highly exclusive energy to a timeless silhouette.",
         specs: "Brand: Rolex",
         price: 950000.00,
@@ -129,6 +155,7 @@ var watchData = {
         images: ["women-images/oys1.png", "women-images/oys2.png", "women-images/oys3.png"]
     },
     "Datejust 36 Wimbledon":{
+        category: "Ladies",
         desc: "A nod to prestigious tennis heritage. Featuring the iconic slate dial with forest green Roman numerals, this piece perfectly bridges the gap between sporty and sophisticated.",
         specs: "Brand: Rolex",
         price: 820000.00,
@@ -136,6 +163,7 @@ var watchData = {
         images: ["women-images/daj1.png", "women-images/daj2.png", "women-images/daj3.png"]
     },
     "Air-King 40":{
+        category: "Ladies",
         desc: "Originally designed for aviation pioneers, now a modern icon. Its bold 40mm case and striking green accents make a confident, powerful statement on any wrist.",
         specs: "Brand: Rolex",
         price: 650000.00,
@@ -143,6 +171,7 @@ var watchData = {
         images: ["women-images/air1.png", "women-images/air2.png", "women-images/air3.png"]
     },
     "Navitimer 32":{
+        category: "Ladies",
         desc: "The legendary pilot's watch, elegantly resized for the feminine wrist. It trades the complex slide rule for a clean, radiant dial that brings aviation heritage to everyday luxury.",
         specs: "Brand: Breitling",
         price: 250000.00,
@@ -150,6 +179,7 @@ var watchData = {
         images: ["women-images/nav.png", "women-images/nav1.png", "women-images/nav2.png"]
     },
     "Chronomat Automatic 36 South Sea":{
+        category: "Ladies",
         desc: "A tropical escape in horological form. Adorned with a dazzling gem-set bezel and vivid dial, it brings a vibrant, exotic flair to the classic Chronomat.",
         specs: "Brand: Breitling",
         price: 480000.00,
@@ -157,6 +187,7 @@ var watchData = {
         images: ["women-images/chr.png", "women-images/chr1.png", "women-images/chr2.png"]
     },
     "Superocean Automatic 36":{
+        category: "Ladies",
         desc: "High-performance underwater capability meets coastal chic. Its bright, legible dial and durable build make it the ultimate companion for the active, modern woman.",
         specs: "Brand: Breitling",
         price: 280000.00,
@@ -164,6 +195,7 @@ var watchData = {
         images: ["women-images/sup.png", "women-images/sup1.png", "women-images/sup2.png"]
     },
     "Lady Premier 32":{
+        category: "Ladies",
         desc: "Refined, dressy, and unmistakably elegant. This piece combines vintage-inspired charm with a slim, graceful profile that slips perfectly under any tailored cuff.",
         specs: "Brand: Breitling",
         price: 260000.00,
@@ -171,6 +203,7 @@ var watchData = {
         images: ["women-images/lap.png", "women-images/lap1.png", "women-images/lap2.png"]
     },
     "Professional Endurance Pro 38":{
+        category: "Ladies",
         desc: "he ultimate luxury athleisure watch. Crafted from ultra-lightweight proprietary materials, it delivers vibrant style and rugged durability for high-intensity lifestyles.",
         specs: "Brand: Breitling",
         price: 185000.00,
@@ -178,6 +211,7 @@ var watchData = {
         images: ["women-images/end.png", "women-images/end1.png", "women-images/end2.png"]
     },
     "Ingenieur Automatic 35":{
+        category: "Ladies",
         desc: "A masterclass in integrated bracelet design. This timepiece offers a highly architectural, anti-magnetic build that feels both industrial and incredibly chic.",
         specs: "Brand: IWC Schaffhausen",
         price: 350000.00,
@@ -185,6 +219,7 @@ var watchData = {
         images: ["women-images/ing.png", "women-images/ing2.png", "women-images/ing1.png"]
     },
     "Portofino Automatic 34":{
+        category: "Ladies",
         desc: "The pure essence of Mediterranean luxury. Its uncluttered, minimalist dial and perfectly round case offer a timeless, understated grace that never goes out of style.",
         specs: "Brand: IWC Schaffhausen",
         price: 320000.00,
@@ -192,6 +227,7 @@ var watchData = {
         images: ["women-images/por.png", "women-images/por1.png", "women-images/por2.png"]
     },
     "Portofino Automatic Moon Phase 37":{
+        category: "Ladies",
         desc: "A poetic complication for the romantic soul. The meticulously crafted moon phase display sits beautifully atop a pristine dial, offering starry elegance.",
         specs: "Brand: IWC Schaffhausen",
         price: 490000.00,
@@ -199,6 +235,7 @@ var watchData = {
         images: ["women-images/pot.png", "women-images/pot2.png", "women-images/pot1.png"]
     },
     "Portofino Perpetual Calendar":{
+        category: "Ladies",
         desc: "A true mechanical masterpiece. This highly complex movement automatically tracks the date, month, and leap years without needing adjustment, wrapped in a sleek Portofino case.",
         specs: "Brand: IWC Schaffhausen",
         price: 1250000.00,
@@ -206,6 +243,7 @@ var watchData = {
         images: ["women-images/prt.png", "women-images/prt1.png", "women-images/prt2.png"]
     },
     "Portofino Automatic Day & Night 34":{
+        category: "Ladies",
         desc: "Track the passing of time with celestial beauty. A delicate sun and moon disc slowly rotates on the dial, perfectly capturing the magic of day and night.",
         specs: "Brand: IWC Schaffhausen",
         price: 410000.00,
@@ -213,6 +251,7 @@ var watchData = {
         images: ["women-images/pro.png", "women-images/pro1.png", "women-images/pro2.png"]
     },
     "":{
+        category: "Ladies",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -220,6 +259,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -227,6 +267,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -234,6 +275,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -241,6 +283,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -248,6 +291,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -255,6 +299,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -262,6 +307,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -269,6 +315,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -276,6 +323,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -283,6 +331,7 @@ var watchData = {
         images: [""]
     },
     "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -290,13 +339,7 @@ var watchData = {
         images: [""]
     },
     "":{
-        desc: "",
-        specs: "Brand: ",
-        price: .00,
-        stock: 10,
-        images: [""]
-    },
-    "":{
+        category: "New Arrivals",
         desc: "",
         specs: "Brand: ",
         price: .00,
@@ -576,7 +619,7 @@ function handleAuth(event) {
     var pass = document.getElementById("auth-password").value;
 
     if (user === "" || pass === "") {
-        showNotification("Please enter both username and password! 🛑");
+        showNotification("Please enter both username and password! ⚠️");
         return;
     }
 
@@ -1194,34 +1237,42 @@ function goToProduct(productName) {
 
 // ==================== KEYBOARD SHORTCUTS ====================
 document.addEventListener("keydown", function(event) {
+
     if (event.key === "Escape") {
         var loginModal = document.getElementById('login-modal');
         var forgotModal = document.getElementById('forgot-password-modal');
         var detailsModal = document.getElementById('details-modal');
+        var adminModal = document.getElementById('admin-login-modal'); 
+        var confirmModal = document.getElementById('confirm-modal');   
 
-        if (loginModal && (loginModal.style.display === "block" || loginModal.style.display === "flex")) {
-            if (typeof closeLogin === "function") closeLogin();
-            else loginModal.style.display = "none";
-        }
-        else if (forgotModal && (forgotModal.style.display === "block" || forgotModal.style.display === "flex")) {
-            if (typeof closeForgotPasswordModal === "function") closeForgotPasswordModal();
-            else forgotModal.style.display = "none";
-        }
-        else if (detailsModal && (detailsModal.style.display === "block" || detailsModal.style.display === "flex")) {
-            if (typeof closeDetails === "function") closeDetails();
-            else detailsModal.style.display = "none";
-        }
+        if (loginModal && loginModal.style.display !== "none") closeLogin();
+        else if (forgotModal && forgotModal.style.display !== "none") closeForgotPasswordModal();
+        else if (detailsModal && detailsModal.style.display !== "none") closeDetails();
+        
+        else if (adminModal && adminModal.style.display === "flex") closeAdminLogin();
+        else if (confirmModal && confirmModal.style.display === "flex") closeConfirmModal();
     }
 
     if (event.key === "Enter") {
         var focused = document.activeElement.id;
+        var confirmModal = document.getElementById('confirm-modal');
 
         if (focused === "auth-username" || focused === "auth-password") {
             handleAuth(event);
-        } else if (focused === "reg-username" || focused === "reg-password" || focused === "reg-confirm-password") {
+        } 
+        else if (focused === "reg-username" || focused === "reg-password" || focused === "reg-confirm-password") {
             if (typeof handleRegister === "function") handleRegister(event);
-        } else if (focused === "new-reset-password" || focused === "confirm-reset-password") {
+        } 
+        else if (focused === "new-reset-password" || focused === "confirm-reset-password") {
             if (typeof executePasswordReset === "function") executePasswordReset();
+        }
+        
+        else if (focused === "admin-secret-pass") {
+            checkAdminAccess();
+        }
+        
+        else if (confirmModal && confirmModal.style.display === "flex") {
+            executeClearHistory();
         }
     }
 });
@@ -1631,25 +1682,32 @@ function placeShopeeOrder(event) {
 
         if (watch) {
             itemsHTML += `
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
-                    <img src="${watch.images[0]}" style="width: 60px; height: 60px; object-fit: contain; background: #f9f9f9; border-radius: 6px; border: 1px solid #eee;">
-                    <div style="text-align: left;">
-                        <p style="margin: 0; font-weight: bold; font-size: 0.95rem;">${item.name}</p>
-                        <p style="margin: 2px 0 0 0; color: #666; font-size: 0.85rem;">Qty: ${item.quantity}</p>
-                    </div>
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                <img src="${watch.images[0]}" style="width: 60px; height: 60px; object-fit: contain; background: #f9f9f9; border-radius: 6px; border: 1px solid #eee;">
+                <div style="text-align: left;">
+                    <p style="margin: 0; font-weight: bold; font-size: 0.95rem;">${item.name}</p>
+                    
+                    <p style="margin: 0; font-size: 0.75rem; color: #888;">${watch.specs || 'Brand: Luxury'}</p>
+                    
+                    <p style="margin: 2px 0 0 0; color: #666; font-size: 0.8rem;">Qty: ${item.quantity}</p>
                 </div>
-            `;
+            </div>`;
         }
     });
     itemsHTML += `</div>`;
 
+    const arrivalDate = new Date();
+    arrivalDate.setDate(arrivalDate.getDate() + 4); 
+    const formattedArrival = arrivalDate.toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' });
     const receiptDetails = document.getElementById('receipt-details');
+    
     if (receiptDetails) {
         receiptDetails.innerHTML = `
             <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
                 <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
                 <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
                 <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
+                <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong> <span style="color: #3b0066;">${formattedArrival}</span></p>
             </div>
             ${itemsHTML} 
             <p style="font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 20px;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
@@ -1658,6 +1716,34 @@ function placeShopeeOrder(event) {
 
     nameBox.value = "";
     addressBox.value = "";
+    checkedBoxes.forEach(box => {
+    const cartIndex = parseInt(box.value);
+
+    const item = cart[cartIndex];
+    if (item && watchData[item.name]) {
+        watchData[item.name].stock -= item.quantity;
+    }
+    });
+
+    localStorage.setItem('watchStock', JSON.stringify(
+    Object.fromEntries(
+        Object.keys(watchData).map(name => [name, watchData[name].stock])
+    )
+    ));
+
+    const order = {
+        id: 'CW-' + Date.now().toString().slice(-6),
+        date: new Date().toLocaleString(),
+        customer: rawName,
+        address: rawAddress,
+        items: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
+        total: grandTotal
+    };
+
+    const existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+    existingOrders.push(order);
+    localStorage.setItem('orderHistory', JSON.stringify(existingOrders));
+    
     const indicesToRemove = [];
     checkedBoxes.forEach(box => indicesToRemove.push(parseInt(box.value)));
     indicesToRemove.sort((a,b) => b - a).forEach(idx => cart.splice(idx, 1));
@@ -1706,30 +1792,31 @@ window.addEventListener('popstate', function(event) {
     }
 });
 
-function navigateTo(pageId, headerClass = '') {
-    window.scrollTo(0, 0);
-
-    const pages = [
-        'homepage', 'shop-page', 'about-page', 'contact-page',
-        'privacy-page', 'terms-page', 'return-page', 'warranty-page',
-        'receipt-page'
-    ];
-
-    pages.forEach(id => {
+function navigateTo(pageId) {
+    const sections = ['homepage', 'shop-page', 'product-details', 'cart-page', 'receipt-page', 'admin-page'];
+    
+    sections.forEach(id => {
         const el = document.getElementById(id);
-        if (el) {
-            el.style.display = 'none';
-            el.style.paddingTop = "0";
-        }
+        if (el) el.style.display = 'none';
     });
 
-    const target = document.getElementById(pageId);
-    if (target) target.style.display = 'block';
+    const footer = document.querySelector('footer');
+    const mainHeader = document.querySelector('.main-header');
 
-    document.body.classList.remove('static-header', 'shop-active', 'on-cart-page');
-    
-    if (headerClass && headerClass.trim() !== '') {
-        document.body.classList.add(headerClass);
+    if (pageId === 'admin-page') {
+        if (footer) footer.style.display = 'none';
+        if (mainHeader) mainHeader.style.display = 'none';
+        
+        loadAdminDashboard();
+        window.scrollTo(0, 0);
+    } else {
+        if (footer) footer.style.display = 'block';
+        if (mainHeader) mainHeader.style.display = 'flex'; 
+    }
+
+    const target = document.getElementById(pageId);
+    if (target) {
+        target.style.display = 'block';
     }
 }
 
@@ -1812,6 +1899,8 @@ function processOrder(event) {
         return; 
     }
 
+   const transID = Date.now().toString().slice(-6);
+
     const receiptDetails = document.getElementById('receipt-details');
     receiptDetails.innerHTML = `
         <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px;">
@@ -1819,24 +1908,33 @@ function processOrder(event) {
             <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${addressBox.value}</p>
             <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${total}</span></p>
         </div>
-        <p style="font-size: 0.75rem; color: #aaa; text-align: center;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
+        <p style="font-size: 0.75rem; color: #aaa; text-align: center;">Transaction ID: #CW-${transID}</p>
     `;
+
+    const numericTotal = parseFloat(total.replace(/[^0-9.-]+/g,""));
+
+    const newOrder = {
+        id: "CW-" + transID,
+        customer: nameBox.value,
+        address: addressBox.value,
+        date: new Date().toLocaleString('en-PH'),
+        
+        total: numericTotal, 
+
+        items: cart.map(item => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: cleanPrice(item.price) 
+        }))
+    };
+
+    const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+    history.push(newOrder);
+    localStorage.setItem('orderHistory', JSON.stringify(history));
 
     closeCheckoutModal(); 
     navigateTo('receipt-page', 'static-header');
     
-    cart.forEach(item => {
-    if (watchData[item.name]) {
-        watchData[item.name].stock -= item.quantity;
-    }
-});
-
-    localStorage.setItem('watchStock', JSON.stringify(
-        Object.fromEntries(
-            Object.keys(watchData).map(name => [name, watchData[name].stock])
-    )
-));
-
     cart = [];
     if (typeof updateCartUI === 'function') updateCartUI();
 }
@@ -1885,4 +1983,296 @@ function subscribeNewsletter(event) {
 
     showNotification("Thank you! Exclusive offers will be sent to " + emailText + " ✨");
     emailBox.value = ""; 
+}   
+
+function updateAdminStock(watchName) {
+    let safeID = watchName.replace(/\s+/g, '-');
+    let inputField = document.getElementById(`admin-input-${safeID}`);
+    
+    if (!inputField) {
+        console.error("Could not find input for: " + watchName);
+        return;
+    }
+
+    let newStockValue = parseInt(inputField.value);
+
+    if (isNaN(newStockValue) || newStockValue < 0) {
+        showNotification("Please enter a valid stock number! ❌");
+        return;
+    }
+
+    watchData[watchName].stock = newStockValue;
+    const allStock = Object.fromEntries(
+    Object.keys(watchData).map(name => [name, watchData[name].stock])
+    );
+    localStorage.setItem('watchStock', JSON.stringify(allStock));
+
+    loadAdminDashboard();
+    showNotification(`${watchName} stock updated to ${newStockValue}! ✅`);
+}
+
+function showAdmin() {
+    if (document.getElementById('homepage')) {
+        document.getElementById('homepage').style.display = 'none';
+    }
+    
+    const footer = document.querySelector('footer');
+    if (footer) footer.style.display = 'none';
+
+    const adminPage = document.getElementById('admin-page');
+    if (adminPage) {
+        adminPage.style.display = 'block';
+        
+        window.scrollTo(0, 0); 
+    }
+
+    loadAdminDashboard();
+}
+
+function switchAdminTab(tabName) {
+    document.getElementById('admin-tab-stock').style.display = 'none';
+    document.getElementById('admin-tab-orders').style.display = 'none';
+    
+    document.getElementById('btn-tab-stock').style.color = '#888';
+    document.getElementById('btn-tab-stock').style.borderBottom = '3px solid transparent';
+    document.getElementById('btn-tab-orders').style.color = '#888';
+    document.getElementById('btn-tab-orders').style.borderBottom = '3px solid transparent';
+
+    document.getElementById('admin-tab-' + tabName).style.display = 'block';
+    document.getElementById('btn-tab-' + tabName).style.color = '#3b0066';
+    document.getElementById('btn-tab-' + tabName).style.borderBottom = '3px solid #3b0066';
+
+    loadAdminDashboard();
+}
+
+let currentAdminFilter = 'Gentlemen'; 
+
+function filterAdminStock(category) {
+    currentAdminFilter = category;
+    
+    const allBtns = ['Gentlemen', 'Ladies', 'NewArrivals'];
+    allBtns.forEach(id => {
+        let btn = document.getElementById('filter-' + id);
+        if (btn) {
+            btn.style.background = 'white';
+            btn.style.color = '#888';
+            btn.style.borderColor = '#eaeaea';
+        }
+    });
+
+    let activeId = category === 'New Arrivals' ? 'NewArrivals' : category;
+    let activeBtn = document.getElementById('filter-' + activeId);
+    if (activeBtn) {
+        activeBtn.style.background = '#3b0066';
+        activeBtn.style.color = 'white';
+        activeBtn.style.borderColor = '#3b0066';
+    }
+
+    loadAdminDashboard();
+}
+
+function loadAdminDashboard() {
+    console.log("🛠️ Admin Dashboard: Refreshing data...");
+
+    const tableBody = document.getElementById('admin-stock-list');
+    const statsContainer = document.getElementById('admin-stats-container');
+    
+    if (tableBody && statsContainer) {
+        tableBody.innerHTML = "";
+        let stockIndex = 0;
+        let totalProducts = 0, totalUnits = 0, lowOrOutStock = 0;
+        
+        for (let watchName in watchData) {
+            let watch = watchData[watchName];
+            let watchCategory = watch.category || "Gentlemen"; 
+            
+            if (watchCategory !== currentAdminFilter) continue; 
+
+            totalProducts++;
+            totalUnits += (watch.stock || 0);
+            if (watch.stock <= 3) lowOrOutStock++;
+
+            let badgeStyle = watch.stock <= 0 ? "background:#ffe5e5;color:#d63031;" : 
+                             watch.stock <= 3 ? "background:#fff0d4;color:#e17055;" : 
+                                                "background:#e3fcec;color:#00b894;";
+            
+            let badgeText = watch.stock <= 0 ? "Out of Stock" : 
+                            watch.stock <= 3 ? "Low Stock" : "In Stock";
+
+            let safeID = watchName.replace(/[^a-zA-Z0-9]/g, '-');
+            let delay = stockIndex * 0.05;
+            stockIndex++;
+            tableBody.innerHTML += `
+                <div class="admin-stock-row" style="animation-delay: ${delay}s; display: grid; grid-template-columns: 2fr 1fr 1fr; border-bottom: 1px solid #f9f9f9; align-items: center; padding: 15px 0;">
+                    <div style="padding: 16px 25px; font-weight: 600; color: #333; font-size: 14px;">${watchName}</div>
+                    <div style="padding: 16px 25px;">
+                        <span style="${badgeStyle} padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold;">
+                            ${watch.stock} — ${badgeText}
+                        </span>
+                    </div>
+                    <div style="padding: 16px 25px; display: flex; align-items: center; gap: 10px;">
+                        <input type="number" id="admin-input-${safeID}" value="${watch.stock}"
+                            style="width: 60px; background: #f8f9fa; border: 1px solid #ddd; padding: 8px; border-radius: 4px; text-align: center; font-weight: bold;">
+                        <button onclick="updateAdminStock('${watchName.replace(/'/g, "\\'")}')"
+                                style="background: transparent; color: #3b0066; border: 1px solid #3b0066; padding: 7px 15px; cursor: pointer; font-weight: bold; border-radius: 4px; font-size: 11px; text-transform: uppercase;">
+                            SAVE
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        statsContainer.innerHTML = `
+            <div style="background: white; border: 1px solid #eaeaea; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                <div style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Total Products (${currentAdminFilter})</div>
+                <div style="font-size: 32px; font-family: 'Cormorant Garamond', serif; color: #3b0066; font-weight: bold;">${totalProducts}</div>
+            </div>
+            <div style="background: white; border: 1px solid #eaeaea; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                <div style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Total Units</div>
+                <div style="font-size: 32px; font-family: 'Cormorant Garamond', serif; color: #3b0066; font-weight: bold;">${totalUnits}</div>
+            </div>
+            <div style="background: white; border: 1px solid #eaeaea; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.02);">
+                <div style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Needs Attention</div>
+                <div style="font-size: 32px; font-family: 'Cormorant Garamond', serif; color: ${lowOrOutStock > 0 ? '#d63031' : '#3b0066'}; font-weight: bold;">${lowOrOutStock}</div>
+            </div>`;
+    }
+
+    const orderList = document.getElementById('admin-order-list');
+    if (!orderList) {
+        console.error("❌ ERROR: Could not find 'admin-order-list' in HTML!");
+        return;
+    }
+
+    const rawData = localStorage.getItem('orderHistory');
+    const orders = JSON.parse(rawData || '[]');
+    console.log("📦 Found " + orders.length + " orders in storage.");
+
+    if (orders.length === 0) {
+    orderList.innerHTML = `
+        <div class="admin-empty-state">
+            <div style="font-size: 50px; margin-bottom: 20px;">📦</div>
+            <h3 style="color: #3b0066; font-family: 'Playfair Display', serif;">Your Registry is Quiet</h3>
+            <p style="color: #888;">No transactions have been recorded yet.</p>
+        </div>`;
+    return;
+}
+
+    const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' });
+
+    const safeFormat = (val) => {
+        if (!val) return "₱0.00";
+        if (String(val).includes('₱')) return val; 
+        return pesoFormat.format(val);
+    };
+
+    let htmlContent = "";
+
+    orders.slice().reverse().forEach((order, index) => {
+        const delay = index * 0.1;
+        htmlContent += `
+            <div class="admin-order-card" style="animation-delay: ${delay}s; background: white; border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px;">
+                    <span style="font-weight: 800; color: #3b0066;">${order.id || 'ORDER'}</span>
+                    <span style="font-weight: 800; color: #2ed573;">${safeFormat(order.total)}</span>
+                </div>
+                <div style="font-size: 13px; color: #555; line-height: 1.6;">
+                    <p style="margin: 2px 0;">👤 <b>Customer:</b> ${order.customer}</p>
+                    <p style="margin: 2px 0;">📅 <b>Date:</b> ${order.date}</p>
+                    <p style="margin: 2px 0;">📍 <b>Address:</b> ${order.address}</p>
+                </div>
+                <div style="margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 5px;">
+                    ${(order.items || []).map(item => `
+                        <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                            <span>${item.name} (x${item.quantity})</span>
+                            <span>${safeFormat(item.price)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    });
+
+    orderList.innerHTML = htmlContent;
+    console.log("✅ ORDER HISTORY RENDERED SUCCESSFULLY.");
+}
+
+function logout() {
+    console.log("🔐 Admin logging out...");
+
+    const adminPage = document.getElementById('admin-page');
+    if (adminPage) adminPage.style.display = 'none';
+
+    const home = document.getElementById('homepage');
+    if (home) home.style.display = 'block';
+
+    const footer = document.querySelector('footer');
+    if (footer) footer.style.display = 'block';
+
+    const shopHeader = document.querySelector('.main-header');
+    if (shopHeader) shopHeader.style.display = 'flex';
+
+    window.location.hash = '#shop';
+    window.scrollTo(0, 0);
+
+    showNotification("Logged out safely. 🛡️");
+}
+
+function openClearHistoryModal() {
+    document.getElementById('confirm-modal').style.display = 'flex';
+}
+
+function executeClearHistory() {
+    localStorage.removeItem('orderHistory');
+    
+    closeConfirmModal();
+
+    loadAdminDashboard(); 
+    
+    if (typeof showNotification === 'function') {
+        showNotification('Database wiped successfully. 🧹');
+    }
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirm-modal').style.display = 'none';
+}
+
+function cleanPrice(val) {
+    if (typeof val === 'number') return val;
+    let cleaned = String(val).replace(/[^0-9.]/g, '');
+    return parseFloat(cleaned) || 0;
+}
+
+function openSecretAdminLogin() {
+    document.getElementById('admin-login-modal').style.display = 'flex';
+    
+    document.getElementById('admin-secret-pass').value = ''; 
+    
+    const errorMsg = document.getElementById('admin-error');
+    if (errorMsg) errorMsg.style.display = 'none';
+
+    setTimeout(() => {
+        document.getElementById('admin-secret-pass').focus();
+    }, 100); 
+}
+function closeAdminLogin() {
+    document.getElementById('admin-login-modal').style.display = 'none';
+}
+
+function checkAdminAccess() {
+    const pass = document.getElementById('admin-secret-pass').value;
+    const errorMsg = document.getElementById('admin-error');
+
+    if (pass === 'admin123') {
+        closeAdminLogin();
+        navigateTo('admin-page', 'static-header'); 
+        showNotification("Access Granted. Ready to manage stock? 💼");
+    } else {
+        errorMsg.style.display = 'block';
+        document.querySelector('#admin-login-modal > div').animate([
+            { transform: 'translateX(0)' },
+            { transform: 'translateX(-10px)' },
+            { transform: 'translateX(10px)' },
+            { transform: 'translateX(0)' }
+        ], { duration: 300 });
+    }
 }

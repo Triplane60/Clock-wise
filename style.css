@@ -1603,3 +1603,63 @@ body.on-cart-page .nav-logo {
     pointer-events: none !important;
     cursor: default !important;
 }
+
+#confirm-modal > div {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalGlide {
+    0% { 
+        opacity: 0; 
+        transform: scale(0.95) translateY(-20px); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1) translateY(0); 
+    }
+}
+
+@keyframes emptyStateGlide {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#confirm-modal div, 
+#admin-login-modal div {
+    animation: modalGlide 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+.admin-empty-state {
+    animation: emptyStateGlide 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-align: center;
+    padding: 100px 20px;
+}
+
+#admin-secret-pass:focus::placeholder {
+    color: transparent;
+}
+
+#admin-secret-pass::placeholder {
+    transition: color 0.2s ease;
+}
+
+@keyframes cardCascade {
+    0% { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.admin-order-card {
+    opacity: 0;
+    animation: cardCascade 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.admin-stock-row {
+    opacity: 0; 
+    animation: cardCascade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
