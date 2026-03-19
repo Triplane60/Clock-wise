@@ -124,9 +124,9 @@ var watchData = {
     },
     "Grand Complications Celestial Rose Gold":{
         category: "Gentlemen",
-        desc: "",
+        desc: "A masterpiece of astronomical precision, the Celestial features a rotating chart of the heavenly sky. This rose gold complication traces the stars, the phases of the moon, and the meridian passage of Sirius, bringing the galaxy to your wrist.",
         specs: "Brand: Patek Philippe",
-        price: .00,
+        price: 23500000.00,
         stock: 10,
         images: ["new-arrivals/ome1.png", "new-arrivals/ome2.png", "new-arrivals/ome3.png"]
     },
@@ -354,21 +354,29 @@ var watchData = {
         stock: 10,
         images: ["new-arrivals/aup1.png", "new-arrivals/aup2.png", "new-arrivals/aup3.png"]
     },
-    "":{
+    "Half Hunter Limited Edition":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: David Candaux",
         price: .00,
-        stock: 10,
-        images: [""]
+        stock: 2,
+        images: ["new-arrivals/dav1.png", "new-arrivals/dav2.png", "new-arrivals/dav3.png"]
     },
-    "":{
+    "Opus VII":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Harry Winston",
         price: .00,
-        stock: 10,
-        images: [""]
+        stock: 2,
+        images: ["new-arrivals/har1.png", "new-arrivals/har2.png", "new-arrivals/har3.png"]
+    },
+    "Villeret Split Seconds Chronograph Platinum":{
+        category: "New Arrivals",
+        desc: "",
+        specs: "Brand: Blancpain",
+        price: .00,
+        stock: 2,
+        images: ["new-arrivals/bla1.png", "new-arrivals/bla2.png", "new-arrivals/bla3.png"]
     },
     "":{
         category: "New Arrivals",
@@ -403,16 +411,12 @@ var currentCategory = 'all';
 
 // ==================== PAGE NAVIGATION ====================
 function showHome() {
-    const pagesToHide = ['homepage', 'shop-page', 'about-page', 'contact-page',
-                         'privacy-page', 'terms-page', 'return-page', 'warranty-page',
-                         'receipt-page', 'admin-page'];
-    pagesToHide.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-    });
-
-
     document.getElementById('homepage').style.display = 'block';
+    document.getElementById('shop-page').style.display = 'none';
+    document.getElementById('checkout-page').style.display = 'none';
+    
+    var cartPage = document.getElementById('cart-page');
+    if (cartPage) cartPage.style.display = 'none';
     
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
@@ -420,9 +424,17 @@ function showHome() {
     document.body.classList.add('static-header');
     document.body.classList.remove('on-cart-page', 'shop-active');
 
+    let mainLogo = document.querySelector('.nav-logo');
+    if (mainLogo) {
+        mainLogo.style.pointerEvents = 'auto';
+        mainLogo.style.opacity = '1';
+    }
+
     history.pushState({ page: 'home' }, null, '#home');
 
-    setTimeout(() => { window.scrollTo(0, 0); }, 10); 
+    setTimeout(() => {
+        window.scrollTo(0, 0); 
+    }, 10); 
 }
 
 function showShop() {
@@ -468,6 +480,11 @@ function showShopWithCategory(category) {
 }
 
 function showCartPage() {
+    ['about-page','contact-page','privacy-page',
+     'terms-page','return-page','warranty-page'].forEach(id => {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
     document.getElementById('homepage').style.display = 'none';
     document.getElementById('shop-page').style.display = 'block'; 
     document.getElementById('checkout-page').style.display = 'none';
@@ -647,7 +664,7 @@ function handleAuth(event) {
     var pass = document.getElementById("auth-password").value;
 
     if (user === "" || pass === "") {
-        showNotification("Please enter both username and password! ⚠️");
+        showNotification("Please enter both username and password! 🛑");
         return;
     }
 
@@ -1820,34 +1837,30 @@ window.addEventListener('popstate', function(event) {
     }
 });
 
-function navigateTo(pageId) {
-    const sections = [
-    'homepage', 'shop-page', 'product-details', 'cart-page', 'receipt-page', 'admin-page',
-    'privacy-page', 'terms-page', 'returns-page', 'warranty-page', 'about-page', 'contact-page'
+function navigateTo(pageId, headerClass = '') {
+    window.scrollTo(0, 0);
+
+    const pages = [
+    'homepage', 'shop-page', 'about-page', 'contact-page',
+    'privacy-page', 'terms-page', 'return-page', 'warranty-page',
+    'receipt-page', 'cart-page', "admin-page"   
     ];
-    
-    sections.forEach(id => {
+
+    pages.forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.style.display = 'none';
+        if (el) {
+            el.style.display = 'none';
+            el.style.paddingTop = "0";
+        }
     });
 
-    const footer = document.querySelector('footer');
-    const mainHeader = document.querySelector('.main-header');
-
-    if (pageId === 'admin-page') {
-        if (footer) footer.style.display = 'none';
-        if (mainHeader) mainHeader.style.display = 'none';
-        
-        loadAdminDashboard();
-        window.scrollTo(0, 0);
-    } else {
-        if (footer) footer.style.display = 'block';
-        if (mainHeader) mainHeader.style.display = 'flex'; 
-    }
-
     const target = document.getElementById(pageId);
-    if (target) {
-        target.style.display = 'block';
+    if (target) target.style.display = 'block';
+
+    document.body.classList.remove('static-header', 'shop-active', 'on-cart-page');
+    
+    if (headerClass && headerClass.trim() !== '') {
+        document.body.classList.add(headerClass);
     }
 }
 
@@ -2014,7 +2027,7 @@ function subscribeNewsletter(event) {
 
     showNotification("Thank you! Exclusive offers will be sent to " + emailText + " ✨");
     emailBox.value = ""; 
-}   
+}
 
 function updateAdminStock(watchName) {
     let safeID = watchName.replace(/\s+/g, '-');
@@ -2295,7 +2308,15 @@ function checkAdminAccess() {
 
     if (pass === 'admin123') {
         closeAdminLogin();
-        navigateTo('admin-page', 'static-header'); 
+
+        const footer = document.querySelector('footer');
+        if (footer) footer.style.display = 'none';
+
+        navigateTo('admin-page', 'static-header');
+        
+        filterAdminStock('Gentlemen');
+        loadAdminDashboard();
+
         showNotification("Access Granted. Ready to manage stock? 💼");
     } else {
         errorMsg.style.display = 'block';
