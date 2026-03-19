@@ -403,12 +403,16 @@ var currentCategory = 'all';
 
 // ==================== PAGE NAVIGATION ====================
 function showHome() {
+    const pagesToHide = ['homepage', 'shop-page', 'about-page', 'contact-page',
+                         'privacy-page', 'terms-page', 'return-page', 'warranty-page',
+                         'receipt-page', 'admin-page'];
+    pagesToHide.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+
+
     document.getElementById('homepage').style.display = 'block';
-    document.getElementById('shop-page').style.display = 'none';
-    document.getElementById('checkout-page').style.display = 'none';
-    
-    var cartPage = document.getElementById('cart-page');
-    if (cartPage) cartPage.style.display = 'none';
     
     var cartWrapper = document.querySelector('.cart-wrapper');
     if (cartWrapper) cartWrapper.style.display = 'inline-block';
@@ -416,17 +420,9 @@ function showHome() {
     document.body.classList.add('static-header');
     document.body.classList.remove('on-cart-page', 'shop-active');
 
-    let mainLogo = document.querySelector('.nav-logo');
-    if (mainLogo) {
-        mainLogo.style.pointerEvents = 'auto';
-        mainLogo.style.opacity = '1';
-    }
-
     history.pushState({ page: 'home' }, null, '#home');
 
-    setTimeout(() => {
-        window.scrollTo(0, 0); 
-    }, 10); 
+    setTimeout(() => { window.scrollTo(0, 0); }, 10); 
 }
 
 function showShop() {
@@ -1825,7 +1821,10 @@ window.addEventListener('popstate', function(event) {
 });
 
 function navigateTo(pageId) {
-    const sections = ['homepage', 'shop-page', 'product-details', 'cart-page', 'receipt-page', 'admin-page'];
+    const sections = [
+    'homepage', 'shop-page', 'product-details', 'cart-page', 'receipt-page', 'admin-page',
+    'privacy-page', 'terms-page', 'returns-page', 'warranty-page', 'about-page', 'contact-page'
+    ];
     
     sections.forEach(id => {
         const el = document.getElementById(id);

@@ -1528,6 +1528,7 @@ body.homepage-active .main-header {
 #terms-page,
 #return-page,
 #warranty-page {
+    padding-top: 120px;
     animation: premiumFadeIn 0.6s ease-out forwards;
 }
 
