@@ -252,139 +252,139 @@ var watchData = {
     },
     "Complications Annual Calendar Diamond and Mother of Pearl White Gold":{
         category: "Ladies",
-        desc: "",
+        desc: "A mechanical masterpiece featuring an annual calendar and moon phase, elegantly set in a diamond-bezel 18k white gold case with a mother-of-pearl dial.",
         specs: "Brand: Patek Philippe",
-        price: .00,
+        price: 3850000.00,
         stock: 10,
         images: ["new-arrivals/omg1.png", "new-arrivals/omg2.png", "new-arrivals/omg3.png"]
     },
     "Circus Minute Repeater":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A horological theater. This rare platinum timepiece features hand-carved gold automatons that perform a circus act in sync with the minute repeater’s chime.",
         specs: "Brand: Ulysse Nardin",
-        price: .00,
+        price: 18750000.00,
         stock: 10,
         images: ["new-arrivals/uly1.png", "new-arrivals/uly2.png", "new-arrivals/uly3.png"]
     },
     "Executive Skeleton Tourbillon":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A bold fusion of transparency and power. This titanium tourbillon features an ultra-light skeletonized movement with an impressive 170-hour power reserve.",
         specs: "Brand: Ulysse Nardin",
-        price: .00,
+        price: 1100000.00,
         stock: 10,
         images: ["new-arrivals/ule1.png", "new-arrivals/ule3.png", "new-arrivals/ule2.png"]
     },
     "Freak X Black Titanium":{
         category: "New Arrivals",
-        desc: "",
+        desc: "Defying convention with no dial and no hands. A flying carousel rotates to tell the time, housed in a sleek, DLC-coated titanium case for the modern rebel.",
         specs: "Brand: Ulysse Nardin",
-        price: .00,
+        price: 1200000.00,
         stock: 10,
         images: ["new-arrivals/uls1.png", "new-arrivals/uls2.png", "new-arrivals/uls3.png"]
     },
     "Overseas Tourbillon Skeleton Titanium":{
         category: "New Arrivals",
-        desc: "",
+        desc: "The pinnacle of sporty elegance. This grade 5 titanium masterpiece houses an ultra-slim skeletonized tourbillon movement, certified by the prestigious Hallmark of Geneva.",
         specs: "Brand: Vacheron Constantin",
-        price: .00,
+        price: 10500000.00,
         stock: 10,
         images: ["new-arrivals/vac1.png", "new-arrivals/vac2.png", "new-arrivals/vac3.png"]
     },
     "Kalla Geneva Diamond and White Gold":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A masterpiece of high jewelry and horology, featuring over 25 carats of emerald-cut diamonds meticulously set in an 18k white gold case and bracelet.",
         specs: "Brand: Vacheron Constantin",
-        price: .00,
+        price: 28000000.00,
         stock: 10,
         images: ["new-arrivals/vah1.png", "new-arrivals/vah2.png", "new-arrivals/vah3.png"]
     },
     "Traditionelle White Gold":{
         category: "New Arrivals",
-        desc: "",
+        desc: "The essence of pure watchmaking. This 18k white gold timepiece features a clean, minimalist dial and a manual-wind movement, embodying timeless Vacheron elegance.",
         specs: "Brand: Vacheron Constantin",
-        price: .00,
+        price: 1350000.00,
         stock: 10,
         images: ["new-arrivals/vae1.png", "new-arrivals/vae2.png", "new-arrivals/vae3.png"]
     },
     "Rotonde Calendar Aperture and Power Reserve Steel":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A sophisticated Cartier complication featuring a large date aperture and power reserve indicator, housed in a polished steel case with a signature blue cabochon crown.",
         specs: "Brand: Cartier",
-        price: .00,
+        price: 580000.00,
         stock: 10,
         images: ["new-arrivals/car1.png", "new-arrivals/car2.png", "new-arrivals/car3.png"]
     },
     "Ballon Bleu Rose Gold":{
         category: "New Arrivals",
-        desc: "",
+        desc: "Floating like a balloon with a sapphire cabochon guarded by an 18k rose gold arc, this iconic timepiece balances classic Cartier style with modern curves.",
         specs: "Brand: Cartier",
-        price: .00,
+        price: 1150000.00,
         stock: 10,
         images: ["new-arrivals/cat1.png", "new-arrivals/cat2.png", "new-arrivals/cat3.png"]
     },
     "Pasha Chronograph Yellow Gold Quartz":{
         category: "New Arrivals",
-        desc: "",
+        desc: "An 18k yellow gold icon featuring a distinctive screw-down crown cap and blue cabochons, blending Cartier’s sporty heritage with timeless luxury.",
         specs: "Brand: Cartier",
-        price: .00,
+        price: 450000.00,
         stock: 10,
         images: ["new-arrivals/cai1.png", "new-arrivals/cai2.png", "new-arrivals/cai3.png"]
     },
     "Mercedes-Benz 500K Roadster Platinum":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A rare horological tribute to automotive history, this platinum timepiece features a skeletonized dial showcasing a miniature 500K Roadster sculpture.",
         specs: "Brand: Audemars Piguet",
-        price: .00,
+        price: 2900000.00,
         stock: 10,
         images: ["new-arrivals/aud1.png", "new-arrivals/aud2.png", "new-arrivals/aud3.png"]
     },
     "Royal Oak Concept Split-Seconds Chronograph GMT Carbon":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A high-performance beast in forged carbon and titanium, featuring a split-seconds chronograph and GMT function for the ultimate technical collector.",
         specs: "Brand: Audemars Piguet",
-        price: .00,
+        price: 10200000.00,
         stock: 10,
         images: ["new-arrivals/aue1.png", "new-arrivals/aue2.png", "new-arrivals/aue3.png"]
     },
     "Royal Oak Concept CW1 Alacrite":{
         category: "New Arrivals",
-        desc: "",
+        desc: "The original Concept that started it all. Crafted from rare Alacrite 602, this mechanical masterpiece houses a tourbillon and a linear power reserve indicator.",
         specs: "Brand: Audemars Piguet",
-        price: .00,
+        price: 8800000.00,
         stock: 10,
         images: ["new-arrivals/aup1.png", "new-arrivals/aup2.png", "new-arrivals/aup3.png"]
     },
     "Half Hunter Limited Edition":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A collaboration with Pininfarina featuring a 10-day tourbillon. This titanium masterpiece offers total transparency through its sapphire 'half-hunter' case design.",
         specs: "Brand: David Candaux",
-        price: .00,
+        price: 5500000.00,
         stock: 2,
         images: ["new-arrivals/dav1.png", "new-arrivals/dav2.png", "new-arrivals/dav3.png"]
     },
     "Opus VII":{
         category: "New Arrivals",
-        desc: "",
+        desc: "A mechanical 'mystery' watch that displays hours, minutes, or power reserve only on demand through a single push-button, limited to just 50 pieces worldwide.",
         specs: "Brand: Harry Winston",
-        price: .00,
+        price: 4950000.00,
         stock: 2,
         images: ["new-arrivals/har1.png", "new-arrivals/har2.png", "new-arrivals/har3.png"]
     },
     "Villeret Split Seconds Chronograph Platinum":{
         category: "New Arrivals",
-        desc: "",
+        desc: "Understated platinum excellence. This ultra-slim timepiece houses one of the world's thinnest automatic split-seconds chronograph movements for timing two events simultaneously.",
         specs: "Brand: Blancpain",
-        price: .00,
+        price: 860000.00,
         stock: 2,
         images: ["new-arrivals/bla1.png", "new-arrivals/bla2.png", "new-arrivals/bla3.png"]
     },
-    "":{
+    "Zeitwerk Date White Gold":{
         category: "New Arrivals",
-        desc: "",
-        specs: "Brand: ",
-        price: .00,
+        desc: "The first mechanical watch with a digital jumping numerals display and a unique peripheral glass date ring that turns red to indicate the current day.",
+        specs: "Brand: A. Lange & Sohne",
+        price: 5750000.00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/als1.png", "new-arrivals/als2.png", "new-arrivals/als3.png"]
     }
 };
 
