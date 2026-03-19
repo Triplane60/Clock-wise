@@ -10,15 +10,15 @@ var watchData = {
         stock: 10,
         images: ["men-images/sub1.png", "men-images/sub2.png", "men-images/sub3.png"]
     },
-    "Cosmograph Daytona Congo": {
+    "Daytona Steel and Black Dial White Gold Oysterflex": {
         category: "Gentlemen",
-        desc: "A motorsport legend built for unparalleled precision. This highly sought-after chronograph features a high-contrast dial and a tachymetric scale for tracking ultimate speeds.",
+        desc: "The ultimate tool watch for those who prefer 'stealth wealth.' This 18kt white gold Cosmograph Daytona features a high-contrast black dial and the innovative Oysterflex bracelet, combining high-performance engineering with understated luxury.",
         specs: "Brand: Rolex",
         price: 1850000.00,
         stock: 10,
         images: ["men-images/cos1.png", "men-images/cos2.png", "men-images/cos3.png"]
     },
-    "GMT-Master II Two Tone Everose Rootbeer": {
+    "GMT-Master II Two Tone Everose Oyster": {
         category: "Gentlemen",
         desc: "A sophisticated travel companion wrapped in warm Everose gold and Oystersteel. The bi-color Cerachrom bezel allows frequent flyers to track multiple time zones with timeless elegance.",
         specs: "Brand: Rolex",
@@ -122,13 +122,13 @@ var watchData = {
         stock: 10,
         images: ["men-images/end.png", "men-images/end1.png", "men-images/end2.png"]
     },
-    "":{
+    "Grand Complications Celestial Rose Gold":{
         category: "Gentlemen",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Patek Philippe",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/ome1.png", "new-arrivals/ome2.png", "new-arrivals/ome3.png"]
     },
     "Lady Datejust 28 Two Tone Everose Aubergine Dial With Diamonds":{
         category: "Ladies",
@@ -138,9 +138,9 @@ var watchData = {
         stock: 10,
         images: ["women-images/lad1.png", "women-images/lad2.png", "women-images/lad3.png"]
     },
-    "Datejust 31 Mother Of Pearl Dial With Diamonds":{
+    "Datejust 31 Diamond-Set Silver Dial Yellow Gold President":{
         category: "Ladies",
-        desc: "Nature's beauty captured on your wrist. The iridescent mother-of-pearl dial ensures no two watches are exactly alike, elevated by stunning diamond hour markers.",
+        desc: "Exude timeless elegance with this striking 18kt yellow gold timepiece. It features a classic silver dial illuminated by brilliant diamond hour markers, all beautifully presented on the prestigious President bracelet.",
         specs: "Brand: Rolex",
         price: 1150000.00,
         stock: 10,
@@ -154,17 +154,17 @@ var watchData = {
         stock: 10,
         images: ["women-images/oys1.png", "women-images/oys2.png", "women-images/oys3.png"]
     },
-    "Datejust 36 Wimbledon":{
+    "Lady-Datejust Sky Lavender Sugilite Stone Dial Yellow Gold":{
         category: "Ladies",
-        desc: "A nod to prestigious tennis heritage. Featuring the iconic slate dial with forest green Roman numerals, this piece perfectly bridges the gap between sporty and sophisticated.",
+        desc: "A true collector's piece featuring a rare and vibrant Sky Lavender Sugilite stone dial. Each natural stone dial offers a unique pattern of deep purples and lavenders, set against the luxurious warmth of 18kt yellow gold.",
         specs: "Brand: Rolex",
         price: 820000.00,
         stock: 10,
         images: ["women-images/daj1.png", "women-images/daj2.png", "women-images/daj3.png"]
     },
-    "Air-King 40":{
+    "Datejust 31 Champagne Diamond Dial Two-Tone Jubilee":{
         category: "Ladies",
-        desc: "Originally designed for aviation pioneers, now a modern icon. Its bold 40mm case and striking green accents make a confident, powerful statement on any wrist.",
+        desc: "A quintessential classic, this Datejust 31 features a radiant champagne dial adorned with elegant diamond hour markers. The signature two-tone Oystersteel and yellow gold finish is perfectly complemented by the iconic, five-piece link Jubilee bracelet.",
         specs: "Brand: Rolex",
         price: 650000.00,
         stock: 10,
@@ -250,77 +250,109 @@ var watchData = {
         stock: 10,
         images: ["women-images/pro.png", "women-images/pro1.png", "women-images/pro2.png"]
     },
-    "":{
+    "Complications Annual Calendar Diamond and Mother of Pearl White Gold":{
         category: "Ladies",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Patek Philippe",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/omg1.png", "new-arrivals/omg2.png", "new-arrivals/omg3.png"]
     },
-    "":{
+    "Circus Minute Repeater":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Ulysse Nardin",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/uly1.png", "new-arrivals/uly2.png", "new-arrivals/uly3.png"]
     },
-    "":{
+    "Executive Skeleton Tourbillon":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Ulysse Nardin",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/ule1.png", "new-arrivals/ule3.png", "new-arrivals/ule2.png"]
     },
-    "":{
+    "Freak X Black Titanium":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Ulysse Nardin",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/uls1.png", "new-arrivals/uls2.png", "new-arrivals/uls3.png"]
     },
-    "":{
+    "Overseas Tourbillon Skeleton Titanium":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Vacheron Constantin",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/vac1.png", "new-arrivals/vac2.png", "new-arrivals/vac3.png"]
     },
-    "":{
+    "Kalla Geneva Diamond and White Gold":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Vacheron Constantin",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/vah1.png", "new-arrivals/vah2.png", "new-arrivals/vah3.png"]
     },
-    "":{
+    "Traditionelle White Gold":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Vacheron Constantin",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/vae1.png", "new-arrivals/vae2.png", "new-arrivals/vae3.png"]
     },
-    "":{
+    "Rotonde Calendar Aperture and Power Reserve Steel":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Cartier",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/car1.png", "new-arrivals/car2.png", "new-arrivals/car3.png"]
     },
-    "":{
+    "Ballon Bleu Rose Gold":{
         category: "New Arrivals",
         desc: "",
-        specs: "Brand: ",
+        specs: "Brand: Cartier",
         price: .00,
         stock: 10,
-        images: [""]
+        images: ["new-arrivals/cat1.png", "new-arrivals/cat2.png", "new-arrivals/cat3.png"]
+    },
+    "Pasha Chronograph Yellow Gold Quartz":{
+        category: "New Arrivals",
+        desc: "",
+        specs: "Brand: Cartier",
+        price: .00,
+        stock: 10,
+        images: ["new-arrivals/cai1.png", "new-arrivals/cai2.png", "new-arrivals/cai3.png"]
+    },
+    "Mercedes-Benz 500K Roadster Platinum":{
+        category: "New Arrivals",
+        desc: "",
+        specs: "Brand: Audemars Piguet",
+        price: .00,
+        stock: 10,
+        images: ["new-arrivals/aud1.png", "new-arrivals/aud2.png", "new-arrivals/aud3.png"]
+    },
+    "Royal Oak Concept Split-Seconds Chronograph GMT Carbon":{
+        category: "New Arrivals",
+        desc: "",
+        specs: "Brand: Audemars Piguet",
+        price: .00,
+        stock: 10,
+        images: ["new-arrivals/aue1.png", "new-arrivals/aue2.png", "new-arrivals/aue3.png"]
+    },
+    "Royal Oak Concept CW1 Alacrite":{
+        category: "New Arrivals",
+        desc: "",
+        specs: "Brand: Audemars Piguet",
+        price: .00,
+        stock: 10,
+        images: ["new-arrivals/aup1.png", "new-arrivals/aup2.png", "new-arrivals/aup3.png"]
     },
     "":{
         category: "New Arrivals",

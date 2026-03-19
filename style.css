@@ -223,6 +223,7 @@ body {
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
     gap: 30px; 
+    row-gap: 70px;
     padding: 20px 0;
     width: 100%; 
 }
@@ -1078,6 +1079,7 @@ input::-webkit-credentials-auto-fill-button {
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
 }
 
 .product-card img {
@@ -1122,8 +1124,9 @@ input::-webkit-credentials-auto-fill-button {
     position: relative;
     transition: transform 0.3s ease;
 }
+.size-sl { transform: scale(0.90); }
 
-.size-sm { transform: scale(0.95); } 
+.size-sm { transform: scale(1.00); } 
 
 .size-md { transform: scale(1.15); } 
    
