@@ -383,7 +383,7 @@ var watchData = {
         desc: "The first mechanical watch with a digital jumping numerals display and a unique peripheral glass date ring that turns red to indicate the current day.",
         specs: "Brand: A. Lange & Sohne",
         price: 5750000.00,
-        stock: 10,
+        stock: 2,
         images: ["new-arrivals/als1.png", "new-arrivals/als2.png", "new-arrivals/als3.png"]
     }
 };
@@ -456,7 +456,7 @@ function showShop() {
     document.body.classList.add('shop-active'); 
 
     document.querySelector('.category-bar').style.display = 'flex';
-    document.querySelector('.hero-banner').style.display = 'block';
+    document.querySelector('.hero-banner-fade').style.display = 'block';
     document.querySelector('.content-area').style.display = 'block';
 
     history.pushState({ page: 'shop' }, null, '#shop');
@@ -490,7 +490,7 @@ function showCartPage() {
     document.getElementById('checkout-page').style.display = 'none';
 
     document.querySelector('.category-bar').style.display = 'none';
-    document.querySelector('.hero-banner').style.display = 'none';
+    document.querySelector('.hero-banner-fade').style.display = 'none';
     document.querySelector('.content-area').style.display = 'none';
 
     var cartPage = document.getElementById('cart-page');
@@ -2328,3 +2328,16 @@ function checkAdminAccess() {
         ], { duration: 300 });
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+        let fadeSlides = document.querySelectorAll('.fade-slide');
+        let currentFade = 0;
+
+        setInterval(() => {
+            fadeSlides[currentFade].classList.remove('active-slide');
+            
+            currentFade = (currentFade + 1) % fadeSlides.length;
+            
+            fadeSlides[currentFade].classList.add('active-slide');
+        }, 5000); 
+    });

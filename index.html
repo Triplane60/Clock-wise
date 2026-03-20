@@ -290,23 +290,56 @@
         </nav>
 
 
-        <div class="hero-banner">
-            <div class="slides-container" id="slides">
-                <div class="slide" style="background: linear-gradient(45deg, #1a1a2e, #4a0072);">
-                    <div class="slide-content">
-                        <h2 style="font-size: 2.5rem; margin-bottom: 10px;">New Arrival: Lunar Eclipse 🌙</h2>
-                        <p style="font-size: 1.2rem; margin-bottom: 20px;">Forged from genuine meteorite fragments.</p>
-                        <button class="add-btn" style="width: 200px; margin: 0 auto; background-color: #ffffff; color: #4a0072;" onclick="openDetails('Lunar Eclipse')">Shop Now</button>
-                    </div>
-                </div>
-                <div class="slide" style="background: linear-gradient(45deg, #2e004f, #000000);">
-                    <div class="slide-content">
-                        <h2 style="font-size: 2.5rem; margin-bottom: 10px;">The Spring Sale ✨</h2>
-                        <p style="font-size: 1.2rem; margin-bottom: 20px;">Up to 30% off on selected luxury pieces.</p>
-                        <button class="add-btn" style="width: 200px; margin: 0 auto; background-color: #ffffff; color: #2e004f;" onclick="filterCategory('women')">View Deals</button>
-                    </div>
+        <div class="hero-banner-fade" id="luxury-fade-banner">
+    
+            <div class="fade-slide active-slide" style="background: linear-gradient(45deg, #1f1c2c, #928dab);">
+                <div class="fade-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; color: white;">The ₱28M Masterpiece</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px; color: #e0e0e0;">Kalla Geneva Diamond and White Gold. Pure brilliance.</p>
+                    <button class="add-btn" style="width: 200px; padding: 12px; border: none; background-color: #ffffff; color: #1f1c2c; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="openDetails('Kalla Geneva Diamond and White Gold')">View Details</button>
                 </div>
             </div>
+
+            <div class="fade-slide" style="background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);">
+                <div class="fade-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; color: white;">Celestial Perfection</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px; color: #e0e0e0;">Grand Complications Celestial in Rose Gold.</p>
+                    <button class="add-btn" style="width: 200px; padding: 12px; border: none; background-color: #ffffff; color: #0f2027; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="openDetails('Grand Complications Celestial Rose Gold')">View Details</button>
+                </div>
+            </div>
+
+            <div class="fade-slide" style="background: linear-gradient(45deg, #141e30, #243b55);">
+                <div class="fade-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; color: white;">Acoustic Marvel</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px; color: #e0e0e0;">Circus Minute Repeater. A symphony of haute horlogerie.</p>
+                    <button class="add-btn" style="width: 200px; padding: 12px; border: none; background-color: #ffffff; color: #141e30; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="openDetails('Circus Minute Repeater')">View Details</button>
+                </div>
+            </div>
+
+            <div class="fade-slide" style="background: linear-gradient(45deg, #3a1c71, #d76d77, #ffaf7b);">
+                <div class="fade-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; color: white;">Architectural Brilliance</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px; color: #e0e0e0;">Overseas Tourbillon Skeleton Titanium.</p>
+                    <button class="add-btn" style="width: 200px; padding: 12px; border: none; background-color: #ffffff; color: #3a1c71; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="openDetails('Overseas Tourbillon Skeleton Titanium')">View Details</button>
+                </div>
+            </div>
+
+            <div class="fade-slide" style="background: linear-gradient(45deg, #000000, #434343);">
+                <div class="fade-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; color: white;">Forged Carbon & Ceramic</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px; color: #e0e0e0;">Royal Oak Concept Split-Seconds Chronograph GMT.</p>
+                    <button class="add-btn" style="width: 200px; padding: 12px; border: none; background-color: #ffffff; color: #000000; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="openDetails('Royal Oak Concept Split-Seconds Chronograph GMT Carbon')">View Details</button>
+                </div>
+            </div>
+
+            <div class="fade-slide" style="background: linear-gradient(45deg, #8e9eab, #eef2f3);">
+                <div class="fade-content">
+                    <h2 style="font-size: 2.5rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; color: #333;">Diamond & Mother of Pearl</h2>
+                    <p style="font-size: 1.2rem; margin-bottom: 20px; color: #555;">Complications Annual Calendar in White Gold.</p>
+                    <button class="add-btn" style="width: 200px; padding: 12px; border: none; background-color: #333; color: #ffffff; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;" onclick="openDetails('Complications Annual Calendar Diamond and Mother of Pearl White Gold')">View Details</button>
+                </div>
+            </div>
+
         </div>
 
         <main class="content-area">
@@ -719,12 +752,12 @@
                 </div>
 
                 <div class="watch-card new-arrivals">
-                    <img src="new-arrivals/har.png" alt="Opus VII " class="image-placeholder size-sl" onclick="openDetails('Opus VII ')" style="cursor: pointer;">
-                    <h3>Opus VII </h3>
+                    <img src="new-arrivals/har.png" alt="Opus VII" class="image-placeholder size-sl" onclick="openDetails('Opus VII')" style="cursor: pointer;">
+                    <h3>Opus VII</h3>
                     <p class="category-tag">New Arrivals' Collection</p>
                     <p class="price">₱4,950,000.00</p>
-                    <button class="details-btn" onclick="openDetails('Opus VII ')">View Details</button>
-                    <button class="add-btn" onclick="addToCart('Opus VII ')">Add to Cart</button>
+                    <button class="details-btn" onclick="openDetails('Opus VII')">View Details</button>
+                    <button class="add-btn" onclick="addToCart('Opus VII')">Add to Cart</button>
                 </div>
 
                 <div class="watch-card new-arrivals">
