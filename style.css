@@ -398,7 +398,7 @@ body {
     width: 100vw;
     margin-left: calc(50% - 50vw); 
     margin-top: auto; 
-    padding-top: 50px;
+    padding-top: 40px;
     flex-shrink: 0; 
 }
 
@@ -408,7 +408,7 @@ body {
     flex-wrap: wrap;
     max-width: 85%; 
     margin: 0 auto;    
-    padding: 25px 0; 
+    padding: 5px 0; 
 }
 
 .footer-column {
@@ -1005,7 +1005,7 @@ input::-webkit-credentials-auto-fill-button {
     flex: 1;
     min-width: 350px;
     position: relative;
-    height: 600px;
+    height: 700px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1440,7 +1440,7 @@ body.static-header #cart-summary-section {
 }
 
 #homepage {
-    padding-top: 100px;
+    padding-top: 0px;
     min-height: 500px;
 }
 
@@ -1501,7 +1501,7 @@ justify-content:space-between;
 align-items:center;
 max-width:900px;
 margin:0 auto 30px auto;
-padding-top:10px;
+padding-top:5px;
 }
 
 .footer-links a{
@@ -1576,7 +1576,7 @@ transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .hero-text {
-    margin-top: 100px !important;
+    margin-top: 250px !important;
 }
 
 .hero-visuals {

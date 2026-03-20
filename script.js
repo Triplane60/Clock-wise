@@ -1385,15 +1385,15 @@ function renderFullCartPage() {
             var itemTotal = watch.price * item.quantity;
 
             html += `
-                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0;">
-                    <div style="width: 50px; display: flex; justify-content: center;">
+                <div class="cart-item-row" style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0; gap: 10px;">
+                    <div style="width: 40px; display: flex; justify-content: center; flex-shrink: 0;">
                         <input type="checkbox" class="cart-item-chk" value="${i}" onchange="calculateSelectedTotal()" checked>
                     </div>
-                    <div style="flex: 3; display: flex; align-items: center; gap: 15px;">
-                        <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border-radius: 4px;">
-                        <div>
+                    <div style="flex: 5; display: flex; align-items: center; gap: 15px; min-width: 0;">
+                        <img src="${imgSrc}" style="width: 80px; height: 80px; object-fit: contain; background: #f9f9f9; border-radius: 4px; flex-shrink: 0;">
+                        <div style="min-width: 0;">
                             <span style="display: block; font-weight: bold; color: #333;">${item.name}</span>
-                            <span style="font-size: 0.8rem; color: #999;">${watch.specs || 'Brand: Rolex'}</span>
+                            <span style="font-size: 0.8rem; color: #999;">${watch.specs || 'Brand: '}</span>
                         </div>
                     </div>
                     <div style="flex: 1.5; text-align: center; color: #666;">${pesoFormat.format(watch.price)}</div>
@@ -1850,7 +1850,6 @@ function navigateTo(pageId, headerClass = '') {
         const el = document.getElementById(id);
         if (el) {
             el.style.display = 'none';
-            el.style.paddingTop = "0";
         }
     });
 
