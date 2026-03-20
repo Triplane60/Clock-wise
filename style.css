@@ -190,6 +190,19 @@ body {
 .fade-content .add-btn {
     display: block;
     margin: 0 auto;
+    
+    background-color: var(--violet-main) !important;
+    color: #ffffff !important;
+    
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.fade-content .add-btn:hover {
+    transform: translateY(-4px) !important; 
+    
+    background-color: var(--violet-light) !important; 
+    
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important;
 }
 
 .content-area {
