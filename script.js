@@ -647,21 +647,21 @@ function handleRegister(event) {
     var confirm = document.getElementById("reg-confirm-password").value;
 
     if (username === "") {
-        showNotification("Please enter a username! 👤");
+        showNotification("Please enter a username!");
         return;
     }
 
     if (password.length < 8 || !/[a-zA-Z]/.test(password)) {
-        showNotification("Password must be at least 8 characters and contain a letter! 🛑");
+        showNotification("Password must be at least 8 characters and contain a letter!");
         return;
     }
     if (password !== confirm) {
-        showNotification("Passwords do not match! ❌");
+        showNotification("Passwords do not match!");
         return;
     }
 
     if (localStorage.getItem("user_" + username)) {
-        showNotification("Username already exists! Choose another. ❌");
+        showNotification("Username already exists! Choose another.");
         return;
     }
 
@@ -673,7 +673,7 @@ function handleRegister(event) {
     document.getElementById('nav-portfolio-link').style.display = 'inline-block';
 
     var userDisplay = document.getElementById("user-display");
-    if (userDisplay) userDisplay.innerText = "👤 " + username;
+    if (userDisplay) userDisplay.innerText = "👤" + username;
 
     document.getElementById("reg-username").value = "";
     document.getElementById("reg-password").value = "";
@@ -681,7 +681,7 @@ function handleRegister(event) {
 
     closeLogin();
 
-    showNotification("Account created! Welcome, " + username + "! 🎉");
+    showNotification("Account created! Welcome, " + username + "!");
 }
 
 function handleAuth(event) {
@@ -691,7 +691,7 @@ function handleAuth(event) {
     var pass = document.getElementById("auth-password").value;
 
     if (user === "" || pass === "") {
-        showNotification("Please enter both username and password! 🛑");
+        showNotification("Please enter both username and password!");
         return;
     }
 
@@ -714,9 +714,9 @@ function handleAuth(event) {
         renderCartItems();      
         updateCartDisplay();
         showShop();    
-        showNotification("Welcome back, " + user + "! ✨");
+        showNotification("Welcome back, Admin!");
     } else {
-        showNotification("Invalid username or password! ❌");
+        showNotification("Invalid username or password!");
     }
 }
 
@@ -735,30 +735,30 @@ function saveNewPassword() {
     var confirmPassword = document.getElementById("reset-confirm-password").value;
 
     if (username === "") {
-        showNotification("Please enter a username! 👤");
+        showNotification("Please enter a username!", "user");
         return;
     }
 
     var savedPass = localStorage.getItem("user_" + username);
     if (!savedPass) {
-        showNotification("Account not found! Please check the username. ❌");
+        showNotification("Account not found! Please check the username.");
         return;
     }
 
     if (newPassword.length < 8 || newPassword.length > 10) {
-        showNotification("Password must be between 8 and 10 characters! 🛑");
+        showNotification("Password must be between 8 and 10 characters!");
         return;
     }
 
     if (newPassword !== confirmPassword) {
-        showNotification("Passwords do not match! ❌");
+        showNotification("Passwords do not match!");
         return;
     }
 
     localStorage.setItem("user_" + username, newPassword);
 
     closeResetModal();
-    showNotification("Password updated! Please log in. 🔓");
+    showNotification("Password updated! Please log in.");
     openLoginModal();
 }
 
@@ -842,7 +842,7 @@ function executeLogout() {
     document.getElementById("auth-password").value = "";
     document.getElementById("auth-password").type = "password";
 
-    showNotification("Logged out successfully! 👋");
+    showNotification("Logged out successfully!");
 
     cart = [];
     renderCartItems();      
@@ -870,7 +870,7 @@ function togglePasswordVisibility(inputId, iconElement) {
 function addToCart(watchName) {
     
     if (!isLoggedIn) {
-        showNotification("Please login first to add items to your cart! 🔐");
+        showNotification("Please login first to add items to your cart!");
         openLoginModal();
         return;
     }
@@ -878,13 +878,13 @@ function addToCart(watchName) {
     var watch = watchData[watchName];
     var existingItemIndex = cart.findIndex(item => item.name === watchName);
     if (watch.stock <= 0) {
-        showNotification("Sorry! " + watchName + " is completely sold out. ❌");
+        showNotification("Sorry! " + watchName + " is completely sold out.");
         return; 
     }
 
     if (existingItemIndex > -1) {
         if (cart[existingItemIndex].quantity >= watch.stock) {
-            showNotification("Limit reached! We only have " + watch.stock + " in stock. ⚠️");
+            showNotification("Limit reached! We only have " + watch.stock + " in stock.");
             return;
         }
         cart[existingItemIndex].quantity += 1;
@@ -895,7 +895,7 @@ function addToCart(watchName) {
     total += watch.price;
     updateCartDisplay();
     renderCartItems();
-    showNotification(watchName + " added to cart! 🛒");
+    showNotification(watchName + " added to cart!");
 
     let stockDisplay = document.getElementById('modal-stock-count');
     if (stockDisplay) {
@@ -1163,35 +1163,52 @@ function goToSlide(index) {
 
 // ==================== NOTIFICATION ====================
 function showNotification(message) {
-    var container = document.getElementById("toast-container");
-    if (!container) {
-        container = document.createElement("div");
-        container.id = "toast-container";
-        container.style.cssText = "position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 99999; pointer-events: none; align-items: center;";
-        document.body.appendChild(container);
-    }
+    const existing = document.getElementById('custom-notification');
+    if (existing) existing.remove();
 
-    var toast = document.createElement("div");
-    toast.style.cssText = "background-color: #7e57c2; color: white; padding: 12px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 10px 30px rgba(0,0,0,0.3); opacity: 0; transform: translateY(20px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center;";
-    toast.innerText = message;
+    const notif = document.createElement('div');
+    notif.id = 'custom-notification';
+    
+    const textSpan = document.createElement('span');
+    textSpan.innerText = message;
+    textSpan.style.position = 'relative';
 
-    container.appendChild(toast);
+    notif.appendChild(textSpan);
 
-    setTimeout(function() {
-        toast.style.opacity = "1";
-        toast.style.transform = "translateY(0)";
+    Object.assign(notif.style, {
+        position: 'fixed',
+        bottom: '60px',
+        left: '50%',
+        transform: 'translateX(-50%) translateY(20px)',
+        background: 'rgba(59, 0, 102, 0.95)', 
+        color: 'white',
+        padding: '10px 48px',
+        borderRadius: '2px', 
+        clipPath: 'polygon(15px 0%, calc(100% - 15px) 0%, 100% 50%, calc(100% - 15px) 100%, 15px 100%, 0% 50%)',
+        borderLeft: '2px solid rgba(255, 255, 255, 0.1)', 
+        borderRight: '2px solid rgba(255, 255, 255, 0.1)',
+        fontFamily: "'Cormorant Garamond', serif",
+        fontSize: '15px',
+        fontWeight: '600',
+        letterSpacing: '2.5px', 
+        textTransform: 'uppercase',
+        boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+        opacity: '0',
+        transition: 'all 0.6s cubic-bezier(0.19, 1, 0.22, 1)',
+        zIndex: '1000000'
+    });
+
+    document.body.appendChild(notif);
+
+    setTimeout(() => {
+        notif.style.transform = 'translateX(-50%) translateY(0)';
+        notif.style.opacity = '1';
     }, 10);
 
-    setTimeout(function() {
-        toast.style.opacity = "0"; 
-        toast.style.transform = "translateY(-20px)"; 
-        
-        setTimeout(function() {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
-            }
-        }, 400); 
-    }, 3000);
+    setTimeout(() => {
+        notif.style.opacity = '0';
+        setTimeout(() => notif.remove(), 600);
+    }, 3500);
 }
 
 // ==================== FILTER & SEARCH ====================
@@ -1509,7 +1526,7 @@ function deleteCartItem(index) {
     updateCartDisplay();
     renderCartItems();
     renderFullCartPage();
-    showNotification("Item removed from cart 🗑️");
+    showNotification("Item removed from cart.");
 }
 
 function deleteSelectedItems() {
@@ -1523,7 +1540,7 @@ function deleteSelectedItems() {
     });
 
     if (indicesToDelete.length === 0) {
-        showNotification("Please select an item to delete! 🛑");
+        showNotification("Please select an item to delete!");
         return;
     }
 
@@ -1536,7 +1553,7 @@ function deleteSelectedItems() {
     renderFullCartPage();
     calculateSelectedTotal(); 
 
-    showNotification("Selected items removed 🗑️");
+    showNotification("Selected items removed.");
 }
 
 function toggleSelectAll(selectAllCheckbox) {
@@ -1606,7 +1623,7 @@ function openCheckout() {
     var checkedBoxes = document.querySelectorAll('.cart-item-chk:checked');
 
     if (checkedBoxes.length === 0) {
-        showNotification("Please select at least one item to checkout! 🛒");
+        showNotification("Please select at least one item to checkout!");
         return;
     }
 
@@ -1790,9 +1807,13 @@ function placeShopeeOrder(event) {
         total: grandTotal
     };
 
-    const existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-    existingOrders.push(order);
-    localStorage.setItem('orderHistory', JSON.stringify(existingOrders));
+    const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
+    customerOrders.push(order);
+    localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
+
+    const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
+    adminOrders.push(order); 
+    localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     
     const indicesToRemove = [];
     checkedBoxes.forEach(box => indicesToRemove.push(parseInt(box.value)));
@@ -1982,9 +2003,13 @@ function processOrder(event) {
         }))
     };
 
-    const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-    history.push(newOrder);
-    localStorage.setItem('orderHistory', JSON.stringify(history));
+    const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
+    customerOrders.push(newOrder);
+    localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
+
+    const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
+    adminOrders.push(newOrder);
+    localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
 
     closeCheckoutModal(); 
     navigateTo('receipt-page', 'static-header');
@@ -1999,7 +2024,7 @@ function increaseCartQuantity(cartIndex) {
     let masterStock = watchData[watchName].stock;
 
     if (item.quantity >= masterStock) {
-        showNotification("Limit reached! We only have " + masterStock + " of those. ⚠️");
+        showNotification("Limit reached! We only have " + masterStock + " of those.");
         return;
     }
 
@@ -2031,11 +2056,11 @@ function subscribeNewsletter(event) {
     let emailText = emailBox.value.trim(); 
 
     if (!emailText.includes("@") || !emailText.includes(".")) {
-        showNotification("Please enter a valid email address. ❌");
+        showNotification("Please enter a valid email address.");
         return; 
     }
 
-    showNotification("Thank you! Exclusive offers will be sent to " + emailText + " ✨");
+    showNotification("Thank you! Exclusive offers will be sent to " + emailText);
     emailBox.value = ""; 
 }
 
@@ -2051,7 +2076,7 @@ function updateAdminStock(watchName) {
     let newStockValue = parseInt(inputField.value);
 
     if (isNaN(newStockValue) || newStockValue < 0) {
-        showNotification("Please enter a valid stock number! ❌");
+        showNotification("Please enter a valid stock number!");
         return;
     }
 
@@ -2062,7 +2087,7 @@ function updateAdminStock(watchName) {
     localStorage.setItem('watchStock', JSON.stringify(allStock));
 
     loadAdminDashboard();
-    showNotification(`${watchName} stock updated to ${newStockValue}! ✅`);
+    showNotification(`${watchName} stock updated to ${newStockValue}!`);
 }
 
 function showAdmin() {
@@ -2196,7 +2221,7 @@ function loadAdminDashboard() {
         return;
     }
 
-    const rawData = localStorage.getItem('orderHistory');
+    const rawData = localStorage.getItem('adminHistory');
     const orders = JSON.parse(rawData || '[]');
     console.log(
         "%c ✧ CLOCKWISE REGISTRY %c Found " + orders.length + " entries in archive.",
@@ -2205,6 +2230,8 @@ function loadAdminDashboard() {
     );
 
     if (orders.length === 0) {
+        const revenueDisplay = document.getElementById('admin-revenue-display');
+    if (revenueDisplay) revenueDisplay.innerText = '₱0.00';
    orderList.innerHTML = `
         <div class="admin-empty-state" style="text-align: center; padding: 80px 20px;">
             
@@ -2238,8 +2265,17 @@ function loadAdminDashboard() {
         return pesoFormat.format(val);
     };
 
-    let htmlContent = "";
+    const adminGrandTotal = orders.reduce((sum, order) => {
+        const val = parseFloat(String(order.total).replace(/[^0-9.-]+/g, '')) || 0;
+        return sum + val;
+    }, 0);
 
+    const revenueDisplay = document.getElementById('admin-revenue-display');
+    if (revenueDisplay) {
+        revenueDisplay.innerText = pesoFormat.format(adminGrandTotal);
+    }
+
+    let htmlContent = "";
     orders.slice().reverse().forEach((order, index) => {
         const delay = index * 0.1;
         htmlContent += `
@@ -2287,7 +2323,7 @@ function logout() {
     window.location.hash = '#shop';
     window.scrollTo(0, 0);
 
-    showNotification("Logged out safely. 🛡️");
+    showNotification("Logged out safely.");
 }
 
 function openClearHistoryModal() {
@@ -2295,14 +2331,14 @@ function openClearHistoryModal() {
 }
 
 function executeClearHistory() {
-    localStorage.removeItem('orderHistory');
+    localStorage.removeItem('adminHistory');
     
     closeConfirmModal();
 
     loadAdminDashboard(); 
     
     if (typeof showNotification === 'function') {
-        showNotification('Database wiped successfully. 🧹');
+        showNotification('Database wiped successfully.');
     }
 }
 
@@ -2347,7 +2383,7 @@ function checkAdminAccess() {
         filterAdminStock('Gentlemen');
         loadAdminDashboard();
 
-        showNotification("Access Granted. Ready to manage stock? 💼");
+        showNotification("Access Granted. Ready to manage stock?");
     } else {
         errorMsg.style.display = 'block';
         document.querySelector('#admin-login-modal > div').animate([
@@ -2385,7 +2421,7 @@ function showMyOrders() {
     const backBtn = document.getElementById('portfolio-back-btn');
     if (!orderList) return;
 
-    const allOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]').reverse();
+    const allOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]').reverse();
     const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
 
     if (allOrders.length === 0) {
@@ -2405,6 +2441,8 @@ function showMyOrders() {
                 <button onclick="showShop()" style="background: #2e004f; color: white; border: none; padding: 15px 40px; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s;">Explore Collection</button>
             </div>
         `;
+        const clearBtnContainer = document.getElementById('clear-portfolio-container');
+        if (clearBtnContainer) clearBtnContainer.style.display = 'none';
         return;
     }
 
@@ -2489,13 +2527,13 @@ function closeSecureModal() {
 }
 
 function confirmSecureClear() {
-    localStorage.removeItem('orderHistory');
+    localStorage.removeItem('customerHistory');
     
     closeSecureModal();
     
     showMyOrders();
     
-    showNotification("Vault history has been securely wiped. 🔒");
+    showNotification("Vault history has been securely wiped.");
 }
 
 document.addEventListener("DOMContentLoaded", function() {
