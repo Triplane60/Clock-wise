@@ -589,8 +589,10 @@ input::-webkit-credentials-auto-fill-button {
 }
 .feature-icon {
     font-size: 2.5rem;
-    display: block;
+    display: inline-block; 
     margin-bottom: 15px;
+    color: var(--indigo-dark); 
+    transition: color 0.3s ease; 
 }
 .feature-item h4 {
     color: var(--indigo-dark);
@@ -1686,4 +1688,44 @@ body.on-cart-page .nav-logo {
 .admin-stock-row {
     opacity: 0; 
     animation: cardCascade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.clear-btn {
+    background: transparent;
+    color: #888;
+    border: 1px solid #ddd;
+    padding: 10px 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.clear-btn:hover {
+    color: #ff4757;
+    border-color: #ff4757;
+    background: #fff5f5;
+}
+
+.portfolio-fade-in {
+    animation: luxuryFade 0.8s ease-out forwards;
+}
+
+@keyframes luxuryFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#secure-clear-modal button:hover {
+    filter: brightness(0.9);
+    transition: 0.3s ease;
 }

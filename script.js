@@ -410,10 +410,28 @@ var total = 0;
 var currentCategory = 'all';
 
 // ==================== PAGE NAVIGATION ====================
+function hideAllPages() {
+    const pages = [
+        'homepage', 
+        'shop-page', 
+        'my-orders-page',
+        'warranty-section',
+        'main-footer',      
+        'about-page',
+        'contact-page'
+    ];
+
+    pages.forEach(pageId => {
+        const page = document.getElementById(pageId);
+        if (page) {
+            page.style.display = 'none';
+        }
+    });
+}
+
 function showHome() {
+    hideAllPages();
     document.getElementById('homepage').style.display = 'block';
-    document.getElementById('shop-page').style.display = 'none';
-    document.getElementById('checkout-page').style.display = 'none';
     
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
@@ -438,10 +456,15 @@ function showHome() {
 }
 
 function showShop() {
+    var footer = document.querySelector('footer');
+    if (footer) footer.style.display = 'block';
+    document.querySelectorAll('#my-orders-page > div[style*="position: fixed"]')
+        .forEach(function(el) { el.style.display = 'none'; });
     if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
     if (document.getElementById('about-page')) document.getElementById('about-page').style.display = 'none';
     if (document.getElementById('contact-page')) document.getElementById('contact-page').style.display = 'none';
     if (document.getElementById('checkout-page')) document.getElementById('checkout-page').style.display = 'none';
+    if (document.getElementById('my-orders-page')) document.getElementById('my-orders-page').style.display = 'none';
     
     var cartPage = document.getElementById('cart-page');
     if (cartPage) cartPage.style.display = 'none';
@@ -547,10 +570,12 @@ window.onload = function() {
     var activeUser = localStorage.getItem("currentUser");
     if (activeUser) {
         isLoggedIn = true;
+        document.getElementById('nav-portfolio-link').style.display = 'inline-block';
         var userDisplay = document.getElementById("user-display");
         if (userDisplay) userDisplay.innerText = "👤 " + activeUser;
     } else {
         isLoggedIn = false;
+        document.getElementById('nav-portfolio-link').style.display = 'none';
     }
 
     showHome();
@@ -645,6 +670,8 @@ function handleRegister(event) {
     isLoggedIn = true;
     localStorage.setItem("currentUser", username);
 
+    document.getElementById('nav-portfolio-link').style.display = 'inline-block';
+
     var userDisplay = document.getElementById("user-display");
     if (userDisplay) userDisplay.innerText = "👤 " + username;
 
@@ -673,6 +700,8 @@ function handleAuth(event) {
     if (savedPass && savedPass === pass) {
         isLoggedIn = true;
         localStorage.setItem("currentUser", user);
+
+        document.getElementById('nav-portfolio-link').style.display = 'inline-block';
 
         var userDisplay = document.getElementById("user-display");
         if (userDisplay) userDisplay.innerText = "👤 " + user;
@@ -803,6 +832,7 @@ function closeLogoutModal() {
 
 function executeLogout() {
     isLoggedIn = false;
+    document.getElementById('nav-portfolio-link').style.display = 'none';
     localStorage.removeItem("currentUser");
 
     document.getElementById("user-display").innerText = "👤 Login";
@@ -1686,32 +1716,8 @@ function placeShopeeOrder(event) {
         return; 
     }
 
-    if (/\b[a-z]/.test(rawName)) {
-        showNotification("Error: Please capitalize the first letter of your names.");
-        nameBox.style.border = "2px solid #ff4757";
-        return;
-    }
-
-    if (rawAddress.length < 10 || !rawAddress.toLowerCase().includes('city')) {
-        showNotification("Please enter a complete address, including your City.");
-        addressBox.style.border = "2px solid #ff4757";
-        return;
-    }
-
-    if (/\b[a-z]/.test(rawAddress)) {
-        showNotification("Error: Please capitalize the first letter of every word in your address.");
-        addressBox.style.border = "2px solid #ff4757";
-        return;
-    }
-
-    if (!rawAddress.includes(',')) {
-        showNotification("Error: Please include a comma (,) after the Barangay or Street.");
-        addressBox.style.border = "2px solid #ff4757";
-        return;
-    }
-
-    if (/\bBrgy(?!\.)/i.test(rawAddress)) {
-        showNotification("Error: Please use the correct abbreviation 'Brgy.' with a period.");
+    if (rawAddress.length < 10) {
+        showNotification("Please enter a complete delivery address.");
         addressBox.style.border = "2px solid #ff4757";
         return;
     }
@@ -1731,9 +1737,7 @@ function placeShopeeOrder(event) {
                 <img src="${watch.images[0]}" style="width: 60px; height: 60px; object-fit: contain; background: #f9f9f9; border-radius: 6px; border: 1px solid #eee;">
                 <div style="text-align: left;">
                     <p style="margin: 0; font-weight: bold; font-size: 0.95rem;">${item.name}</p>
-                    
                     <p style="margin: 0; font-size: 0.75rem; color: #888;">${watch.specs || 'Brand: Luxury'}</p>
-                    
                     <p style="margin: 2px 0 0 0; color: #666; font-size: 0.8rem;">Qty: ${item.quantity}</p>
                 </div>
             </div>`;
@@ -1761,24 +1765,25 @@ function placeShopeeOrder(event) {
 
     nameBox.value = "";
     addressBox.value = "";
+    
     checkedBoxes.forEach(box => {
-    const cartIndex = parseInt(box.value);
-
-    const item = cart[cartIndex];
-    if (item && watchData[item.name]) {
-        watchData[item.name].stock -= item.quantity;
-    }
+        const cartIndex = parseInt(box.value);
+        const item = cart[cartIndex];
+        if (item && watchData[item.name]) {
+            watchData[item.name].stock -= item.quantity;
+        }
     });
 
     localStorage.setItem('watchStock', JSON.stringify(
-    Object.fromEntries(
-        Object.keys(watchData).map(name => [name, watchData[name].stock])
-    )
+        Object.fromEntries(
+            Object.keys(watchData).map(name => [name, watchData[name].stock])
+        )
     ));
 
     const order = {
         id: 'CW-' + Date.now().toString().slice(-6),
         date: new Date().toLocaleString(),
+        arrivalDate: formattedArrival,
         customer: rawName,
         address: rawAddress,
         items: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
@@ -1839,11 +1844,17 @@ window.addEventListener('popstate', function(event) {
 
 function navigateTo(pageId, headerClass = '') {
     window.scrollTo(0, 0);
-
+    var footer = document.querySelector('footer');
+    var pagesWithoutFooter = ['cart-page', 'admin-page', 'receipt-page', 'my-orders-page', 'checkout-page'];
+    if (footer) footer.style.display = pagesWithoutFooter.includes(pageId) ? 'none' : 'block';
+    var sidePanels = document.querySelectorAll('#my-orders-page > div[style*="position: fixed"]');
+    sidePanels.forEach(function(panel) {
+        panel.style.display = pageId === 'my-orders-page' ? 'flex' : 'none';
+    });
     const pages = [
     'homepage', 'shop-page', 'about-page', 'contact-page',
     'privacy-page', 'terms-page', 'return-page', 'warranty-page',
-    'receipt-page', 'cart-page', "admin-page"   
+    'receipt-page', 'cart-page', "admin-page", 'my-orders-page'   
     ];
 
     pages.forEach(id => {
@@ -2187,15 +2198,35 @@ function loadAdminDashboard() {
 
     const rawData = localStorage.getItem('orderHistory');
     const orders = JSON.parse(rawData || '[]');
-    console.log("📦 Found " + orders.length + " orders in storage.");
+    console.log(
+        "%c ✧ CLOCKWISE REGISTRY %c Found " + orders.length + " entries in archive.",
+        "color: #ffffff; background: #3b0066; padding: 3px 10px; border-radius: 5px; font-weight: bold;",
+        "color: #3b0066; font-style: italic;"
+    );
 
     if (orders.length === 0) {
-    orderList.innerHTML = `
-        <div class="admin-empty-state">
-            <div style="font-size: 50px; margin-bottom: 20px;">📦</div>
-            <h3 style="color: #3b0066; font-family: 'Playfair Display', serif;">Your Registry is Quiet</h3>
-            <p style="color: #888;">No transactions have been recorded yet.</p>
-        </div>`;
+   orderList.innerHTML = `
+        <div class="admin-empty-state" style="text-align: center; padding: 80px 20px;">
+            
+            <div style="margin-bottom: 25px; display: flex; justify-content: center; opacity: 0.4;">
+                <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                </svg>
+            </div>
+
+            <h3 style="color: #3b0066; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; text-transform: capitalize; margin: 0 0 10px;">
+                Your Registry is Quiet
+            </h3>
+            
+            <p style="color: #888; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 1px;">
+                No transactions have been recorded in the archive yet.
+            </p>
+        </div>
+    `;
     return;
 }
 
@@ -2339,4 +2370,140 @@ document.addEventListener("DOMContentLoaded", function() {
             
             fadeSlides[currentFade].classList.add('active-slide');
         }, 5000); 
-    });
+});
+
+function showMyOrders() {
+    const portfolioPage = document.getElementById('my-orders-page');
+    if (portfolioPage) {
+        portfolioPage.style.background = "#f8f9fa"; 
+        portfolioPage.style.minHeight = "100vh";
+    }
+
+    navigateTo('my-orders-page', 'static-header');
+    
+    const orderList = document.getElementById('my-orders-list');
+    const backBtn = document.getElementById('portfolio-back-btn');
+    if (!orderList) return;
+
+    const allOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]').reverse();
+    const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
+
+    if (allOrders.length === 0) {
+        if (backBtn) backBtn.style.display = 'none';
+        orderList.innerHTML = `
+            <div class="portfolio-fade-in" style="max-width: 600px; margin: 60px auto; padding: 70px 40px; background: #fff; border: 2px solid #3b0066; border-radius: 35px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
+                <div style="margin-bottom: 30px;">
+                    <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"></path>
+                    </svg>
+                </div>
+                <h2 style="font-family: 'Cormorant Garamond', serif; color: #3b0066; font-size: 2.2rem; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; margin: 0;">Your Vault is Empty</h2>
+                <div style="width: 40px; height: 1px; background: #3b0066; margin: 20px auto; opacity: 0.4;"></div>
+                <p style="font-family: 'Montserrat', sans-serif; color: #888; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 40px; line-height: 1.8;">Begin your legacy by exploring our <br> curated collection of fine timepieces.</p>
+                <button onclick="showShop()" style="background: #2e004f; color: white; border: none; padding: 15px 40px; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s;">Explore Collection</button>
+            </div>
+        `;
+        return;
+    }
+
+    if (backBtn) backBtn.style.display = 'block';
+
+    orderList.innerHTML = `
+        <div class="portfolio-fade-in" style="max-width: 900px; margin: 0 auto; background: white; border: 1px solid #e0e0e0; border-radius: 15px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.03);">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f4f4f4; padding-bottom: 20px;">
+                <h2 style="font-family: 'Cormorant Garamond', serif; color: #3b0066; font-size: 1.8rem; margin: 0;">Portfolio Registry</h2>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">
+                    ${allOrders.length} ${allOrders.length === 1 ? 'Order' : 'Orders'} Ongoing
+                </span>
+            </div>
+
+            <div id="registry-items-container">
+                ${allOrders.map(order => {
+                    const orderTotal = (order.items || []).reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+                    
+                    let finalArrivalDate = order.arrivalDate;
+                    if (!finalArrivalDate && order.date) {
+                        let purchaseDate = new Date(order.date);
+                        purchaseDate.setDate(purchaseDate.getDate() + 4);
+                        finalArrivalDate = purchaseDate.toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' });
+                    }
+
+                    return `
+                        <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 25px; margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <strong style="color: #3b0066; font-size: 1.1rem; font-family: 'Montserrat', sans-serif;">${order.id}</strong>
+                                <span style="color: #28a745; font-weight: 700; font-size: 1.1rem;">${pesoFormat.format(orderTotal)}</span>
+                            </div>
+                            
+                            <div style="font-size: 0.85rem; color: #555; font-family: 'Montserrat', sans-serif; line-height: 1.8; margin-bottom: 15px;">
+                                <div>👤 <span style="margin-left: 8px;"><strong>Customer:</strong> ${order.customer || 'Valued Client'}</span></div>
+                                <div>📍 <span style="margin-left: 8px;"><strong>Address:</strong> ${order.address || 'Boutique Pickup'}</span></div>
+                                
+                                <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                                    <span>🗓️</span> <span style="color: #888;">Purchased: ${order.date}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span>🚚</span> <strong style="color: #2e004f;">Est. Arrival: ${finalArrivalDate}</strong>
+                                </div>
+                            </div>
+
+                            <div style="background: #f8f9fa; padding: 12px 20px; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">
+                                <span>${order.items[0]?.name} <small style="color:#999; margin-left: 5px;">(x${order.items[0]?.quantity})</small></span>
+                                <strong>${pesoFormat.format(order.items[0]?.price)}</strong>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+
+    const clearBtnContainer = document.getElementById('clear-portfolio-container');
+    if (clearBtnContainer) {
+        clearBtnContainer.style.display = 'block';
+        clearBtnContainer.style.marginTop = '30px';
+    }
+}
+
+function clearPortfolio() {
+    const modal = document.getElementById('secure-clear-modal');
+    const modalContent = modal.querySelector('.portfolio-fade-in');
+    
+    if (modal) {
+        modal.style.display = 'flex';
+            
+        if (modalContent) {
+            modalContent.classList.remove('portfolio-fade-in');
+            void modalContent.offsetWidth; 
+            modalContent.classList.add('portfolio-fade-in');
+        }
+    }
+}
+
+function closeSecureModal() {
+    const modal = document.getElementById('secure-clear-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function confirmSecureClear() {
+    localStorage.removeItem('orderHistory');
+    
+    closeSecureModal();
+    
+    showMyOrders();
+    
+    showNotification("Vault history has been securely wiped. 🔒");
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    if (localStorage.getItem("currentUser")) {
+        var portfolioLink = document.getElementById('nav-portfolio-link');
+        if (portfolioLink) {
+            portfolioLink.style.display = 'inline-block';
+        }
+    }
+});
+
