@@ -573,7 +573,7 @@ window.onload = function() {
         isLoggedIn = true;
         document.getElementById('nav-portfolio-link').style.display = 'inline-block';
         var userDisplay = document.getElementById("user-display");
-        if (userDisplay) userDisplay.innerText = "👤 " + activeUser;
+        if (userDisplay) userDisplay.innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.2rem; color: #ffffff !important;"></i> <span style="font-weight: 600; letter-spacing: 1px; font-size: 0.85rem;">${activeUser}</span>`;
     } else {
         isLoggedIn = false;
         document.getElementById('nav-portfolio-link').style.display = 'none';
@@ -682,7 +682,7 @@ function handleRegister(event) {
     document.getElementById('nav-portfolio-link').style.display = 'inline-block';
 
     var userDisplay = document.getElementById("user-display");
-    if (userDisplay) userDisplay.innerText = "👤" + username;
+    if (userDisplay) userDisplay.innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.2rem; color: #ffffff !important;"></i> <span style="font-weight: 600; letter-spacing: 1px; font-size: 0.85rem;">${username}</span>`;
 
     document.getElementById("reg-username").value = "";
     document.getElementById("reg-password").value = "";
@@ -713,7 +713,7 @@ function handleAuth(event) {
         document.getElementById('nav-portfolio-link').style.display = 'inline-block';
 
         var userDisplay = document.getElementById("user-display");
-        if (userDisplay) userDisplay.innerText = "👤 " + user;
+        if (userDisplay) userDisplay.innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.2rem; color: #ffffff !important;"></i> <span style="font-weight: 600; letter-spacing: 1px; font-size: 0.85rem;">${user}</span>`;
 
         document.getElementById("auth-username").value = "";
         document.getElementById("auth-password").value = "";
@@ -881,7 +881,7 @@ function executeLogout() {
     document.getElementById('nav-portfolio-link').style.display = 'none';
     localStorage.removeItem("currentUser");
 
-    document.getElementById("user-display").innerText = "👤 Login";
+    document.getElementById("user-display").innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.2rem; color: #ffffff !important;"></i> <span style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">Login</span>`;
     document.getElementById("logout-confirm-modal").style.display = "none";
 
     document.getElementById("auth-username").value = "";
