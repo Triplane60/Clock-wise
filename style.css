@@ -1739,3 +1739,24 @@ body.on-cart-page .nav-logo {
         opacity: 1 !important;
     }
 }
+
+#admin-login-modal, 
+#login-modal, 
+#details-modal,
+#reset-modal,
+#clear-history-modal {
+    background: rgba(0, 0, 0, 0.5) !important; 
+    backdrop-filter: blur(8px); 
+    -webkit-backdrop-filter: blur(8px); 
+}
+
+#release-confirm-modal {
+    background: rgba(20, 0, 40, 0.4) !important; 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+@keyframes releaseModalIn {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}

@@ -408,6 +408,7 @@ var currentSlideIndex = 0;
 var cart = [];
 var total = 0;
 var currentCategory = 'all';
+var releaseTimers = {};
 
 // ==================== PAGE NAVIGATION ====================
 function hideAllPages() {
@@ -538,7 +539,7 @@ function showCartPage() {
             luxeDesign = document.createElement('div');
             luxeDesign.className = 'cart-luxe-design';
             
-            luxeDesign.style.cssText = 'position: absolute; left: 50%; transform: translateX(-50%); color: #D4AF37; font-family: "Georgia", serif; letter-spacing: 3px; font-size: 1.1rem; font-weight: bold; white-space: nowrap;';
+            luxeDesign.style.cssText = 'position: absolute; left: 50%; transform: translateX(-50%); color: #7e57c2; font-family: "Georgia", serif; letter-spacing: 3px; font-size: 1.1rem; font-weight: bold; white-space: nowrap;';
             luxeDesign.innerHTML = '✧ SECURE CHECKOUT ✧';
             
             searchContainer.parentElement.insertBefore(luxeDesign, searchContainer);
@@ -587,23 +588,31 @@ function openLoginModal() {
 
 function closeLogin() {
     var modal = document.getElementById("login-modal");
-    if (modal) modal.style.display = "none";
+    if (!modal) return;
 
-    document.getElementById("auth-username").value = "";
-    document.getElementById("auth-password").value = "";
+    modal.style.transition = 'opacity 0.4s ease';
+    modal.style.opacity = '0';
 
-    document.getElementById("reg-username").value = "";
-    document.getElementById("reg-password").value = "";
-    document.getElementById("reg-confirm-password").value = "";
+    setTimeout(() => {
+        modal.style.display = "none";
+        modal.style.opacity = "1";
 
-    document.getElementById("auth-password").type = "password";
-    document.getElementById("reg-password").type = "password";
-    document.getElementById("reg-confirm-password").type = "password";
+        document.getElementById("auth-username").value = "";
+        document.getElementById("auth-password").value = "";
 
-    document.getElementById("login-form-content").style.display = "block";
-    document.getElementById("register-form-content").style.display = "none";
-    document.getElementById("login-title").innerText = "Welcome Back";
-    document.getElementById("login-subtitle").innerText = "Please login to start shopping";
+        document.getElementById("reg-username").value = "";
+        document.getElementById("reg-password").value = "";
+        document.getElementById("reg-confirm-password").value = "";
+
+        document.getElementById("auth-password").type = "password";
+        document.getElementById("reg-password").type = "password";
+        document.getElementById("reg-confirm-password").type = "password";
+
+        document.getElementById("login-form-content").style.display = "block";
+        document.getElementById("register-form-content").style.display = "none";
+        document.getElementById("login-title").innerText = "Welcome Back";
+        document.getElementById("login-subtitle").innerText = "Please login to start shopping";
+    }, 400);
 }
 
 function toggleAuth() {
@@ -721,12 +730,22 @@ function handleAuth(event) {
 }
 
 function handleForgotPassword() {
-    document.getElementById("reset-username").value = "";
-    document.getElementById("reset-new-password").value = "";
-    document.getElementById("reset-confirm-password").value = "";
+    const loginModal = document.getElementById("login-modal");
+    const resetModal = document.getElementById("reset-modal");
 
-    closeLogin(); 
-    document.getElementById("reset-modal").style.display = "block";
+    if (loginModal) {
+        loginModal.style.display = "none";
+    }
+
+    if (resetModal) {
+        resetModal.style.opacity = "0";
+        resetModal.style.display = "flex";
+        
+        setTimeout(() => {
+            resetModal.style.transition = "opacity 0.3s ease";
+            resetModal.style.opacity = "1";
+        }, 10);
+    }
 }
 
 function saveNewPassword() {
@@ -763,15 +782,42 @@ function saveNewPassword() {
 }
 
 function backToLoginFromReset() {
-    closeResetModal(); 
-    openLoginModal();  
+    const loginModal = document.getElementById("login-modal");
+    const resetModal = document.getElementById("reset-modal");
+
+    if (resetModal) {
+        resetModal.style.display = "none";
+        document.getElementById("reset-username").value = "";
+        document.getElementById("reset-new-password").value = "";
+        document.getElementById("reset-confirm-password").value = "";
+    }
+
+    if (loginModal) {
+        loginModal.style.opacity = "0";
+        loginModal.style.display = "flex";
+        
+        setTimeout(() => {
+            loginModal.style.transition = "opacity 0.3s ease";
+            loginModal.style.opacity = "1";
+        }, 10);
+    }
 }
 
 function closeResetModal() {
-    document.getElementById("reset-username").value = "";
-    document.getElementById("reset-new-password").value = "";
-    document.getElementById("reset-confirm-password").value = "";
-    document.getElementById("reset-modal").style.display = "none";
+    const resetModal = document.getElementById("reset-modal");
+    if (!resetModal) return;
+
+    resetModal.style.transition = "opacity 0.4s ease";
+    resetModal.style.opacity = "0";
+
+    setTimeout(() => {
+        resetModal.style.display = "none";
+        resetModal.style.opacity = "1";
+
+        document.getElementById("reset-username").value = "";
+        document.getElementById("reset-new-password").value = "";
+        document.getElementById("reset-confirm-password").value = "";
+    }, 400);
 }
 
 function handleUserClick(event) {
@@ -1128,7 +1174,18 @@ function openDetails(name) {
 }
 
 function closeDetails() {
-    document.getElementById("details-modal").style.display = "none";
+    const detailsModal = document.getElementById('details-modal'); 
+    if (!detailsModal) return;
+
+    detailsModal.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+    detailsModal.style.opacity = '0';
+    detailsModal.style.transform = 'translateY(10px)';
+
+    setTimeout(() => {
+        detailsModal.style.display = 'none';
+        detailsModal.style.opacity = '1';
+        detailsModal.style.transform = 'translateY(0)';
+    }, 400);
 }
 
 function changeSlide(direction) {
@@ -1266,17 +1323,29 @@ setInterval(function() {
 
 // ==================== CLICK OUTSIDE MODAL ====================
 window.onclick = function(event) {
-    var cartModal = document.getElementById("cart-modal");
+    var confirmModal = document.getElementById("confirm-modal");
+    if (event.target == confirmModal) closeConfirmModal();
+
     var detailsModal = document.getElementById("details-modal");
+    if (event.target == detailsModal) closeDetails();
+
+    var loginModal = document.getElementById("login-modal");
+    if (event.target == loginModal) closeLogin();
+
+    var clearModal = document.getElementById("secure-clear-modal");
+    if (event.target == clearModal) closeSecureModal();
+
+    var cartModal = document.getElementById("cart-modal");
     if (event.target == cartModal) cartModal.style.display = "none";
-    if (event.target == detailsModal) detailsModal.style.display = "none";
 
     var cartDropdown = document.getElementById("cart-dropdown");
     var userDropdown = document.getElementById("user-dropdown");
+    
     var clickedCart = event.target.closest('[onclick="toggleCartDropdown()"]') || event.target.closest('#cart-dropdown');
     var clickedUser = event.target.closest('#user-display') || event.target.closest('#user-dropdown');
 
     if (!clickedCart && cartDropdown) cartDropdown.style.display = "none";
+    if (!clickedUser && userDropdown) userDropdown.style.display = "none";
 };
 
 // ==================== HASH CHANGE ====================
@@ -2217,45 +2286,33 @@ function loadAdminDashboard() {
 
     const orderList = document.getElementById('admin-order-list');
     if (!orderList) {
-        console.error("❌ ERROR: Could not find 'admin-order-list' in HTML!");
+        console.error("ERROR: Could not find 'admin-order-list' in HTML!");
         return;
     }
 
     const rawData = localStorage.getItem('adminHistory');
     const orders = JSON.parse(rawData || '[]');
-    console.log(
-        "%c ✧ CLOCKWISE REGISTRY %c Found " + orders.length + " entries in archive.",
-        "color: #ffffff; background: #3b0066; padding: 3px 10px; border-radius: 5px; font-weight: bold;",
-        "color: #3b0066; font-style: italic;"
-    );
 
     if (orders.length === 0) {
         const revenueDisplay = document.getElementById('admin-revenue-display');
-    if (revenueDisplay) revenueDisplay.innerText = '₱0.00';
-   orderList.innerHTML = `
-        <div class="admin-empty-state" style="text-align: center; padding: 80px 20px;">
-            
-            <div style="margin-bottom: 25px; display: flex; justify-content: center; opacity: 0.4;">
-                <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <line x1="10" y1="9" x2="8" y2="9"></line>
-                </svg>
+        if (revenueDisplay) revenueDisplay.innerText = '₱0.00';
+        orderList.innerHTML = `
+            <div class="admin-empty-state" style="text-align: center; padding: 80px 20px;">
+                <div style="margin-bottom: 25px; display: flex; justify-content: center; opacity: 0.4;">
+                    <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <line x1="10" y1="9" x2="8" y2="9"></line>
+                    </svg>
+                </div>
+                <h3 style="color: #3b0066; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; text-transform: capitalize; margin: 0 0 10px;">Your Registry is Quiet</h3>
+                <p style="color: #888; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 1px;">No transactions have been recorded in the archive yet.</p>
             </div>
-
-            <h3 style="color: #3b0066; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; text-transform: capitalize; margin: 0 0 10px;">
-                Your Registry is Quiet
-            </h3>
-            
-            <p style="color: #888; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 1px;">
-                No transactions have been recorded in the archive yet.
-            </p>
-        </div>
-    `;
-    return;
-}
+        `;
+        return;
+    }
 
     const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' });
 
@@ -2266,6 +2323,7 @@ function loadAdminDashboard() {
     };
 
     const adminGrandTotal = orders.reduce((sum, order) => {
+        if (order.status === 'released') return sum;
         const val = parseFloat(String(order.total).replace(/[^0-9.-]+/g, '')) || 0;
         return sum + val;
     }, 0);
@@ -2278,11 +2336,20 @@ function loadAdminDashboard() {
     let htmlContent = "";
     orders.slice().reverse().forEach((order, index) => {
         const delay = index * 0.1;
+        const isReleased = order.status === 'released';
+
+        const statusBadge = isReleased
+            ? `<span style="background:#fff0f0; color:#c0392b; border:1px solid #f5c6cb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✦ Released</span>`
+            : `<span style="background:#f0fff4; color:#2e7d32; border:1px solid #c8e6c9; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✓ Active</span>`;
+
         htmlContent += `
-            <div class="admin-order-card" style="animation-delay: ${delay}s; background: white; border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px;">
-                    <span style="font-weight: 800; color: #3b0066;">${order.id || 'ORDER'}</span>
-                    <span style="font-weight: 800; color: #2ed573;">${safeFormat(order.total)}</span>
+            <div class="admin-order-card" style="animation-delay: ${delay}s; background: ${isReleased ? '#fffafa' : 'white'}; border: 1px solid ${isReleased ? '#fce4e4' : '#eee'}; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); opacity: ${isReleased ? '0.75' : '1'};">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-weight: 800; color: #3b0066; ${isReleased ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${order.id || 'ORDER'}</span>
+                        ${statusBadge}
+                    </div>
+                    <span style="font-weight: 800; color: ${isReleased ? '#999' : '#2ed573'}; ${isReleased ? 'text-decoration: line-through;' : ''}">${safeFormat(order.total)}</span>
                 </div>
                 <div style="font-size: 13px; color: #555; line-height: 1.6;">
                     <p style="margin: 2px 0;">👤 <b>Customer:</b> ${order.customer}</p>
@@ -2292,11 +2359,20 @@ function loadAdminDashboard() {
                 <div style="margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 5px;">
                     ${(order.items || []).map(item => `
                         <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
-                            <span>${item.name} (x${item.quantity})</span>
-                            <span>${safeFormat(item.price)}</span>
+                            <span style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${item.name} (x${item.quantity})</span>
+                            <span style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${safeFormat(item.price)}</span>
                         </div>
                     `).join('')}
                 </div>
+                ${isReleased ? `
+                    <button onclick="adminRemoveOrder('${order.id}')" 
+                        style="margin-top: 12px; background: transparent; border: 1px solid #ddd; color: #bbb; padding: 7px 14px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 6px; transition: 0.3s;"
+                        onmouseover="this.style.borderColor='#c0392b'; this.style.color='#c0392b';"
+                        onmouseout="this.style.borderColor='#ddd'; this.style.color='#bbb';">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+                        Remove from Registry
+                    </button>
+                ` : ''}
             </div>
         `;
     });
@@ -2335,15 +2411,25 @@ function executeClearHistory() {
     
     closeConfirmModal();
 
-    loadAdminDashboard(); 
-    
-    if (typeof showNotification === 'function') {
-        showNotification('Database wiped successfully.');
-    }
+    setTimeout(() => {
+        loadAdminDashboard();
+        if (typeof showNotification === 'function') {
+            showNotification('Database wiped successfully.');
+        }
+    }, 400);
 }
 
 function closeConfirmModal() {
-    document.getElementById('confirm-modal').style.display = 'none';
+    const confirmModal = document.getElementById('confirm-modal');
+    if (!confirmModal) return;
+
+    confirmModal.style.transition = 'opacity 0.4s ease';
+    confirmModal.style.opacity = '0';
+
+    setTimeout(() => {
+        confirmModal.style.display = 'none';
+        confirmModal.style.opacity = '1';
+    }, 400);
 }
 
 function cleanPrice(val) {
@@ -2364,8 +2450,18 @@ function openSecretAdminLogin() {
         document.getElementById('admin-secret-pass').focus();
     }, 100); 
 }
+
 function closeAdminLogin() {
-    document.getElementById('admin-login-modal').style.display = 'none';
+    const adminModal = document.getElementById('admin-login-modal');
+    if (!adminModal) return;
+
+    adminModal.style.transition = 'opacity 0.4s ease';
+    adminModal.style.opacity = '0';
+
+    setTimeout(() => {
+        adminModal.style.display = 'none';
+        adminModal.style.opacity = '1';
+    }, 400);
 }
 
 function checkAdminAccess() {
@@ -2411,19 +2507,19 @@ document.addEventListener("DOMContentLoaded", function() {
 function showMyOrders() {
     const portfolioPage = document.getElementById('my-orders-page');
     if (portfolioPage) {
-        portfolioPage.style.background = "#f8f9fa"; 
+        portfolioPage.style.background = "#f8f9fa";
         portfolioPage.style.minHeight = "100vh";
     }
-
+ 
     navigateTo('my-orders-page', 'static-header');
-    
+ 
     const orderList = document.getElementById('my-orders-list');
     const backBtn = document.getElementById('portfolio-back-btn');
     if (!orderList) return;
-
+ 
     const allOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]').reverse();
     const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
-
+ 
     if (allOrders.length === 0) {
         if (backBtn) backBtn.style.display = 'none';
         orderList.innerHTML = `
@@ -2432,76 +2528,127 @@ function showMyOrders() {
                     <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <polyline points="12 6 12 12 16 14"></polyline>
-                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"></path>
                     </svg>
                 </div>
                 <h2 style="font-family: 'Cormorant Garamond', serif; color: #3b0066; font-size: 2.2rem; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; margin: 0;">Your Vault is Empty</h2>
                 <div style="width: 40px; height: 1px; background: #3b0066; margin: 20px auto; opacity: 0.4;"></div>
                 <p style="font-family: 'Montserrat', sans-serif; color: #888; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 40px; line-height: 1.8;">Begin your legacy by exploring our <br> curated collection of fine timepieces.</p>
-                <button onclick="showShop()" style="background: #2e004f; color: white; border: none; padding: 15px 40px; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s;">Explore Collection</button>
+                <button onclick="showShop()" style="background: #2e004f; color: white; border: none; padding: 15px 40px; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; cursor: pointer; border-radius: 4px;">Explore Collection</button>
             </div>
         `;
         const clearBtnContainer = document.getElementById('clear-portfolio-container');
         if (clearBtnContainer) clearBtnContainer.style.display = 'none';
         return;
     }
-
+ 
     if (backBtn) backBtn.style.display = 'block';
-
+ 
     orderList.innerHTML = `
         <div class="portfolio-fade-in" style="max-width: 900px; margin: 0 auto; background: white; border: 1px solid #e0e0e0; border-radius: 15px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.03);">
-            
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f4f4f4; padding-bottom: 20px;">
                 <h2 style="font-family: 'Cormorant Garamond', serif; color: #3b0066; font-size: 1.8rem; margin: 0;">Portfolio Registry</h2>
                 <span style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">
-                    ${allOrders.length} ${allOrders.length === 1 ? 'Order' : 'Orders'} Ongoing
+                    ${allOrders.filter(o => o.status !== 'released').length} ${allOrders.filter(o => o.status !== 'released').length === 1 ? 'Order' : 'Orders'} Ongoing
                 </span>
             </div>
-
             <div id="registry-items-container">
                 ${allOrders.map(order => {
                     const orderTotal = (order.items || []).reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
-                    
                     let finalArrivalDate = order.arrivalDate;
                     if (!finalArrivalDate && order.date) {
                         let purchaseDate = new Date(order.date);
                         purchaseDate.setDate(purchaseDate.getDate() + 4);
                         finalArrivalDate = purchaseDate.toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' });
                     }
-
-                    return `
-                        <div style="border: 1px solid #f0f0f0; border-radius: 10px; padding: 25px; margin-bottom: 20px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                <strong style="color: #3b0066; font-size: 1.1rem; font-family: 'Montserrat', sans-serif;">${order.id}</strong>
-                                <span style="color: #28a745; font-weight: 700; font-size: 1.1rem;">${pesoFormat.format(orderTotal)}</span>
+ 
+                    const status = order.status || 'active';
+                    const isReleased = status === 'released';
+                    const isPending = status === 'pending-release';
+ 
+                    const statusBadge = isReleased
+                        ? `<span style="background: #fff0f0; color: #c0392b; border: 1px solid #f5c6cb; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✦ Released to Vault</span>`
+                        : isPending
+                        ? `<span style="background: #fff8e1; color: #b8860b; border: 1px solid #ffe082; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">⏳ Pending Release</span>`
+                        : `<span style="background: #f0fff4; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✓ Active</span>`;
+ 
+                    const countdownBar = isPending ? `
+                        <div style="margin-top: 20px; padding: 18px 20px; background: linear-gradient(135deg, #f3f0ff, #ede7f6); border-radius: 10px; border: 1px solid #4b0082;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                <span style="color: #7e57c2; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;">Release finalizing in</span>
+                                <span id="release-timer-${order.id}" style="color: #7e57c2; font-weight: 700; font-size: 1rem; font-family: 'Cormorant Garamond', serif;">10s</span>
                             </div>
-                            
+                            <div style="background: rgba(126, 87, 194, 0.15); border-radius: 50px; height: 4px; overflow: hidden;">
+                                <div id="release-bar-${order.id}" style="height: 100%; background: linear-gradient(90deg, #7e57c2, #b39ddb); border-radius: 50px; width: 100%; transition: width 1s linear;"></div>
+                            </div>
+                            <button onclick="undoRelease('${order.id}')" style="margin-top: 14px; width: 100%; background: transparent; border: 1px solid #7e57c2; color: #7e57c2; padding: 10px; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 6px; transition: 0.3s;" onmouseover="this.style.background='#7e57c2'; this.style.color='white';" onmouseout="this.style.background='transparent'; this.style.color='#7e57c2';">
+                                ↩ Undo Release
+                            </button>
+                        </div>
+                    ` : '';
+ 
+                    const releaseBtn = (!isReleased && !isPending) ? `
+                        <button onclick="requestRelease('${order.id}')" 
+                            style="margin-top: 15px; background: transparent; border: 1px solid #c0392b; color: #c0392b; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
+                            onmouseover="this.style.background='#c0392b'; this.style.color='white';"
+                            onmouseout="this.style.background='transparent'; this.style.color='#c0392b';">
+                            Release Allocation
+                        </button>
+                    ` : '';
+
+                    const trashBtn = isReleased ? `
+                        <button onclick="deleteSingleOrder('${order.id}')" 
+                            style="margin-top: 10px; background: transparent; border: 1px solid #ddd; color: #bbb; padding: 7px 14px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 6px; transition: 0.3s;"
+                            onmouseover="this.style.borderColor='#c0392b'; this.style.color='#c0392b';"
+                            onmouseout="this.style.borderColor='#ddd'; this.style.color='#bbb';">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+                            Remove from Registry
+                        </button>
+                    ` : ''; 
+ 
+                    return `
+                        <div style="border: 1px solid ${isReleased ? '#fce4e4' : '#f0f0f0'}; border-radius: 10px; padding: 25px; margin-bottom: 20px; background: ${isReleased ? '#fffafa' : 'white'}; opacity: ${isReleased ? '0.75' : '1'}; transition: 0.3s;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <strong style="color: #3b0066; font-size: 1.1rem; font-family: 'Montserrat', sans-serif; ${isReleased ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${order.id}</strong>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    ${statusBadge}
+                                    <span style="color: ${isReleased ? '#999' : '#28a745'}; font-weight: 700; font-size: 1.1rem; ${isReleased ? 'text-decoration: line-through;' : ''}">${pesoFormat.format(orderTotal)}</span>
+                                </div>
+                            </div>
                             <div style="font-size: 0.85rem; color: #555; font-family: 'Montserrat', sans-serif; line-height: 1.8; margin-bottom: 15px;">
-                                <div>👤 <span style="margin-left: 8px;"><strong>Customer:</strong> ${order.customer || 'Valued Client'}</span></div>
-                                <div>📍 <span style="margin-left: 8px;"><strong>Address:</strong> ${order.address || 'Boutique Pickup'}</span></div>
-                                
-                                <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
-                                    <span>🗓️</span> <span style="color: #888;">Purchased: ${order.date}</span>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                    <span><strong>Customer:</strong> <span style="font-weight: 400;">${order.customer || 'Valued Client'}</span></span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span>🚚</span> <strong style="color: #2e004f;">Est. Arrival: ${finalArrivalDate}</strong>
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    <span><strong>Address:</strong> <span style="font-weight: 400;">${order.address || 'Boutique Pickup'}</span></span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    <span><strong>Purchased:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${isReleased ? '#999' : '#3b0066'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                                    <span style="color: ${isReleased ? '#999' : '#2e004f'};"><strong>Est. Arrival:</strong> <span style="font-weight: 400; color: ${isReleased ? '#999' : '#2e004f'};">${finalArrivalDate}</span></span>
                                 </div>
                             </div>
-
                             <div style="background: #f8f9fa; padding: 12px 20px; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">
-                                <span>${order.items[0]?.name} <small style="color:#999; margin-left: 5px;">(x${order.items[0]?.quantity})</small></span>
-                                <strong>${pesoFormat.format(order.items[0]?.price)}</strong>
+                                <span style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${order.items[0]?.name} <small style="color:#999; margin-left: 5px;">(x${order.items[0]?.quantity})</small></span>
+                                <strong style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${pesoFormat.format(order.items[0]?.price)}</strong>
                             </div>
+                            ${countdownBar}
+                            ${releaseBtn}
+                            ${trashBtn}
                         </div>
                     `;
                 }).join('')}
             </div>
         </div>
     `;
-
+ 
     const clearBtnContainer = document.getElementById('clear-portfolio-container');
     if (clearBtnContainer) {
-        clearBtnContainer.style.display = 'block';
+        clearBtnContainer.style.display = 'none';
         clearBtnContainer.style.marginTop = '30px';
     }
 }
@@ -2523,17 +2670,41 @@ function clearPortfolio() {
 
 function closeSecureModal() {
     const modal = document.getElementById('secure-clear-modal');
-    if (modal) modal.style.display = 'none';
+    if (!modal) return;
+
+    modal.style.transition = 'opacity 0.4s ease';
+    modal.style.opacity = '0';
+
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.style.opacity = '1';
+    }, 400);
 }
 
 function confirmSecureClear() {
-    localStorage.removeItem('customerHistory');
+    const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     
+    const activeOrders = customerOrders.filter(o => o.status !== 'released');
+    const releasedOrders = customerOrders.filter(o => o.status === 'released');
+
+    if (releasedOrders.length === 0) {
+        closeSecureModal();
+        showNotification("No released allocations to clear. ✦");
+        return;
+    }
+
+    localStorage.setItem('customerHistory', JSON.stringify(activeOrders));
+
     closeSecureModal();
-    
-    showMyOrders();
-    
-    showNotification("Vault history has been securely wiped.");
+
+    setTimeout(() => {
+        showMyOrders();
+        if (activeOrders.length > 0) {
+            showNotification(`⚠️ ${activeOrders.length} active order(s) retained. Released allocations cleared.`);
+        } else {
+            showNotification("Released allocations have been securely wiped. 🔒");
+        }
+    }, 400);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -2545,3 +2716,145 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+function requestRelease(orderId) {
+    const modal = document.getElementById('release-confirm-modal');
+    if (!modal) return;
+
+    modal.dataset.orderId = orderId;
+    
+    modal.style.transition = "none";
+    modal.style.opacity = "1";
+    modal.style.display = "flex"; 
+
+    const box = modal.querySelector('.release-modal-box');
+    if (box) {
+        box.style.transition = "none";
+        box.style.opacity = "0";
+        box.style.transform = "translateY(30px)";
+
+        setTimeout(() => {
+            box.style.transition = "opacity 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)";
+            box.style.opacity = "1";
+            box.style.transform = "translateY(0)"; 
+        }, 10);
+    }
+}
+
+function closeReleaseModal() {
+    const modal = document.getElementById('release-confirm-modal');
+    const box = modal.querySelector('.release-modal-box');
+    if (!modal) return;
+
+    if (box) {
+        box.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+        box.style.opacity = "0";
+        box.style.transform = "translateY(20px)";
+    }
+
+    modal.style.transition = "opacity 0.4s ease";
+    modal.style.opacity = "0";
+
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.style.opacity = "1"; 
+        if (box) {
+            box.style.opacity = "1";
+            box.style.transform = "translateY(0)"; 
+        }
+    }, 400);
+}
+ 
+function confirmRelease() {
+    const modal = document.getElementById('release-confirm-modal');
+    const orderId = modal.dataset.orderId;
+    closeReleaseModal();
+ 
+    const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
+    const orderIndex = customerOrders.findIndex(o => o.id === orderId);
+    if (orderIndex === -1) return;
+ 
+    customerOrders[orderIndex].status = 'pending-release';
+    localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
+ 
+    showMyOrders();
+ 
+    let secondsLeft = 20;
+    const bar = document.getElementById(`release-bar-${orderId}`);
+    const timerText = document.getElementById(`release-timer-${orderId}`);
+ 
+    if (bar) bar.style.width = '100%';
+ 
+    const interval = setInterval(() => {
+        secondsLeft--;
+ 
+        if (timerText) timerText.innerText = secondsLeft + 's';
+        if (bar) bar.style.width = (secondsLeft * 10) + '%';
+ 
+        if (secondsLeft <= 0) {
+            clearInterval(interval);
+            delete releaseTimers[orderId];
+            finalizeRelease(orderId);
+        }
+    }, 1000);
+ 
+    releaseTimers[orderId] = interval;
+}
+ 
+function undoRelease(orderId) {
+    if (releaseTimers[orderId]) {
+        clearInterval(releaseTimers[orderId]);
+        delete releaseTimers[orderId];
+    }
+ 
+    const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
+    const orderIndex = customerOrders.findIndex(o => o.id === orderId);
+    if (orderIndex !== -1) {
+        customerOrders[orderIndex].status = 'active';
+        localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
+    }
+ 
+    const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
+    const adminIndex = adminOrders.findIndex(o => o.id === orderId);
+    if (adminIndex !== -1) {
+        adminOrders[adminIndex].status = 'active';
+        localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
+    }
+ 
+    showMyOrders();
+    showNotification("Allocation retained. Your timepiece remains reserved. ✦");
+}
+ 
+function finalizeRelease(orderId) {
+    const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
+    const orderIndex = customerOrders.findIndex(o => o.id === orderId);
+    if (orderIndex !== -1) {
+        customerOrders[orderIndex].status = 'released';
+        localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
+    }
+ 
+    const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
+    const adminIndex = adminOrders.findIndex(o => o.id === orderId);
+    if (adminIndex !== -1) {
+        adminOrders[adminIndex].status = 'released';
+        localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
+    }
+ 
+    showMyOrders();
+    showNotification("Allocation released. The timepiece has returned to the vault. 🏛️");
+}
+
+function deleteSingleOrder(orderId) {
+    const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
+    const updated = customerOrders.filter(o => o.id !== orderId);
+    localStorage.setItem('customerHistory', JSON.stringify(updated));
+    showMyOrders();
+    showNotification("Order removed from registry. 🗑️");
+}
+
+function adminRemoveOrder(orderId) {
+    const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
+    const updated = adminOrders.filter(o => o.id !== orderId);
+    localStorage.setItem('adminHistory', JSON.stringify(updated));
+    loadAdminDashboard();
+    showNotification("Order removed from registry. 🗑️");
+}
