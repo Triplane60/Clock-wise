@@ -2351,10 +2351,19 @@ function loadAdminDashboard() {
                     </div>
                     <span style="font-weight: 800; color: ${isReleased ? '#999' : '#2ed573'}; ${isReleased ? 'text-decoration: line-through;' : ''}">${safeFormat(order.total)}</span>
                 </div>
-                <div style="font-size: 13px; color: #555; line-height: 1.6;">
-                    <p style="margin: 2px 0;">👤 <b>Customer:</b> ${order.customer}</p>
-                    <p style="margin: 2px 0;">📅 <b>Date:</b> ${order.date}</p>
-                    <p style="margin: 2px 0;">📍 <b>Address:</b> ${order.address}</p>
+                <div style="font-size: 0.85rem; color: #555; font-family: 'Montserrat', sans-serif; line-height: 1.8; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span><strong>Customer:</strong> <span style="font-weight: 400;">${order.customer || 'Valued Client'}</span></span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span><strong>Address:</strong> <span style="font-weight: 400;">${order.address || 'Boutique Pickup'}</span></span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span><strong>Date:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
+                    </div>
                 </div>
                 <div style="margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 5px;">
                     ${(order.items || []).map(item => `
