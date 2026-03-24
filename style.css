@@ -1766,3 +1766,29 @@ span[onclick="showCartPage()"]:hover i {
     color: #7e57c2 !important;
     transition: color 0.3s ease;
 }
+
+@keyframes modalSlide {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+#customModal {
+    transition: opacity 0.4s ease, backdrop-filter 0.4s ease;
+    opacity: 0;
+    pointer-events: none; 
+}
+
+#customModal.active {
+    opacity: 1;
+    pointer-events: auto;
+    backdrop-filter: blur(8px); 
+}
+
+#customModal .modal-content {
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+#customModal.active .modal-content {
+    transform: scale(1) translateY(0);
+}
