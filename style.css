@@ -1729,3 +1729,13 @@ body.on-cart-page .nav-logo {
     filter: brightness(0.9);
     transition: 0.3s ease;
 }
+
+@media screen and (min-width: 769px) {
+    .social-links, 
+    .features-section,
+    .footer-features {
+        display: flex !important; 
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
