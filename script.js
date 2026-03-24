@@ -2821,7 +2821,7 @@ function undoRelease(orderId) {
     }
  
     showMyOrders();
-    showNotification("Allocation retained. Your timepiece remains reserved. ✦");
+    showNotification("Allocation retained. Your timepiece remains reserved.");
 }
  
 function finalizeRelease(orderId) {
@@ -2840,7 +2840,7 @@ function finalizeRelease(orderId) {
     }
  
     showMyOrders();
-    showNotification("Allocation released. The timepiece has returned to the vault. 🏛️");
+    showNotification("Allocation released. The timepiece has returned to the vault.");
 }
 
 function deleteSingleOrder(orderId) {
@@ -2848,7 +2848,7 @@ function deleteSingleOrder(orderId) {
     const updated = customerOrders.filter(o => o.id !== orderId);
     localStorage.setItem('customerHistory', JSON.stringify(updated));
     showMyOrders();
-    showNotification("Order removed from registry. 🗑️");
+    showNotification("Order removed from registry.");
 }
 
 function adminRemoveOrder(orderId) {
@@ -2856,5 +2856,5 @@ function adminRemoveOrder(orderId) {
     const updated = adminOrders.filter(o => o.id !== orderId);
     localStorage.setItem('adminHistory', JSON.stringify(updated));
     loadAdminDashboard();
-    showNotification("Order removed from registry. 🗑️");
+    showNotification("Order removed from registry.");
 }
