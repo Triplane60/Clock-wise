@@ -100,7 +100,7 @@ var watchData = {
     },
     "Chronomat B01 42":{
         category: "Gentlemen",
-        desc: "Breitling’s all-purpose sports watch in its most luxurious form. Featuring the signature \"Rouleaux\" bracelet, this piece makes a bold, unapologetic statement in solid gold.",
+        desc: "Breitling's all-purpose sports watch in its most luxurious form. Featuring the signature \"Rouleaux\" bracelet, this piece makes a bold, unapologetic statement in solid gold.",
         specs: "Brand: Breitling",
         price: 485000.00,
         stock: 10,
@@ -260,7 +260,7 @@ var watchData = {
     },
     "Circus Minute Repeater":{
         category: "New Arrivals",
-        desc: "A horological theater. This rare platinum timepiece features hand-carved gold automatons that perform a circus act in sync with the minute repeater’s chime.",
+        desc: "A horological theater. This rare platinum timepiece features hand-carved gold automatons that perform a circus act in sync with the minute repeater's chime.",
         specs: "Brand: Ulysse Nardin",
         price: 18750000.00,
         stock: 10,
@@ -324,7 +324,7 @@ var watchData = {
     },
     "Pasha Chronograph Yellow Gold Quartz":{
         category: "New Arrivals",
-        desc: "An 18k yellow gold icon featuring a distinctive screw-down crown cap and blue cabochons, blending Cartier’s sporty heritage with timeless luxury.",
+        desc: "An 18k yellow gold icon featuring a distinctive screw-down crown cap and blue cabochons, blending Cartier's sporty heritage with timeless luxury.",
         specs: "Brand: Cartier",
         price: 450000.00,
         stock: 10,
@@ -555,8 +555,6 @@ function showCartPage() {
     document.body.classList.add('on-cart-page');
 
     history.pushState({ page: 'cart' }, null, '#cart');
-
-    
 
     if (typeof renderFullCartPage === 'function') renderFullCartPage();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1540,7 +1538,6 @@ function renderFullCartPage() {
 
         container.innerHTML = `
             <div style="text-align: center; padding: 100px 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; animation: fadeIn 0.8s ease-out;">
-                
                 <div style="margin-bottom: 10px; opacity: 0.8;">
                     <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#4B0082" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="7"></circle>
@@ -1548,16 +1545,13 @@ function renderFullCartPage() {
                         <path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.84a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 0 1 9.84 1h4.32a2 2 0 0 1 2 1.82l.35 3.83"></path>
                     </svg>
                 </div>
-
                 <div style="margin-bottom: 15px;">
                     <h2 style="font-family: serif; color: #2e004f; font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; margin: 0;">Your Collection is Empty</h2>
                     <p style="color: #888; font-size: 0.9rem; margin-top: 10px; letter-spacing: 0.5px;">Discover the perfect timepiece to define your style.</p>
                 </div>
-                
                 <button onclick="showShop()" style="background: white; color: #4B0082; border: 1.5px solid #4B0082; padding: 14px 0; width: 300px; cursor: pointer; font-size: 0.9rem; border-radius: 4px; font-weight: 600; transition: 0.3s; letter-spacing: 2px; text-transform: uppercase;">
                     Explore Collection
                 </button>
-
             </div>
         `;
     }
@@ -1783,18 +1777,22 @@ function updateCheckoutTotal() {
     document.getElementById('checkout-grand-total').innerText = pesoFormat.format(grandTotal);
 }
 
+// ==================== PLACE ORDER (WITH CONTACT NUMBER) ====================
 function placeShopeeOrder(event) {
     if (event) event.preventDefault(); 
 
     const nameBox = document.getElementById('checkout-name-input') || document.getElementById('cust-name');
     const addressBox = document.getElementById('checkout-address-input') || document.getElementById('cust-address');
+    const contactBox = document.getElementById('checkout-contact-input');
     const grandTotal = document.getElementById('checkout-grand-total').innerText;
 
     nameBox.style.border = "1px solid #ccc";
     addressBox.style.border = "1px solid #ccc";
+    if (contactBox) contactBox.style.border = "1px solid #ddd";
 
     const rawName = nameBox.value.trim();
     const rawAddress = addressBox.value.trim();
+    const rawContact = contactBox ? contactBox.value.trim() : '';
 
     if (rawName === "" || /\d/.test(rawName) || !rawName.includes(' ')) {
         showNotification("Please enter your full First and Last Name.");
@@ -1805,6 +1803,17 @@ function placeShopeeOrder(event) {
     if (rawAddress.length < 10) {
         showNotification("Please enter a complete delivery address.");
         addressBox.style.border = "2px solid #ff4757";
+        return;
+    }
+
+    const digitOnlyContact = rawContact.replace(/\D/g, '');
+
+    if (digitOnlyContact.length < 11) {
+        showNotification("Please enter a valid 11-digit contact number.");
+        if (contactBox) {
+            contactBox.style.border = "2px solid #ff4757";
+            contactBox.focus();
+        }
         return;
     }
 
@@ -1841,6 +1850,7 @@ function placeShopeeOrder(event) {
             <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
                 <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
                 <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
+                <p style="margin: 5px 0;"><strong>Contact Number:</strong> <span style="color: #3b0066; font-weight: 600;">${rawContact}</span></p>
                 <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
                 <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong> <span style="color: #3b0066;">${formattedArrival}</span></p>
             </div>
@@ -1851,6 +1861,7 @@ function placeShopeeOrder(event) {
 
     nameBox.value = "";
     addressBox.value = "";
+    if (contactBox) contactBox.value = "";
     
     checkedBoxes.forEach(box => {
         const cartIndex = parseInt(box.value);
@@ -1872,6 +1883,7 @@ function placeShopeeOrder(event) {
         arrivalDate: formattedArrival,
         customer: rawName,
         address: rawAddress,
+        contact: rawContact,  
         items: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
         total: grandTotal
     };
@@ -1977,9 +1989,9 @@ function updateUserName(loggedInName) {
     
     if (userDisplay) {
         if (loggedInName === 'none' || !loggedInName) {
-            userDisplay.innerHTML = '👤 Login';
+            userDisplay.innerHTML = 'Login';
         } else {
-            userDisplay.innerHTML = `👤 ${loggedInName}`;
+            userDisplay.innerHTML = `${loggedInName}`;
         }
     }
 }   
@@ -2055,9 +2067,7 @@ function processOrder(event) {
         <p style="font-size: 0.75rem; color: #aaa; text-align: center;">Transaction ID: #CW-${transID}</p>
     `;
 
-    let currentVault = parseFloat(localStorage.getItem('lifetimeRevenue') || '0');
-    let updatedTotal = currentVault + numericTotal;
-    localStorage.setItem('lifetimeRevenue', updatedTotal.toString());
+    const numericTotal = parseFloat(total.replace(/[^0-9.-]+/g,""));
 
     const newOrder = {
         id: "CW-" + transID,
@@ -2222,20 +2232,7 @@ function filterAdminStock(category) {
 }
 
 function loadAdminDashboard() {
-    console.log("🛠️ Admin Dashboard: Refreshing data...");
-
-    const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' });
-    const safeFormat = (val) => {
-        if (!val) return "₱0.00";
-        if (String(val).includes('₱')) return val; 
-        return pesoFormat.format(val);
-    };
-
-    let persistentRevenue = parseFloat(localStorage.getItem('lifetimeRevenue') || '0');
-    const revenueDisplay = document.getElementById('admin-revenue-display');
-    if (revenueDisplay) {
-        revenueDisplay.innerText = pesoFormat.format(persistentRevenue);
-    }
+    console.log("Admin Dashboard: Refreshing data...");
 
     const tableBody = document.getElementById('admin-stock-list');
     const statsContainer = document.getElementById('admin-stats-container');
@@ -2248,6 +2245,7 @@ function loadAdminDashboard() {
         for (let watchName in watchData) {
             let watch = watchData[watchName];
             let watchCategory = watch.category || "Gentlemen"; 
+            
             if (watchCategory !== currentAdminFilter) continue; 
 
             totalProducts++;
@@ -2257,6 +2255,7 @@ function loadAdminDashboard() {
             let badgeStyle = watch.stock <= 0 ? "background:#ffe5e5;color:#d63031;" : 
                              watch.stock <= 3 ? "background:#fff0d4;color:#e17055;" : 
                                                 "background:#e3fcec;color:#00b894;";
+            
             let badgeText = watch.stock <= 0 ? "Out of Stock" : 
                             watch.stock <= 3 ? "Low Stock" : "In Stock";
 
@@ -2298,11 +2297,17 @@ function loadAdminDashboard() {
     }
 
     const orderList = document.getElementById('admin-order-list');
-    if (!orderList) return;
+    if (!orderList) {
+        console.error("ERROR: Could not find 'admin-order-list' in HTML!");
+        return;
+    }
 
-    const orders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
+    const rawData = localStorage.getItem('adminHistory');
+    const orders = JSON.parse(rawData || '[]');
 
     if (orders.length === 0) {
+        const revenueDisplay = document.getElementById('admin-revenue-display');
+        if (revenueDisplay) revenueDisplay.innerText = '₱0.00';
         orderList.innerHTML = `
             <div class="admin-empty-state" style="text-align: center; padding: 80px 20px;">
                 <div style="margin-bottom: 25px; display: flex; justify-content: center; opacity: 0.4;">
@@ -2316,23 +2321,55 @@ function loadAdminDashboard() {
                 </div>
                 <h3 style="color: #3b0066; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400; letter-spacing: 2px; text-transform: capitalize; margin: 0 0 10px;">Your Registry is Quiet</h3>
                 <p style="color: #888; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 1px;">No transactions have been recorded in the archive yet.</p>
-            </div>`;
-        return; 
+            </div>
+        `;
+        return;
+    }
+
+    const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' });
+
+    const safeFormat = (val) => {
+        if (!val) return "₱0.00";
+        if (String(val).includes('₱')) return val; 
+        return pesoFormat.format(val);
+    };
+
+    const adminGrandTotal = orders.reduce((sum, order) => {
+        if (order.status === 'released') return sum;
+        const val = parseFloat(String(order.total).replace(/[^0-9.-]+/g, '')) || 0;
+        return sum + val;
+    }, 0);
+
+    const revenueDisplay = document.getElementById('admin-revenue-display');
+    if (revenueDisplay) {
+        revenueDisplay.innerText = pesoFormat.format(adminGrandTotal);
     }
 
     let htmlContent = "";
-    orders.slice().sort((a, b) => {
+    
+    let sortedAdminOrders = orders.slice().reverse().sort((a, b) => {
         const weight = { 'active': 1, 'pending-release': 1, 'delivered': 2, 'released': 3 };
-        return (weight[a.status] || 1) - (weight[b.status] || 1);
-    }).forEach((order, index) => {
+        const wA = weight[a.status || 'active'] || 1;
+        const wB = weight[b.status || 'active'] || 1;
+        return wA - wB;
+    });
+
+    sortedAdminOrders.forEach((order, index) => {
         const delay = index * 0.1;
         const isReleased = order.status === 'released';
         const isDelivered = order.status === 'delivered';
 
-        let statusBadge = isDelivered ? `<span style="background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; padding: 3px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">✓ DELIVERED</span>` :
-                          isReleased  ? `<span style="background: #f0f0f4; color: #a1a1a1; border: 1px solid #d5d5d5; padding: 3px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; text-decoration: line-through;">RELEASED</span>` :
-                                        `<span style="background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 3px 12px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;">✓ ACTIVE</span>`;
-   
+        let statusBadge = '';
+        if (isReleased) {
+            statusBadge = `<span style="background:#fff0f0; color:#c0392b; border:1px solid #f5c6cb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✦ Released</span>`;
+        } else if (isDelivered) {
+            statusBadge = `<span style="background:#e3f2fd; color:#0d47a1; border:1px solid #bbdefb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✓ Delivered</span>`;
+        } else {
+            statusBadge = `<span style="background:#f0fff4; color:#2e7d32; border:1px solid #c8e6c9; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✓ Active</span>`;
+        }
+
+        const phoneSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.88 11.3a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.8 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`;
+
         htmlContent += `
             <div class="admin-order-card" style="animation-delay: ${delay}s; background: ${isReleased ? '#fffafa' : 'white'}; border: 1px solid ${isReleased ? '#fce4e4' : '#eee'}; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); opacity: ${isReleased ? '0.75' : '1'};">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #f9f9f9; padding-bottom: 10px;">
@@ -2351,6 +2388,10 @@ function loadAdminDashboard() {
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                         <span><strong>Address:</strong> <span style="font-weight: 400;">${order.address || 'Boutique Pickup'}</span></span>
                     </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        ${phoneSVG}
+                        <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
+                    </div>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         <span><strong>Date:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
@@ -2364,23 +2405,27 @@ function loadAdminDashboard() {
                         </div>
                     `).join('')}
                 </div>
-                ${(isReleased || isDelivered) ? `
-                <button onclick="adminRemoveOrder('${order.id}')" 
-                    style="margin-top: 15px; background: transparent; border: 1px solid #ddd; color: #bbb; padding: 9px 18px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 8px; transition: 0.3s;"
-                    onmouseover="this.style.borderColor='#c0392b'; this.style.color='#c0392b';"
-                    onmouseout="this.style.borderColor='#ddd'; this.style.color='#bbb';">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                    Remove from Registry
-                </button>` : ''}
-            </div>`;
+                <div style="display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;">
+                    ${(isReleased || isDelivered) ? `
+                        <button onclick="adminRemoveOrder('${order.id}')" 
+                            style="background: transparent; border: 1px solid #ddd; color: #bbb; padding: 7px 14px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; display: flex; align-items: center; gap: 6px; transition: 0.3s;"
+                            onmouseover="this.style.borderColor='#c0392b'; this.style.color='#c0392b';"
+                            onmouseout="this.style.borderColor='#ddd'; this.style.color='#bbb';">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+                            Remove from Registry
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
     });
 
     orderList.innerHTML = htmlContent;
-    console.log("✅ ADMIN DASHBOARD FULLY RENDERED.");
+    console.log("ORDER HISTORY RENDERED SUCCESSFULLY.");
 }
 
 function logout() {
-    console.log("🔐 Admin logging out...");
+    console.log("Admin logging out...");
 
     const adminPage = document.getElementById('admin-page');
     if (adminPage) adminPage.style.display = 'none';
@@ -2502,6 +2547,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 5000); 
 });
 
+// ==================== MY ORDERS / PORTFOLIO (WITH CONTACT NUMBER) ====================
 function showMyOrders() {
     const portfolioPage = document.getElementById('my-orders-page');
     if (portfolioPage) {
@@ -2515,10 +2561,12 @@ function showMyOrders() {
     const backBtn = document.getElementById('portfolio-back-btn');
     if (!orderList) return;
  
-    const allOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]').reverse();
-    allOrders.sort((a, b) => {
-        const statusWeight = { 'active': 1, 'pending-release': 1, 'delivered': 2, 'released': 3 };
-        return (statusWeight[a.status] || 1) - (statusWeight[b.status] || 1);
+    const allOrdersRaw = JSON.parse(localStorage.getItem('customerHistory') || '[]').reverse();
+    const allOrders = allOrdersRaw.sort((a, b) => {
+        const weight = { 'active': 1, 'pending-release': 1, 'delivered': 2, 'released': 3 };
+        const wA = weight[a.status || 'active'] || 1;
+        const wB = weight[b.status || 'active'] || 1;
+        return wA - wB;
     });
     const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
  
@@ -2544,12 +2592,16 @@ function showMyOrders() {
     }
  
     if (backBtn) backBtn.style.display = 'block';
+
+    const phoneSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.88 11.3a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.8 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`;
  
     orderList.innerHTML = `
         <div class="portfolio-fade-in" style="max-width: 900px; margin: 0 auto; background: white; border: 1px solid #e0e0e0; border-radius: 15px; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.03);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f4f4f4; padding-bottom: 20px;">
                 <h2 style="font-family: 'Cormorant Garamond', serif; color: #3b0066; font-size: 1.8rem; margin: 0;">Portfolio Registry</h2>
-                <span style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">${allOrders.filter(o => (o.status || 'active') === 'active' || o.status === 'pending-release').length} ${allOrders.filter(o => (o.status || 'active') === 'active' || o.status === 'pending-release').length === 1 ? 'Order' : 'Orders'} Ongoing</span>
+                <span style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">
+                    ${allOrders.filter(o => o.status !== 'released' && o.status !== 'delivered').length} Ongoing
+                </span>
             </div>
             <div id="registry-items-container">
                 ${allOrders.map(order => {
@@ -2564,18 +2616,15 @@ function showMyOrders() {
                     const status = order.status || 'active';
                     const isReleased = status === 'released';
                     const isPending = status === 'pending-release';
-                    const isDelivered = order.status === 'delivered';
+                    const isDelivered = status === 'delivered';
 
-                    let statusBadge = '';
-                    if (isDelivered) {
-                        statusBadge = `<span style="background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">✓ DELIVERED</span>`;
-                    } else if (isPending) {
-                        statusBadge = `<span style="background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">PENDING RELEASE</span>`;
-                    } else if (isReleased) {
-                        statusBadge = `<span style="background: #f5f5f5; color: #9e9e9e; border: 1px solid #e0e0e0; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; text-decoration: line-through;">RELEASED</span>`;
-                    } else {
-                        statusBadge = `<span style="background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">✓ ACTIVE</span>`;
-                    }
+                    const statusBadge = isReleased
+                        ? `<span style="background: #fff0f0; color: #c0392b; border: 1px solid #f5c6cb; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✦ Released to Vault</span>`
+                        : isDelivered
+                        ? `<span style="background: #e3f2fd; color: #0d47a1; border: 1px solid #bbdefb; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✓ Delivered</span>`
+                        : isPending
+                        ? `<span style="background: #fff8e1; color: #b8860b; border: 1px solid #ffe082; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">⏳ Pending Release</span>`
+                        : `<span style="background: #f0fff4; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✓ Active</span>`;
 
                     const countdownBar = isPending ? `
                         <div style="margin-top: 20px; padding: 18px 20px; background: linear-gradient(135deg, #f3f0ff, #ede7f6); border-radius: 10px; border: 1px solid #4b0082;">
@@ -2591,41 +2640,15 @@ function showMyOrders() {
                             </button>
                         </div>
                     ` : '';
- 
-                    const today = new Date();
-                    const orderDateObj = new Date(order.date);
-                    const arrivalDateObj = new Date(orderDateObj);
-                    arrivalDateObj.setDate(arrivalDateObj.getDate() - 1);
-                    
-                    const hasArrived = today >= arrivalDateObj; 
 
-                    const showActionRow = !isReleased && !isPending && !isDelivered;
-
-                    const actionButtons = showActionRow ? `
-                    <div style="display: flex; align-items: center; gap: 15px; margin-top: 15px;">
-                        
-                        ${hasArrived ? `
-                            <button onclick="confirmDelivery('${order.id}')" 
-                                style="background: #3b0066; border: 1px solid #3b0066; color: white; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: 0.3s;"
-                                onmouseover="this.style.background='#5e1b8f';" 
-                                onmouseout="this.style.background='#3b0066';">
-                                Confirm Receipt
-                            </button>
-                        ` : `
-                            <button onclick="requestRelease('${order.id}')" 
-                                style="background: transparent; border: 1px solid #c0392b; color: #c0392b; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; border-radius: 4px; cursor: pointer; transition: 0.3s;"
-                                onmouseover="this.style.background='#c0392b'; this.style.color='white';" 
-                                onmouseout="this.style.background='transparent'; this.style.color='#c0392b';">
-                                Release Allocation
-                            </button>
-
-                            <span style="font-size: 0.75rem; color: #888; font-style: italic; letter-spacing: 0.5px;">
-                                ✦ Confirmation unlocks on ${finalArrivalDate}
-                            </span>
-                        `}
-
-                    </div>
-                ` : '';
+                    const receiveBtn = (!isReleased && !isPending && !isDelivered) ? `
+                        <button onclick="markOrderDelivered('${order.id}')" 
+                            style="margin-top: 15px; background: transparent; border: 1px solid #0d47a1; color: #0d47a1; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
+                            onmouseover="this.style.background='#0d47a1'; this.style.color='white';"
+                            onmouseout="this.style.background='transparent'; this.style.color='#0d47a1';">
+                            ✓ Order Received
+                        </button>
+                    ` : '';
 
                     const trashBtn = (isReleased || isDelivered) ? `
                         <button onclick="deleteSingleOrder('${order.id}')" 
@@ -2655,9 +2678,13 @@ function showMyOrders() {
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                                     <span><strong>Address:</strong> <span style="font-weight: 400;">${order.address || 'Boutique Pickup'}</span></span>
                                 </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    ${phoneSVG}
+                                    <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
+                                </div>
                                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                    <span><strong>Purchased:</strong> <span style="font-weight: 400; color: #444;">${order.date}</span></span>
+                                    <span><strong>Purchased:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${isReleased ? '#999' : '#3b0066'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
@@ -2665,11 +2692,11 @@ function showMyOrders() {
                                 </div>
                             </div>
                             <div style="background: #f8f9fa; padding: 12px 20px; border-radius: 6px; display: flex; justify-content: space-between; font-size: 0.85rem; font-family: 'Montserrat', sans-serif;">
-                                <span style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${order.items[0]?.name} <small style="font-weight: 600; color: #666; margin-left: 5px; font-size: 0.8rem;">(x${order.items[0]?.quantity || 1})</small></span>
+                                <span style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${order.items[0]?.name} <small style="color:#999; margin-left: 5px;">(x${order.items[0]?.quantity})</small></span>
                                 <strong style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${pesoFormat.format(order.items[0]?.price)}</strong>
                             </div>
                             ${countdownBar}
-                            ${actionButtons}
+                            ${receiveBtn}
                             ${trashBtn}
                         </div>
                     `;
@@ -2721,7 +2748,7 @@ function confirmSecureClear() {
 
     if (releasedOrders.length === 0) {
         closeSecureModal();
-        showNotification("No released allocations to clear.");
+        showNotification("No released allocations to clear. ✦");
         return;
     }
 
@@ -2732,7 +2759,7 @@ function confirmSecureClear() {
     setTimeout(() => {
         showMyOrders();
         if (activeOrders.length > 0) {
-            showNotification(`⚠️ ${activeOrders.length} active order(s) retained. Released allocations cleared.`);
+            showNotification(`${activeOrders.length} active order(s) retained. Released allocations cleared.`);
         } else {
             showNotification("Released allocations have been securely wiped.");
         }
@@ -2803,7 +2830,7 @@ function confirmRelease() {
  
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex === -1) return;
+    if (orderIndex === + 4) return;
  
     customerOrders[orderIndex].status = 'pending-release';
     localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
@@ -2840,33 +2867,33 @@ function undoRelease(orderId) {
  
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex !== -1) {
+    if (orderIndex !== + 4) {
         customerOrders[orderIndex].status = 'active';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
     }
  
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const adminIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (adminIndex !== -1) {
+    if (adminIndex !== + 4) {
         adminOrders[adminIndex].status = 'active';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
  
     showMyOrders();
-    showNotification("Allocation retained. Your timepiece remains reserved.");
+    showNotification("Allocation retained. Your timepiece remains reserved. ✦");
 }
  
 function finalizeRelease(orderId) {
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex !== -1) {
+    if (orderIndex !== + 4) {
         customerOrders[orderIndex].status = 'released';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
     }
  
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const adminIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (adminIndex !== -1) {
+    if (adminIndex !== + 4) {
         adminOrders[adminIndex].status = 'released';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
@@ -2884,99 +2911,46 @@ function deleteSingleOrder(orderId) {
 }
 
 function adminRemoveOrder(orderId) {
-    const modal = document.getElementById('customModal');
-    const confirmBtn = document.getElementById('modalConfirm');
-    const cancelBtn = document.getElementById('modalCancel');
-
-    modal.classList.add('active');
-
-    confirmBtn.onclick = function() {
-        const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
-        const updated = adminOrders.filter(o => o.id !== orderId);
-        localStorage.setItem('adminHistory', JSON.stringify(updated));
-        
-        loadAdminDashboard();
-        
-        modal.classList.remove('active');
-        showNotification("Registry updated successfully.");
-    };
-
-    cancelBtn.onclick = function() {
-        modal.classList.remove('active');
-    };
+    const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
+    const updated = adminOrders.filter(o => o.id !== orderId);
+    localStorage.setItem('adminHistory', JSON.stringify(updated));
+    loadAdminDashboard();
+    showNotification("Order removed from registry.");
 }
 
-function confirmDelivery(orderId) {
+function filterOrders() {
+    const query = document.getElementById('admin-order-search').value.toLowerCase();
+    const cards = document.querySelectorAll('.admin-order-card');
+    cards.forEach(card => {
+        card.style.display = card.innerText.toLowerCase().includes(query) ? 'block' : 'none';
+    });
+}
+
+function formatPhoneNumber(input) {
+    let cleaned = input.value.replace(/\D/g, '');
+
+    let match = cleaned.match(/^(\d{0,4})(\d{0,3})(\d{0,4})$/);
+
+    if (match) {
+        input.value = !match[2] ? match[1] : `${match[1]}-${match[2]}` + (match[3] ? `-${match[3]}` : '');
+    }
+}
+
+function markOrderDelivered(orderId) {
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const cIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (cIndex !== -1) {
+    if (cIndex !== + 4) {
         customerOrders[cIndex].status = 'delivered';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
     }
 
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const aIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (aIndex !== -1) {
+    if (aIndex !== + 4) {
         adminOrders[aIndex].status = 'delivered';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
 
-    showMyOrders();
-
-    if (typeof showNotification === 'function') {
-        showNotification("Delivery confirmed. Enjoy your new timepiece!");
-    } else {
-        alert("Delivery confirmed. Enjoy your new timepiece!");
-    }
+    showNotification("Order marked as Received!");
+    showMyOrders(); 
 }
-
-function filterOrders() {
-    const searchTerm = document.getElementById('admin-order-search').value.toLowerCase();
-    const allCards = document.querySelectorAll('.admin-order-card');
-
-    allCards.forEach(card => {
-        const cardText = card.innerText.toLowerCase();
-        
-        if (cardText.includes(searchTerm)) {
-            card.style.display = 'block'; 
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-function resetDemo() {
-    const modal = document.getElementById('customModal');
-    const confirmBtn = document.getElementById('modalConfirm');
-    const cancelBtn = document.getElementById('modalCancel');
-
-    modal.querySelector('h3').innerText = "System Purge";
-    modal.querySelector('p').innerText = "This will permanently wipe all sales revenue and order history. Are you prepared to reset the boutique environment?";
-    confirmBtn.innerText = "Confirm Reset";
-    confirmBtn.style.background = "#c0392b"; 
-
-    modal.classList.add('active');
-
-    confirmBtn.onclick = function() {
-        localStorage.removeItem('lifetimeRevenue');
-        localStorage.removeItem('adminHistory');
-        localStorage.removeItem('customerHistory');
-        modal.classList.remove('active');
-        location.reload();
-    };
-
-    cancelBtn.onclick = function() {
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.querySelector('h3').innerText = "Confirm Removal";
-            confirmBtn.innerText = "Confirm Purge";
-        }, 400);
-    };
-}
-
-window.addEventListener('keydown', (e) => {
-    if (e.shiftKey && (e.key === 'R' || e.key === 'r' || e.code === 'KeyR')) {
-        console.log("🎯 Secret Command Detected!");
-        resetDemo();
-    }
-});

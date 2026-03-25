@@ -924,7 +924,18 @@
                                 <label style="font-weight: bold; color: #333; align-self: start;">Full Address:</label>
                                 <textarea id="checkout-address-input" placeholder="Street, Barangay, City" rows="2"
                                         style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.9rem; resize: none; width: 100%; box-sizing: border-box;"></textarea>
-                            </div>
+
+                                <label style="font-weight: bold; color: #333;">Contact Number:</label>
+                                <input 
+                                type="tel" 
+                                id="checkout-contact-input" 
+                                placeholder="09XX-XXX-XXXX" 
+                                autocomplete="off"
+                                maxlength="13"
+                                oninput="formatPhoneNumber(this)"
+                                style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.9rem; width: 100%; box-sizing: border-box;"
+                                >       
+                                </div>
                         </div>
 
                         <h3 style="margin-top: 0; color: #333;">Products Ordered</h3>
@@ -1488,18 +1499,6 @@
                 </div>
         
                 <div style="height: 2px; background: linear-gradient(90deg, transparent, #7e57c2, transparent);"></div>
-            </div>
-        </div>
-
-        <div id="customModal" style="display: flex; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center;">
-            <div class="modal-content" style="background: white; padding: 40px; border-radius: 12px; max-width: 420px; text-align: center; border: 1px solid #3b0066; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
-                <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #3b0066; margin-bottom: 15px; letter-spacing: 1px;">Confirm Removal</h3>
-                <p style="font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: #777; line-height: 1.8; margin-bottom: 35px;">This record will be permanently purged from the Clock-Wise Boutique registry. This action is irreversible.</p>
-                
-                <div style="display: flex; gap: 15px; justify-content: center;">
-                    <button id="modalCancel" style="background: transparent; border: 1px solid #ddd; color: #999; padding: 12px 28px; cursor: pointer; border-radius: 4px; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;">Keep Record</button>
-                    <button id="modalConfirm" style="background: #3b0066; border: none; color: white; padding: 12px 28px; cursor: pointer; border-radius: 4px; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; transition: 0.3s;">Confirm Purge</button>
-                </div>
             </div>
         </div>
 
