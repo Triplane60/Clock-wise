@@ -721,7 +721,7 @@ function handleAuth(event) {
         renderCartItems();      
         updateCartDisplay();
         showShop();    
-        showNotification("Welcome back, Admin!");
+        showNotification(`Welcome back, ${user.toUpperCase()}!`);
     } else {
         showNotification("Invalid username or password!");
     }
@@ -876,22 +876,28 @@ function closeLogoutModal() {
 
 function executeLogout() {
     isLoggedIn = false;
-    document.getElementById('nav-portfolio-link').style.display = 'none';
-    localStorage.removeItem("currentUser");
+    
+    if(document.getElementById('nav-portfolio-link')) {
+        document.getElementById('nav-portfolio-link').style.display = "none";
+    }
 
-    document.getElementById("user-display").innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.2rem; color: #ffffff !important;"></i> <span style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">Login</span>`;
-    document.getElementById("logout-confirm-modal").style.display = "none";
+    localStorage.removeItem("customerHistory");
+    localStorage.removeItem("cart");
 
-    document.getElementById("auth-username").value = "";
-    document.getElementById("auth-password").value = "";
-    document.getElementById("auth-password").type = "password";
+    const userDisplay = document.getElementById('user-display');
+    if (userDisplay) {
+        userDisplay.innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.1rem; color: #ffffff !important;"></i> <span style="font-weight: 600; font-size: 15px; margin-left: 5px;">Login</span>`;
+    }
+
+    document.getElementById('logout-confirm-modal').style.display = "none";
+    document.getElementById('auth-username').value = "";
+    document.getElementById('auth-password').value = "";
 
     showNotification("Logged out successfully!");
 
     cart = [];
-    renderCartItems();      
-    updateCartDisplay();    
-
+    renderCartItems();
+    updateCartDisplay();
     showHome();
 }
 
@@ -1881,7 +1887,8 @@ function placeShopeeOrder(event) {
         id: 'CW-' + Date.now().toString().slice(-6),
         date: new Date().toLocaleString(),
         arrivalDate: formattedArrival,
-        customer: rawName,
+        customer: currentUser,
+        shippingName: rawName,
         address: rawAddress,
         contact: rawContact,  
         items: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
@@ -2071,7 +2078,8 @@ function processOrder(event) {
 
     const newOrder = {
         id: "CW-" + transID,
-        customer: nameBox.value,
+        customer: currentUser,
+        shippingName: nameBox.value,
         address: addressBox.value,
         date: new Date().toLocaleString('en-PH'),
         
@@ -2573,8 +2581,12 @@ function showMyOrders() {
         return wA - wB;
     });
     const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
+    const currentUser = localStorage.getItem('currentUser') || ""; 
+    const myOrders = allOrders.filter(order => {
+        return order.customer && order.customer.toLowerCase().trim() === currentUser.toLowerCase().trim();
+    });
  
-    if (allOrders.length === 0) {
+    if (myOrders.length === 0) {
         if (backBtn) backBtn.style.display = 'none';
         orderList.innerHTML = `
             <div class="portfolio-fade-in" style="max-width: 600px; margin: 60px auto; padding: 70px 40px; background: #fff; border: 2px solid #3b0066; border-radius: 35px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
@@ -2604,11 +2616,11 @@ function showMyOrders() {
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f4f4f4; padding-bottom: 20px;">
                 <h2 style="font-family: 'Cormorant Garamond', serif; color: #3b0066; font-size: 1.8rem; margin: 0;">Portfolio Registry</h2>
                 <span style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">
-                    ${allOrders.filter(o => o.status !== 'released' && o.status !== 'delivered').length} Ongoing
+                    ${myOrders.filter(o => o.status !== 'released' && o.status !== 'delivered').length} Ongoing
                 </span>
             </div>
             <div id="registry-items-container">
-                ${allOrders.map(order => {
+                ${myOrders.map(order => {
                     const orderTotal = (order.items || []).reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
                     let finalArrivalDate = order.arrivalDate;
                     if (!finalArrivalDate && order.date) {
@@ -2662,12 +2674,12 @@ function showMyOrders() {
                         ` : `
                             <button disabled 
                                 style="margin-top: 15px; margin-right: 10px; background: #f9f9f9; border: 1px solid #eaeaea; color: #bbb; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: not-allowed; border-radius: 4px; font-weight: 600;">
-                                ⏳ Arriving on ${finalArrivalDate}
+                                Arriving on ${finalArrivalDate}
                             </button>
                         `
                     ) : '';
-
-                    const releaseBtn = (!isReleased && !isPending && !isDelivered) ? `
+                    
+                    const releaseBtn = (!isReleased && !isPending && !isDelivered && !isArrived) ? `
                         <button onclick="requestRelease('${order.id}')" 
                             style="margin-top: 15px; background: transparent; border: 1px solid #c0392b; color: #c0392b; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
                             onmouseover="this.style.background='#c0392b'; this.style.color='white';"
