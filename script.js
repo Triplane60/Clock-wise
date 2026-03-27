@@ -623,12 +623,12 @@ function toggleAuth() {
         if (loginForm.style.display === "none") {
             loginForm.style.display = "block";
             registerForm.style.display = "none";
-            title.innerText = "WELCOME BACK";
+            title.innerText = "Welcom Back";
             subtitle.innerText = "Please login to start shopping";
         } else {
             loginForm.style.display = "none";
             registerForm.style.display = "block";
-            title.innerText = "CREATE ACCOUNT";
+            title.innerText = "Create Account";
             subtitle.innerText = "Join us to explore premium timepieces";
         }
 
@@ -721,7 +721,7 @@ function handleAuth(event) {
         renderCartItems();      
         updateCartDisplay();
         showShop();    
-        showNotification(`Welcome back, ${user.toUpperCase()}!`);
+        showNotification(`Welcome back, ${user.toLowerCase()}!`);
     } else {
         showNotification("Invalid username or password!");
     }
@@ -1856,10 +1856,10 @@ function placeShopeeOrder(event) {
             <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
                 <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
                 <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
-                <p style="margin: 5px 0;"><strong>Contact Number:</strong> <span style="color: #3b0066; font-weight: 600;">${rawContact}</span></p>
+                <p style="margin: 5px 0;"><strong>Contact Number:</strong>${rawContact}</p>
                 <p style="margin: 5px 0;"><strong>Payment:</strong> ${selectedPayment.value}</p>
                 <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
-                <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong> <span style="color: #3b0066;">${formattedArrival}</span></p>
+                <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong>${formattedArrival}</p>
             </div>
             ${itemsHTML} 
             <p style="font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 20px;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
@@ -2398,7 +2398,7 @@ function loadAdminDashboard() {
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         ${phoneSVG}
-                        <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
+                        <span><strong>Contact:</strong> <span style="font-weight: 400;">${order.contact || 'N/A'}</span></span>
                     </div>
                     <p style="margin: 2px 0; display: flex; align-items: center; gap: 6px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
@@ -2406,7 +2406,7 @@ function loadAdminDashboard() {
                     </p>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        <span><strong>Date:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
+                        <span><strong>Date:</strong> <span style="font-weight: 400;">${order.date}</span></span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${isReleased ? '#999' : '#3b0066'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
@@ -2639,7 +2639,7 @@ function showMyOrders() {
                         });
                     }
 
-                    const today = new Date();
+                    const today = getToday();
                     today.setHours(0, 0, 0, 0);
                     if (arrivalDateObj) arrivalDateObj.setHours(0, 0, 0, 0);
                     const isArrived = arrivalDateObj ? today >= arrivalDateObj : false;
@@ -2683,7 +2683,7 @@ function showMyOrders() {
                         ` : `
                             <button disabled 
                                 style="margin-top: 15px; margin-right: 10px; background: #f9f9f9; border: 1px solid #eaeaea; color: #bbb; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: not-allowed; border-radius: 4px; font-weight: 600;">
-                                ⏳ Arriving on ${finalArrivalDate}
+                                Arriving on ${finalArrivalDate}
                             </button>
                         `
                     ) : '';
@@ -3037,3 +3037,43 @@ function selectPayment(label) {
     label.style.background = '#f3f0ff';
     label.querySelector('input[type="radio"]').checked = true;
 }
+
+function getToday() {
+    const override = localStorage.getItem('testDateOverride');
+    if (override) {
+        const [year, month, day] = override.split('-').map(Number);
+        return new Date(year, month - 1, day);
+    }
+    return new Date();
+}
+
+function applyTestDate() {
+    const input = document.getElementById('test-date-input').value;
+    if (!input) return;
+    localStorage.setItem('testDateOverride', input);
+    showMyOrders(); 
+    if (typeof showNotification === 'function') showNotification('Test date set to ' + input);
+}
+
+function clearTestDate() {
+    localStorage.removeItem('testDateOverride');
+    document.getElementById('test-date-input').value = '';
+    showMyOrders(); 
+    if (typeof showNotification === 'function') showNotification('Using real system date.');
+}
+
+function closeTester() {
+    document.getElementById('date-tester').style.display = 'none';
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.altKey && event.shiftKey && (event.key === 'D' || event.key === 'd')) {
+        const panel = document.getElementById('date-tester');
+        
+        if (panel.style.display === 'none' || panel.style.display === '') {
+            panel.style.display = 'block';
+        } else {
+            panel.style.display = 'none';
+        }
+    }
+});
