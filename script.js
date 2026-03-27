@@ -1799,6 +1799,12 @@ function placeShopeeOrder(event) {
     const rawName = nameBox.value.trim();
     const rawAddress = addressBox.value.trim();
     const rawContact = contactBox ? contactBox.value.trim() : '';
+    const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+
+    if (!selectedPayment) {
+        showNotification("Please select a payment method! 💳");
+        return;
+    }
 
     if (rawName === "" || /\d/.test(rawName) || !rawName.includes(' ')) {
         showNotification("Please enter your full First and Last Name.");
@@ -1857,6 +1863,7 @@ function placeShopeeOrder(event) {
                 <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
                 <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
                 <p style="margin: 5px 0;"><strong>Contact Number:</strong> <span style="color: #3b0066; font-weight: 600;">${rawContact}</span></p>
+                <p style="margin: 5px 0;"><strong>Payment:</strong> ${selectedPayment.value}</p>
                 <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
                 <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong> <span style="color: #3b0066;">${formattedArrival}</span></p>
             </div>
@@ -1890,7 +1897,8 @@ function placeShopeeOrder(event) {
         customer: currentUser,
         shippingName: rawName,
         address: rawAddress,
-        contact: rawContact,  
+        contact: rawContact,
+        paymentMethod: selectedPayment.value,  
         items: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
         total: grandTotal
     };
@@ -2400,6 +2408,10 @@ function loadAdminDashboard() {
                         ${phoneSVG}
                         <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
                     </div>
+                    <p style="margin: 2px 0; display: flex; align-items: center; gap: 6px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                        <b>Payment:</b> ${order.paymentMethod || 'N/A'}
+                    </p>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         <span><strong>Date:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
@@ -2719,6 +2731,9 @@ function showMyOrders() {
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     ${phoneSVG}
                                     <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
+                                </div><div style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                    <span><strong>Payment:</strong> <span style="font-weight: 400;">${order.paymentMethod || 'N/A'}</span></span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -3014,4 +3029,14 @@ function markOrderDelivered(orderId) {
 
     showNotification("Order marked as Received!");
     showMyOrders(); 
+}
+
+function selectPayment(label) {
+    document.querySelectorAll('label[onclick="selectPayment(this)"]').forEach(l => {
+        l.style.borderColor = '#ddd';
+        l.style.background = 'white';
+    });
+    label.style.borderColor = '#3b0066';
+    label.style.background = '#f3f0ff';
+    label.querySelector('input[type="radio"]').checked = true;
 }
