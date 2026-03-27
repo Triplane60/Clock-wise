@@ -2622,23 +2622,32 @@ function showMyOrders() {
             <div id="registry-items-container">
                 ${allOrders.map(order => {
                     const orderTotal = (order.items || []).reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+
                     let finalArrivalDate = order.arrivalDate;
-                    if (!finalArrivalDate && order.date) {
-                        let purchaseDate = new Date(order.date);
-                        purchaseDate.setDate(purchaseDate.getDate() + 4);
-                        finalArrivalDate = purchaseDate.toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                    let arrivalDateObj;
+                    if (order.date) {
+                        const datePart = order.date.split(',')[0];
+                        const [month, day, year] = datePart.split('/').map(Number);
+                        arrivalDateObj = new Date(year, month - 1, day);
+                        arrivalDateObj.setDate(arrivalDateObj.getDate() + 4);
                     }
- 
+
+                    if (!finalArrivalDate && arrivalDateObj) {
+                        finalArrivalDate = arrivalDateObj.toLocaleDateString('en-PH', {
+                            month: 'long', day: 'numeric', year: 'numeric'
+                        });
+                    }
+
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    if (arrivalDateObj) arrivalDateObj.setHours(0, 0, 0, 0);
+                    const isArrived = arrivalDateObj ? today >= arrivalDateObj : false;
+
                     const status = order.status || 'active';
                     const isReleased = status === 'released';
                     const isPending = status === 'pending-release';
                     const isDelivered = status === 'delivered';
-
-                    const arrivalDateObj = new Date(finalArrivalDate);
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    arrivalDateObj.setHours(0,0,0,0);
-                    const isArrived = today >= arrivalDateObj;
 
                     const statusBadge = isReleased
                         ? `<span style="background: #fff0f0; color: #c0392b; border: 1px solid #f5c6cb; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✦ Released to Vault</span>`
@@ -2679,7 +2688,7 @@ function showMyOrders() {
                         `
                     ) : '';
 
-                    const releaseBtn = (!isReleased && !isPending && !isDelivered) ? `
+                    const releaseBtn = (!isReleased && !isPending && !isDelivered && !isArrived) ? `
                         <button onclick="requestRelease('${order.id}')" 
                             style="margin-top: 15px; background: transparent; border: 1px solid #c0392b; color: #c0392b; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
                             onmouseover="this.style.background='#c0392b'; this.style.color='white';"
