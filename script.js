@@ -623,12 +623,12 @@ function toggleAuth() {
         if (loginForm.style.display === "none") {
             loginForm.style.display = "block";
             registerForm.style.display = "none";
-            title.innerText = "WELCOME BACK";
+            title.innerText = "Welcom Back";
             subtitle.innerText = "Please login to start shopping";
         } else {
             loginForm.style.display = "none";
             registerForm.style.display = "block";
-            title.innerText = "CREATE ACCOUNT";
+            title.innerText = "Create Account";
             subtitle.innerText = "Join us to explore premium timepieces";
         }
 
@@ -721,7 +721,7 @@ function handleAuth(event) {
         renderCartItems();      
         updateCartDisplay();
         showShop();    
-        showNotification(`Welcome back, ${user.toUpperCase()}!`);
+        showNotification(`Welcome back, ${user.toLowerCase()}!`);
     } else {
         showNotification("Invalid username or password!");
     }
@@ -1796,7 +1796,7 @@ function placeShopeeOrder(event) {
     const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
 
     if (!selectedPayment) {
-        showNotification("Please select a payment method!");
+        showNotification("Please select a payment method! 💳");
         return;
     }
 
@@ -1854,12 +1854,12 @@ function placeShopeeOrder(event) {
     if (receiptDetails) {
         receiptDetails.innerHTML = `
             <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
-                <p style="margin: 5px 0;"><strong>Customer:</strong> <span style="color: #3b0066; font-weight: 600;"> ${rawName}</span</p>
-                <p style="margin: 5px 0;"><strong>Shipping To:</strong> <span style="color: #3b0066; font-weight: 600;">${rawAddress}</span</p>
-                <p style="margin: 5px 0;"><strong>Contact Number:</strong> <span style="color: #3b0066; font-weight: 600;">${rawContact}</span></p>
-                <p style="margin: 5px 0;"><strong>Payment:</strong> <span style="color: #3b0066; font-weight: 600;">${selectedPayment.value}</span</p>
+                <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
+                <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
+                <p style="margin: 5px 0;"><strong>Contact Number:</strong>${rawContact}</p>
+                <p style="margin: 5px 0;"><strong>Payment:</strong> ${selectedPayment.value}</p>
                 <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
-                <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong> <span style="color: #3b0066;">${formattedArrival}</span></p>
+                <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong>${formattedArrival}</p>
             </div>
             ${itemsHTML} 
             <p style="font-size: 0.75rem; color: #aaa; text-align: center; margin-top: 20px;">Transaction ID: #CW-${Date.now().toString().slice(-6)}</p>
@@ -2369,11 +2369,11 @@ function loadAdminDashboard() {
 
         let statusBadge = '';
         if (isReleased) {
-            statusBadge = `<span style="background:#fff0f0; color:#c0392b; border:1px solid #f5c6cb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Released</span>`;
+            statusBadge = `<span style="background:#fff0f0; color:#c0392b; border:1px solid #f5c6cb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✦ Released</span>`;
         } else if (isDelivered) {
-            statusBadge = `<span style="background:#e3f2fd; color:#0d47a1; border:1px solid #bbdefb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Delivered</span>`;
+            statusBadge = `<span style="background:#e3f2fd; color:#0d47a1; border:1px solid #bbdefb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✓ Delivered</span>`;
         } else {
-            statusBadge = `<span style="background:#f0fff4; color:#2e7d32; border:1px solid #c8e6c9; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Active</span>`;
+            statusBadge = `<span style="background:#f0fff4; color:#2e7d32; border:1px solid #c8e6c9; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✓ Active</span>`;
         }
 
         const phoneSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.88 11.3a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.8 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`;
@@ -2398,7 +2398,7 @@ function loadAdminDashboard() {
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         ${phoneSVG}
-                        <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
+                        <span><strong>Contact:</strong> <span style="font-weight: 400;">${order.contact || 'N/A'}</span></span>
                     </div>
                     <p style="margin: 2px 0; display: flex; align-items: center; gap: 6px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
@@ -2406,7 +2406,7 @@ function loadAdminDashboard() {
                     </p>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        <span><strong>Date:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
+                        <span><strong>Date:</strong> <span style="font-weight: 400;">${order.date}</span></span>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${isReleased ? '#999' : '#3b0066'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
@@ -2622,13 +2622,28 @@ function showMyOrders() {
             <div id="registry-items-container">
                 ${allOrders.map(order => {
                     const orderTotal = (order.items || []).reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
+
                     let finalArrivalDate = order.arrivalDate;
-                    if (!finalArrivalDate && order.date) {
-                        let purchaseDate = new Date(order.date);
-                        purchaseDate.setDate(purchaseDate.getDate() + 4);
-                        finalArrivalDate = purchaseDate.toLocaleDateString('en-PH', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                    let arrivalDateObj;
+                    if (order.date) {
+                        const datePart = order.date.split(',')[0];
+                        const [month, day, year] = datePart.split('/').map(Number);
+                        arrivalDateObj = new Date(year, month - 1, day);
+                        arrivalDateObj.setDate(arrivalDateObj.getDate() + 4);
                     }
- 
+
+                    if (!finalArrivalDate && arrivalDateObj) {
+                        finalArrivalDate = arrivalDateObj.toLocaleDateString('en-PH', {
+                            month: 'long', day: 'numeric', year: 'numeric'
+                        });
+                    }
+
+                    const today = getToday();
+                    today.setHours(0, 0, 0, 0);
+                    if (arrivalDateObj) arrivalDateObj.setHours(0, 0, 0, 0);
+                    const isArrived = arrivalDateObj ? today >= arrivalDateObj : false;
+
                     const status = order.status || 'active';
                     const isReleased = status === 'released';
                     const isPending = status === 'pending-release';
@@ -2642,28 +2657,11 @@ function showMyOrders() {
                         ? `<span style="background: #fff8e1; color: #b8860b; border: 1px solid #ffe082; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">⏳ Pending Release</span>`
                         : `<span style="background: #f0fff4; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✓ Active</span>`;
 
-                    let arrivalDateObj = null;
-                    if (finalArrivalDate) {
-                        arrivalDateObj = new Date(finalArrivalDate);
-                    } else if (order.date) {
-                        arrivalDateObj = new Date(order.date);
-                        arrivalDateObj.setDate(arrivalDateObj.getDate() + 4);
-                    }
-
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-
-                    let canMarkReceived = false;
-                    if (arrivalDateObj && !isNaN(arrivalDateObj.getTime())) {
-                        arrivalDateObj.setHours(0, 0, 0, 0);
-                        canMarkReceived = today >= arrivalDateObj;
-                    }
-
                     const countdownBar = isPending ? `
                         <div style="margin-top: 20px; padding: 18px 20px; background: linear-gradient(135deg, #f3f0ff, #ede7f6); border-radius: 10px; border: 1px solid #4b0082;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                                 <span style="color: #7e57c2; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;">Release finalizing in</span>
-                                <span id="release-timer-${order.id}" style="color: #7e57c2; font-weight: 700; font-size: 1rem; font-family: 'Cormorant Garamond', serif;">10s</span>
+                                <span id="release-timer-${order.id}" style="color: #7e57c2; font-weight: 700; font-size: 1rem; font-family: 'Cormorant Garamond', serif;">20s</span>
                             </div>
                             <div style="background: rgba(126, 87, 194, 0.15); border-radius: 50px; height: 4px; overflow: hidden;">
                                 <div id="release-bar-${order.id}" style="height: 100%; background: linear-gradient(90deg, #7e57c2, #b39ddb); border-radius: 50px; width: 100%; transition: width 1s linear;"></div>
@@ -2674,27 +2672,30 @@ function showMyOrders() {
                         </div>
                     ` : '';
 
-                    let releaseInfo = '';
-                    if (!isReleased && !isPending && !isDelivered) {
-                        if (canMarkReceived) {
-                            releaseInfo = `
-                                <button onclick="markOrderDelivered('${order.id}')" 
-                                    style="margin-top: 15px; background: transparent; border: 1px solid #0d47a1; color: #0d47a1; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
-                                    onmouseover="this.style.background='#0d47a1'; this.style.color='white';"
-                                    onmouseout="this.style.background='transparent'; this.style.color='#0d47a1';">
-                                    ✓ Order Received
-                                </button>
-                            `;
-                        } else {
-                            releaseInfo = `
-                                <div style="margin-top: 15px; padding: 16px 20px; background: linear-gradient(135deg, #f0fff4, #e8f5e9); border: 1px solid #c8e6c9; border-radius: 8px; text-align: center;">
-                                    <div style="font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; color: #2e7d32; text-transform: uppercase;">Release Allocation</div>
-                                    <div style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #2e7d32; margin: 4px 0 8px;">${finalArrivalDate}</div>
-                                    <small style="font-family: 'Montserrat', sans-serif; color: #555; line-height: 1.4;">Your watch allocation will be released on the estimated arrival date.<br>Come back on or after <strong>March 31, 2026</strong> to mark as received.</small>
-                                </div>
-                            `;
-                        }
-                    }
+                    const receiveBtn = (!isReleased && !isPending && !isDelivered) ? (
+                        isArrived ? `
+                            <button onclick="markOrderDelivered('${order.id}')" 
+                                style="margin-top: 15px; margin-right: 10px; background: transparent; border: 1px solid #0d47a1; color: #0d47a1; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
+                                onmouseover="this.style.background='#0d47a1'; this.style.color='white';"
+                                onmouseout="this.style.background='transparent'; this.style.color='#0d47a1';">
+                                ✓ Confirm Order Received
+                            </button>
+                        ` : `
+                            <button disabled 
+                                style="margin-top: 15px; margin-right: 10px; background: #f9f9f9; border: 1px solid #eaeaea; color: #bbb; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: not-allowed; border-radius: 4px; font-weight: 600;">
+                                Arriving on ${finalArrivalDate}
+                            </button>
+                        `
+                    ) : '';
+
+                    const releaseBtn = (!isReleased && !isPending && !isDelivered && !isArrived) ? `
+                        <button onclick="requestRelease('${order.id}')" 
+                            style="margin-top: 15px; background: transparent; border: 1px solid #c0392b; color: #c0392b; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
+                            onmouseover="this.style.background='#c0392b'; this.style.color='white';"
+                            onmouseout="this.style.background='transparent'; this.style.color='#c0392b';">
+                            Release Allocation
+                        </button>
+                    ` : '';
 
                     const trashBtn = (isReleased || isDelivered) ? `
                         <button onclick="deleteSingleOrder('${order.id}')" 
@@ -2727,8 +2728,7 @@ function showMyOrders() {
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     ${phoneSVG}
                                     <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
-                                </div>
-                                <div style="display: flex; align-items: center; gap: 8px;">
+                                </div><div style="display: flex; align-items: center; gap: 8px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                                     <span><strong>Payment:</strong> <span style="font-weight: 400;">${order.paymentMethod || 'N/A'}</span></span>
                                 </div>
@@ -2746,7 +2746,10 @@ function showMyOrders() {
                                 <strong style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${pesoFormat.format(order.items[0]?.price)}</strong>
                             </div>
                             ${countdownBar}
-                            ${releaseInfo}
+                            <div style="display: flex; flex-wrap: wrap;">
+                                ${receiveBtn}
+                                ${releaseBtn}
+                            </div>
                             ${trashBtn}
                         </div>
                     `;
@@ -2880,14 +2883,14 @@ function confirmRelease() {
  
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex === - 1) return;
+    if (orderIndex === + 4) return;
  
     customerOrders[orderIndex].status = 'pending-release';
     localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
  
     showMyOrders();
  
-    let secondsLeft = 10;
+    let secondsLeft = 20;
     const bar = document.getElementById(`release-bar-${orderId}`);
     const timerText = document.getElementById(`release-timer-${orderId}`);
  
@@ -2917,14 +2920,14 @@ function undoRelease(orderId) {
  
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex !== - 1) {
+    if (orderIndex !== + 4) {
         customerOrders[orderIndex].status = 'active';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
     }
  
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const adminIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (adminIndex !== - 1) {
+    if (adminIndex !== + 4) {
         adminOrders[adminIndex].status = 'active';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
@@ -3009,14 +3012,14 @@ function formatPhoneNumber(input) {
 function markOrderDelivered(orderId) {
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const cIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (cIndex !== - 1) {
+    if (cIndex !== + 4) {
         customerOrders[cIndex].status = 'delivered';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
     }
 
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const aIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (aIndex !== - 1) {
+    if (aIndex !== + 4) {
         adminOrders[aIndex].status = 'delivered';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
@@ -3034,3 +3037,43 @@ function selectPayment(label) {
     label.style.background = '#f3f0ff';
     label.querySelector('input[type="radio"]').checked = true;
 }
+
+function getToday() {
+    const override = localStorage.getItem('testDateOverride');
+    if (override) {
+        const [year, month, day] = override.split('-').map(Number);
+        return new Date(year, month - 1, day);
+    }
+    return new Date();
+}
+
+function applyTestDate() {
+    const input = document.getElementById('test-date-input').value;
+    if (!input) return;
+    localStorage.setItem('testDateOverride', input);
+    showMyOrders(); 
+    if (typeof showNotification === 'function') showNotification('Test date set to ' + input);
+}
+
+function clearTestDate() {
+    localStorage.removeItem('testDateOverride');
+    document.getElementById('test-date-input').value = '';
+    showMyOrders(); 
+    if (typeof showNotification === 'function') showNotification('Using real system date.');
+}
+
+function closeTester() {
+    document.getElementById('date-tester').style.display = 'none';
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.altKey && event.shiftKey && (event.key === 'D' || event.key === 'd')) {
+        const panel = document.getElementById('date-tester');
+        
+        if (panel.style.display === 'none' || panel.style.display === '') {
+            panel.style.display = 'block';
+        } else {
+            panel.style.display = 'none';
+        }
+    }
+});
