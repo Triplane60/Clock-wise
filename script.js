@@ -876,28 +876,22 @@ function closeLogoutModal() {
 
 function executeLogout() {
     isLoggedIn = false;
-    
-    if(document.getElementById('nav-portfolio-link')) {
-        document.getElementById('nav-portfolio-link').style.display = "none";
-    }
+    document.getElementById('nav-portfolio-link').style.display = 'none';
+    localStorage.removeItem("currentUser");
 
-    localStorage.removeItem("customerHistory");
-    localStorage.removeItem("cart");
+    document.getElementById("user-display").innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.2rem; color: #ffffff !important;"></i> <span style="font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">Login</span>`;
+    document.getElementById("logout-confirm-modal").style.display = "none";
 
-    const userDisplay = document.getElementById('user-display');
-    if (userDisplay) {
-        userDisplay.innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.1rem; color: #ffffff !important;"></i> <span style="font-weight: 600; font-size: 15px; margin-left: 5px;">Login</span>`;
-    }
-
-    document.getElementById('logout-confirm-modal').style.display = "none";
-    document.getElementById('auth-username').value = "";
-    document.getElementById('auth-password').value = "";
+    document.getElementById("auth-username").value = "";
+    document.getElementById("auth-password").value = "";
+    document.getElementById("auth-password").type = "password";
 
     showNotification("Logged out successfully!");
 
     cart = [];
-    renderCartItems();
-    updateCartDisplay();
+    renderCartItems();      
+    updateCartDisplay();    
+
     showHome();
 }
 
@@ -1802,7 +1796,7 @@ function placeShopeeOrder(event) {
     const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
 
     if (!selectedPayment) {
-        showNotification("Please select a payment method! 💳");
+        showNotification("Please select a payment method!");
         return;
     }
 
@@ -1860,10 +1854,10 @@ function placeShopeeOrder(event) {
     if (receiptDetails) {
         receiptDetails.innerHTML = `
             <div style="border-left: 4px solid #2e004f; padding-left: 15px; margin-bottom: 20px; text-align: left;">
-                <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
-                <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
+                <p style="margin: 5px 0;"><strong>Customer:</strong> <span style="color: #3b0066; font-weight: 600;"> ${rawName}</span</p>
+                <p style="margin: 5px 0;"><strong>Shipping To:</strong> <span style="color: #3b0066; font-weight: 600;">${rawAddress}</span</p>
                 <p style="margin: 5px 0;"><strong>Contact Number:</strong> <span style="color: #3b0066; font-weight: 600;">${rawContact}</span></p>
-                <p style="margin: 5px 0;"><strong>Payment:</strong> ${selectedPayment.value}</p>
+                <p style="margin: 5px 0;"><strong>Payment:</strong> <span style="color: #3b0066; font-weight: 600;">${selectedPayment.value}</span</p>
                 <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
                 <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong> <span style="color: #3b0066;">${formattedArrival}</span></p>
             </div>
@@ -1894,8 +1888,7 @@ function placeShopeeOrder(event) {
         id: 'CW-' + Date.now().toString().slice(-6),
         date: new Date().toLocaleString(),
         arrivalDate: formattedArrival,
-        customer: currentUser,
-        shippingName: rawName,
+        customer: rawName,
         address: rawAddress,
         contact: rawContact,
         paymentMethod: selectedPayment.value,  
@@ -2086,8 +2079,7 @@ function processOrder(event) {
 
     const newOrder = {
         id: "CW-" + transID,
-        customer: currentUser,
-        shippingName: nameBox.value,
+        customer: nameBox.value,
         address: addressBox.value,
         date: new Date().toLocaleString('en-PH'),
         
@@ -2377,11 +2369,11 @@ function loadAdminDashboard() {
 
         let statusBadge = '';
         if (isReleased) {
-            statusBadge = `<span style="background:#fff0f0; color:#c0392b; border:1px solid #f5c6cb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✦ Released</span>`;
+            statusBadge = `<span style="background:#fff0f0; color:#c0392b; border:1px solid #f5c6cb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Released</span>`;
         } else if (isDelivered) {
-            statusBadge = `<span style="background:#e3f2fd; color:#0d47a1; border:1px solid #bbdefb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✓ Delivered</span>`;
+            statusBadge = `<span style="background:#e3f2fd; color:#0d47a1; border:1px solid #bbdefb; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Delivered</span>`;
         } else {
-            statusBadge = `<span style="background:#f0fff4; color:#2e7d32; border:1px solid #c8e6c9; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">✓ Active</span>`;
+            statusBadge = `<span style="background:#f0fff4; color:#2e7d32; border:1px solid #c8e6c9; padding:3px 12px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;">Active</span>`;
         }
 
         const phoneSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.88 11.3a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.8 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>`;
@@ -2593,12 +2585,8 @@ function showMyOrders() {
         return wA - wB;
     });
     const pesoFormat = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', minimumFractionDigits: 2 });
-    const currentUser = localStorage.getItem('currentUser') || ""; 
-    const myOrders = allOrders.filter(order => {
-        return order.customer && order.customer.toLowerCase().trim() === currentUser.toLowerCase().trim();
-    });
  
-    if (myOrders.length === 0) {
+    if (allOrders.length === 0) {
         if (backBtn) backBtn.style.display = 'none';
         orderList.innerHTML = `
             <div class="portfolio-fade-in" style="max-width: 600px; margin: 60px auto; padding: 70px 40px; background: #fff; border: 2px solid #3b0066; border-radius: 35px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.05);">
@@ -2628,11 +2616,11 @@ function showMyOrders() {
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f4f4f4; padding-bottom: 20px;">
                 <h2 style="font-family: 'Cormorant Garamond', serif; color: #3b0066; font-size: 1.8rem; margin: 0;">Portfolio Registry</h2>
                 <span style="font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 1px;">
-                    ${myOrders.filter(o => o.status !== 'released' && o.status !== 'delivered').length} Ongoing
+                    ${allOrders.filter(o => o.status !== 'released' && o.status !== 'delivered').length} Ongoing
                 </span>
             </div>
             <div id="registry-items-container">
-                ${myOrders.map(order => {
+                ${allOrders.map(order => {
                     const orderTotal = (order.items || []).reduce((sum, item) => sum + (Number(item.price) * Number(item.quantity)), 0);
                     let finalArrivalDate = order.arrivalDate;
                     if (!finalArrivalDate && order.date) {
@@ -2646,12 +2634,6 @@ function showMyOrders() {
                     const isPending = status === 'pending-release';
                     const isDelivered = status === 'delivered';
 
-                    const arrivalDateObj = new Date(finalArrivalDate);
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    arrivalDateObj.setHours(0,0,0,0);
-                    const isArrived = today >= arrivalDateObj;
-
                     const statusBadge = isReleased
                         ? `<span style="background: #fff0f0; color: #c0392b; border: 1px solid #f5c6cb; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✦ Released to Vault</span>`
                         : isDelivered
@@ -2660,11 +2642,28 @@ function showMyOrders() {
                         ? `<span style="background: #fff8e1; color: #b8860b; border: 1px solid #ffe082; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">⏳ Pending Release</span>`
                         : `<span style="background: #f0fff4; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✓ Active</span>`;
 
+                    let arrivalDateObj = null;
+                    if (finalArrivalDate) {
+                        arrivalDateObj = new Date(finalArrivalDate);
+                    } else if (order.date) {
+                        arrivalDateObj = new Date(order.date);
+                        arrivalDateObj.setDate(arrivalDateObj.getDate() + 4);
+                    }
+
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    let canMarkReceived = false;
+                    if (arrivalDateObj && !isNaN(arrivalDateObj.getTime())) {
+                        arrivalDateObj.setHours(0, 0, 0, 0);
+                        canMarkReceived = today >= arrivalDateObj;
+                    }
+
                     const countdownBar = isPending ? `
                         <div style="margin-top: 20px; padding: 18px 20px; background: linear-gradient(135deg, #f3f0ff, #ede7f6); border-radius: 10px; border: 1px solid #4b0082;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                                 <span style="color: #7e57c2; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;">Release finalizing in</span>
-                                <span id="release-timer-${order.id}" style="color: #7e57c2; font-weight: 700; font-size: 1rem; font-family: 'Cormorant Garamond', serif;">20s</span>
+                                <span id="release-timer-${order.id}" style="color: #7e57c2; font-weight: 700; font-size: 1rem; font-family: 'Cormorant Garamond', serif;">10s</span>
                             </div>
                             <div style="background: rgba(126, 87, 194, 0.15); border-radius: 50px; height: 4px; overflow: hidden;">
                                 <div id="release-bar-${order.id}" style="height: 100%; background: linear-gradient(90deg, #7e57c2, #b39ddb); border-radius: 50px; width: 100%; transition: width 1s linear;"></div>
@@ -2675,30 +2674,27 @@ function showMyOrders() {
                         </div>
                     ` : '';
 
-                    const receiveBtn = (!isReleased && !isPending && !isDelivered) ? (
-                        isArrived ? `
-                            <button onclick="markOrderDelivered('${order.id}')" 
-                                style="margin-top: 15px; margin-right: 10px; background: transparent; border: 1px solid #0d47a1; color: #0d47a1; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
-                                onmouseover="this.style.background='#0d47a1'; this.style.color='white';"
-                                onmouseout="this.style.background='transparent'; this.style.color='#0d47a1';">
-                                ✓ Confirm Order Received
-                            </button>
-                        ` : `
-                            <button disabled 
-                                style="margin-top: 15px; margin-right: 10px; background: #f9f9f9; border: 1px solid #eaeaea; color: #bbb; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: not-allowed; border-radius: 4px; font-weight: 600;">
-                                Arriving on ${finalArrivalDate}
-                            </button>
-                        `
-                    ) : '';
-                    
-                    const releaseBtn = (!isReleased && !isPending && !isDelivered && !isArrived) ? `
-                        <button onclick="requestRelease('${order.id}')" 
-                            style="margin-top: 15px; background: transparent; border: 1px solid #c0392b; color: #c0392b; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
-                            onmouseover="this.style.background='#c0392b'; this.style.color='white';"
-                            onmouseout="this.style.background='transparent'; this.style.color='#c0392b';">
-                            Release Allocation
-                        </button>
-                    ` : '';
+                    let releaseInfo = '';
+                    if (!isReleased && !isPending && !isDelivered) {
+                        if (canMarkReceived) {
+                            releaseInfo = `
+                                <button onclick="markOrderDelivered('${order.id}')" 
+                                    style="margin-top: 15px; background: transparent; border: 1px solid #0d47a1; color: #0d47a1; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
+                                    onmouseover="this.style.background='#0d47a1'; this.style.color='white';"
+                                    onmouseout="this.style.background='transparent'; this.style.color='#0d47a1';">
+                                    ✓ Order Received
+                                </button>
+                            `;
+                        } else {
+                            releaseInfo = `
+                                <div style="margin-top: 15px; padding: 16px 20px; background: linear-gradient(135deg, #f0fff4, #e8f5e9); border: 1px solid #c8e6c9; border-radius: 8px; text-align: center;">
+                                    <div style="font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; color: #2e7d32; text-transform: uppercase;">Release Allocation</div>
+                                    <div style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #2e7d32; margin: 4px 0 8px;">${finalArrivalDate}</div>
+                                    <small style="font-family: 'Montserrat', sans-serif; color: #555; line-height: 1.4;">Your watch allocation will be released on the estimated arrival date.<br>Come back on or after <strong>March 31, 2026</strong> to mark as received.</small>
+                                </div>
+                            `;
+                        }
+                    }
 
                     const trashBtn = (isReleased || isDelivered) ? `
                         <button onclick="deleteSingleOrder('${order.id}')" 
@@ -2731,7 +2727,8 @@ function showMyOrders() {
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     ${phoneSVG}
                                     <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
-                                </div><div style="display: flex; align-items: center; gap: 8px;">
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
                                     <span><strong>Payment:</strong> <span style="font-weight: 400;">${order.paymentMethod || 'N/A'}</span></span>
                                 </div>
@@ -2749,10 +2746,7 @@ function showMyOrders() {
                                 <strong style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${pesoFormat.format(order.items[0]?.price)}</strong>
                             </div>
                             ${countdownBar}
-                            <div style="display: flex; flex-wrap: wrap;">
-                                ${receiveBtn}
-                                ${releaseBtn}
-                            </div>
+                            ${releaseInfo}
                             ${trashBtn}
                         </div>
                     `;
@@ -2886,14 +2880,14 @@ function confirmRelease() {
  
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex === + 4) return;
+    if (orderIndex === - 1) return;
  
     customerOrders[orderIndex].status = 'pending-release';
     localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
  
     showMyOrders();
  
-    let secondsLeft = 20;
+    let secondsLeft = 10;
     const bar = document.getElementById(`release-bar-${orderId}`);
     const timerText = document.getElementById(`release-timer-${orderId}`);
  
@@ -2923,14 +2917,14 @@ function undoRelease(orderId) {
  
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex !== + 4) {
+    if (orderIndex !== - 1) {
         customerOrders[orderIndex].status = 'active';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
     }
  
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const adminIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (adminIndex !== + 4) {
+    if (adminIndex !== - 1) {
         adminOrders[adminIndex].status = 'active';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
@@ -3015,14 +3009,14 @@ function formatPhoneNumber(input) {
 function markOrderDelivered(orderId) {
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const cIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (cIndex !== + 4) {
+    if (cIndex !== - 1) {
         customerOrders[cIndex].status = 'delivered';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
     }
 
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const aIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (aIndex !== + 4) {
+    if (aIndex !== - 1) {
         adminOrders[aIndex].status = 'delivered';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
