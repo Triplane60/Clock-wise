@@ -5,7 +5,8 @@
 header('Content-Type: application/json');
 require_once 'db.php';
 
-$action = $_POST['action'] ?? $_GET['action'] ?? '';
+$data = json_decode(file_get_contents('php://input'), true);
+$action = $data['action'] ?? $_POST['action'] ?? $_GET['action'] ?? '';
 
 // ── GET ALL STOCK ─────────────────────────────────────────
 if ($action === 'get_stock') {
@@ -20,7 +21,6 @@ if ($action === 'get_stock') {
 
 // ── UPDATE SINGLE STOCK ───────────────────────────────────
 if ($action === 'update_stock') {
-    $data     = json_decode(file_get_contents('php://input'), true);
     $name     = $data['name'] ?? '';
     $newStock = (int)($data['stock'] ?? 0);
 

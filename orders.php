@@ -6,12 +6,11 @@ session_start();
 header('Content-Type: application/json');
 require_once 'db.php';
 
-$action = $_POST['action'] ?? $_GET['action'] ?? '';
+$data = json_decode(file_get_contents('php://input'), true);
+$action = $data['action'] ?? $_POST['action'] ?? $_GET['action'] ?? '';
 
 // ── PLACE ORDER ───────────────────────────────────────────
 if ($action === 'place_order') {
-    $data = json_decode(file_get_contents('php://input'), true);
-
     $id             = $data['id'] ?? '';
     $customer       = $data['customer'] ?? '';
     $address        = $data['address'] ?? '';

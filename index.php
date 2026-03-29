@@ -21,6 +21,21 @@ if ($conn->connect_error) {
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Clock-wise | Luxury Store</title>
+    <script>
+        function showShop() {
+            console.log("showShop (inline) called");
+            if (typeof _showShop === 'function') {
+                _showShop();
+            } else {
+                console.error("_showShop (from script.js) is NOT defined");
+                // Fallback show shop if the script failed to load properly
+                if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
+                const shopPage = document.getElementById('shop-page');
+                if (shopPage) shopPage.style.display = 'block';
+            }
+        }
+    </script>
+    <script src="script.js"></script>
 </head>
 <body>
 
@@ -35,11 +50,11 @@ if ($conn->connect_error) {
             </div>
 
             <nav class="home-nav">
-            <a href="#" onclick="showShop(); return false;" style="color: white; margin-right: 25px; text-decoration: none; font-weight: bold;">Shop</a>
-            <a href="#" onclick="showAbout(); return false;" style="color: white; margin-right: 25px; text-decoration: none; font-weight: bold;">About</a>
-            <a href="#" onclick="showContact(); return false;" style="color: white; text-decoration: none; font-weight: bold;">Contact</a>
-            <a href="#" onclick="showMyOrders(); return false;" id="nav-portfolio-link" style="display: none; color: white; margin-left: 25px; text-decoration: none; font-weight: bold;">My Portfolio</a>
-        </nav>
+                <a href="javascript:void(0);" onclick="showShop()" style="color: white; margin-right: 25px; text-decoration: none; font-weight: bold;">Shop</a>
+                <a href="javascript:void(0);" onclick="showAbout()" style="color: white; margin-right: 25px; text-decoration: none; font-weight: bold;">About</a>
+                <a href="javascript:void(0);" onclick="showContact()" style="color: white; text-decoration: none; font-weight: bold;">Contact</a>
+                <a href="javascript:void(0);" onclick="showMyOrders()" id="nav-portfolio-link" style="display: none; color: white; margin-left: 25px; text-decoration: none; font-weight: bold;">My Portfolio</a>
+            </nav>
         </header>
 
         <section class="tiktok-hero" style="margin-top: 0 !important; padding-top: 100px !important; align-items: flex-start !important;">
@@ -147,9 +162,9 @@ if ($conn->connect_error) {
             </div>
 
             <nav class="home-nav">
-                <a href="#" onclick="showShop(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
-                <a href="#" onclick="showAbout(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
-                <a href="#" onclick="showContact(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
+                <a href="javascript:void(0);" onclick="showShop()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
+                <a href="javascript:void(0);" onclick="showAbout()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
+                <a href="javascript:void(0);" onclick="showContact()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
             </nav>
         </header>
 
@@ -189,9 +204,9 @@ if ($conn->connect_error) {
             </div>
 
             <nav class="home-nav">
-                <a href="#" onclick="showShop(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
-                <a href="#" onclick="showAbout(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
-                <a href="#" onclick="showContact(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
+                <a href="javascript:void(0);" onclick="showShop()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
+                <a href="javascript:void(0);" onclick="showAbout()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
+                <a href="javascript:void(0);" onclick="showContact()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
             </nav>
         </header>
 
@@ -402,40 +417,43 @@ if ($conn->connect_error) {
         <main class="content-area">
             <div class="product-grid" id="watchContainer">
                 <?php
-    $sql = "SELECT * FROM products";
-    $result = $conn->query($sql);
+                $sql = "SELECT * FROM products";
+                $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            
-            $catLabel = "";
-            if ($row["category"] == "men") { $catLabel = "GENTLEMEN'S COLLECTION"; } 
-            elseif ($row["category"] == "ladies") { $catLabel = "LADIES' COLLECTION"; } 
-            elseif ($row["category"] == "arrivals") { $catLabel = "NEW ARRIVALS"; } 
-            else { $catLabel = strtoupper($row["category"]) . " COLLECTION"; }
+                if ($result && $result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                    $name = htmlspecialchars($row["name"]);
+                    $price = isset($row["price"]) ? (float)$row["price"] : 0;
+                    $stock = isset($row["stock"]) ? (int)$row["stock"] : 10;
+                    
+                    $catLabel = "";
+                    if ($row["category"] == "men") { $catLabel = "GENTLEMEN'S COLLECTION"; } 
+                    elseif ($row["category"] == "ladies") { $catLabel = "LADIES' COLLECTION"; } 
+                    else { $catLabel = strtoupper($row["category"]) . " COLLECTION"; }
+                ?>
+                    <div class="watch-card <?= $row["category"] ?>" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 430px; padding-bottom: 20px;">
+                        
+                        <div style="height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                            <img src="<?= $row["image_main"] ?>" class="image-placeholder" data-name="<?= $name ?>" style="cursor: pointer; max-height: 100%; max-width: 100%; object-fit: contain;">
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: column; flex-grow: 1;">
+                            <h3 style="margin: 0 0 10px 0; font-size: 1.1rem; flex-grow: 1;"><?= $name ?></h3>
+                            <p class="category-tag" style="margin-bottom: 5px;"><?= $catLabel ?></p>
+                            
+                            <p class="price" style="margin-bottom: 15px;">₱<?= number_format($price, 2) ?></p>
+                            
+                            <button class="details-btn" data-name="<?= $name ?>" style="margin-bottom: 8px;">View Details</button>
+                            <button class="add-btn" data-name="<?= $name ?>" data-price="<?= $price ?>" data-stock="<?= $stock ?>">Add to Cart</button>
+                        </div>
 
-            echo '<div class="watch-card ' . $row["category"] . '" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 430px; padding-bottom: 20px;">';
-            
-            echo '  <div style="height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">';
-            echo '    <img src="' . $row["image_main"] . '" alt="' . $row["name"] . '" class="image-placeholder" onclick="openDetails(\'' . $row["name"] . '\')" style="cursor: pointer; max-height: 100%; max-width: 100%; object-fit: contain;">';
-            echo '  </div>';
-            
-            echo '  <div style="display: flex; flex-direction: column; flex-grow: 1;">';
-            echo '    <h3 style="margin: 0 0 10px 0; font-size: 1.1rem; flex-grow: 1;">' . $row["name"] . '</h3>';
-            echo '    <p class="category-tag" style="margin-bottom: 5px;">' . $catLabel . '</p>';
-            echo '    <p class="price" style="margin-bottom: 15px;">₱' . number_format($row["price"], 2) . '</p>';
-            
-            // NOTICE THE ONCLICK EVENTS HERE! This makes the buttons work!
-            echo '    <button class="details-btn" onclick="openDetails(\'' . $row["name"] . '\')" style="margin-bottom: 8px;">View Details</button>';
-            echo '    <button class="add-btn" onclick="addToCart(\'' . $row["name"] . '\')">Add to Cart</button>';
-            echo '  </div>';
-            
-            echo '</div>';
-        }
-    } else {
-        echo "<p>No luxury items found in the vault.</p>";
-    }
-    ?>
+                    </div>
+                <?php 
+                    }
+                } else {
+                    echo "<p style='text-align: center; color: #666; width: 100%; grid-column: 1 / -1; padding: 50px;'>No products found.</p>";
+                }
+                ?>
         </main>
 
 
@@ -798,9 +816,9 @@ if ($conn->connect_error) {
         </div>
 
         <nav class="home-nav">
-        <a href="#" onclick="showShop(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
-        <a href="#" onclick="showAbout(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
-        <a href="#" onclick="showContact(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
+        <a href="javascript:void(0);" onclick="showShop()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
+        <a href="javascript:void(0);" onclick="showAbout()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
+        <a href="javascript:void(0);" onclick="showContact()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
         </nav>
     </header>
 
@@ -841,9 +859,9 @@ if ($conn->connect_error) {
         </div>
 
         <nav class="home-nav">
-        <a href="#" onclick="showShop(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
-        <a href="#" onclick="showAbout(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
-        <a href="#" onclick="showContact(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
+        <a href="javascript:void(0);" onclick="showShop()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
+        <a href="javascript:void(0);" onclick="showAbout()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
+        <a href="javascript:void(0);" onclick="showContact()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
         </nav>
     </header>
 
@@ -884,9 +902,9 @@ if ($conn->connect_error) {
         </div>
 
         <nav class="home-nav">
-        <a href="#" onclick="showShop(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
-        <a href="#" onclick="showAbout(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
-        <a href="#" onclick="showContact(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
+        <a href="javascript:void(0);" onclick="showShop()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
+        <a href="javascript:void(0);" onclick="showAbout()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
+        <a href="javascript:void(0);" onclick="showContact()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
         </nav>
     </header>
 
@@ -931,9 +949,9 @@ if ($conn->connect_error) {
         </div>
 
         <nav class="home-nav">
-        <a href="#" onclick="showShop(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
-        <a href="#" onclick="showAbout(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
-        <a href="#" onclick="showContact(); return false;" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
+        <a href="javascript:void(0);" onclick="showShop()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Shop</a>
+        <a href="javascript:void(0);" onclick="showAbout()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">About</a>
+        <a href="javascript:void(0);" onclick="showContact()" style="color:white; margin-right:25px; text-decoration:none; font-weight:bold;">Contact</a>
         </nav>
         </header>
 
@@ -1179,7 +1197,6 @@ if ($conn->connect_error) {
             </div>
         </div>
 
-        <script src="script.js?v=<?php echo time(); ?>"></script>
 
 </body>
 </html>

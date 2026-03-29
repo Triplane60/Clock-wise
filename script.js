@@ -1,7 +1,11 @@
-// ============================================================
-// 1. ON PAGE LOAD — Check session instead of localStorage
-// ============================================================
+let watchData = {};
+let cart = [];
+let isLoggedIn = false;
+let currentCategory = 'all';
+let releaseTimers = {};
+
 window.onload = async function() {
+    await loadWatchDataFromDB();
     history.replaceState({ page: 'home' }, null, window.location.href);
 
     try {
@@ -21,31 +25,25 @@ window.onload = async function() {
         console.error('Session check failed:', e);
     }
 
-    // Load stock from DB
-    await loadStockFromDB();
-
     showHome();
 };
 
 // ============================================================
 // 2. LOAD STOCK FROM DATABASE (replaces localStorage watchStock)
 // ============================================================
-async function loadStockFromDB() {
+async function loadWatchDataFromDB() {
     try {
-        const res = await fetch('stock.php?action=get_stock');
+        const res  = await fetch('get_all_watches.php');
         const data = await res.json();
         if (data.success) {
-            Object.keys(data.stock).forEach(name => {
-                if (watchData[name]) {
-                    watchData[name].stock = data.stock[name];
-                }
+            Object.keys(data.watches).forEach(name => {
+                watchData[name] = data.watches[name];
             });
         }
     } catch (e) {
-        console.error('Failed to load stock:', e);
+        console.error('Failed to load watch data:', e);
     }
 }
-
 // ============================================================
 // 3. REGISTER — Replace handleRegister()
 // ============================================================
@@ -606,32 +604,35 @@ function searchWatches() {
 // ============================================================
 // openDetails() — fetch from DB
 // ============================================================
-async function openDetails(name) {
-    console.log("openDetails called with:", name); // ← keep this for now
+function openDetails(watchName) {
+    fetch('get_watch.php?name=' + encodeURIComponent(watchName))
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) { console.error(data.error); return; }
 
-    try {
-        const res   = await fetch('get_watch.php?name=' + encodeURIComponent(name));
-        const watch = await res.json();
+            if (watchData[watchName]) {
+                watchData[watchName].stock = data.stock;
+            } else {
+                watchData[watchName] = {
+                    price:  Number(data.price),
+                    stock:  Number(data.stock), 
+                    images: [data.image_main, data.image_2, data.image_3].filter(Boolean)
+                };
+            }
 
-        console.log("DB returned:", watch); // ← keep this for now
+            document.getElementById('modal-title').innerText = data.name;
+            document.getElementById('modal-desc').innerText = data.description;
+            document.getElementById('modal-price').innerText = '₱' + parseFloat(data.price).toLocaleString('en-US', { minimumFractionDigits: 2 });
+            document.getElementById('modal-main-image').src = data.image_main;
 
-        if (watch.error) { showNotification("Watch not found."); return; }
+            const addBtn = document.querySelector('#details-modal .add-btn');
+            if (addBtn) {
+                addBtn.onclick = () => addToCart(data.name);
+            }
 
-        document.getElementById('modal-main-image').src  = watch.image_main   || '';
-        document.getElementById('modal-title').innerText = watch.name         || '';
-        document.getElementById('modal-desc').innerText  = watch.description  || '';
-        document.getElementById('modal-price').innerText =
-            '₱' + Number(watch.price).toLocaleString('en-PH', { minimumFractionDigits: 2 });
-
-        const addBtn = document.querySelector('#details-modal .add-btn');
-        if (addBtn) addBtn.onclick = () => addToCart(watch.name, Number(watch.price), Number(watch.stock));
-
-        document.getElementById('details-modal').style.display = 'block';
-
-    } catch (e) {
-        console.error("openDetails error:", e);
-        showNotification("Could not load watch details.");
-    }
+            document.getElementById('details-modal').style.display = 'flex'; 
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 // ============================================================
@@ -644,7 +645,6 @@ function addToCart(watchName, price, stock) {
         return;
     }
 
-    // Fallback to watchData if price/stock not passed directly
     if (price === undefined && watchData[watchName]) {
         price = watchData[watchName].price;
         stock = watchData[watchName].stock;
@@ -672,4 +672,129 @@ function addToCart(watchName, price, stock) {
 
 function closeDetails() {
     document.getElementById('details-modal').style.display = 'none';
+}
+
+function _showShop() {
+    console.log("_showShop called");
+    console.log("homepage element:", document.getElementById('homepage'));
+    if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
+    if (document.getElementById('about-page')) document.getElementById('about-page').style.display = 'none';
+    if (document.getElementById('contact-page')) document.getElementById('contact-page').style.display = 'none';
+    if (document.getElementById('cart-page')) document.getElementById('cart-page').style.display = 'none';
+    if (document.getElementById('my-orders-page')) document.getElementById('my-orders-page').style.display = 'none';
+    if (document.getElementById('privacy-page')) document.getElementById('privacy-page').style.display = 'none';
+    if (document.getElementById('terms-page')) document.getElementById('terms-page').style.display = 'none';
+    if (document.getElementById('return-page')) document.getElementById('return-page').style.display = 'none';
+    if (document.getElementById('warranty-page')) document.getElementById('warranty-page').style.display = 'none';
+    
+    const shopPage = document.getElementById('shop-page');
+    if (shopPage) shopPage.style.display = 'block';
+    window.scrollTo(0, 0);
+}
+
+function showHome() {
+    if (document.getElementById('shop-page')) document.getElementById('shop-page').style.display = 'none';
+    if (document.getElementById('about-page')) document.getElementById('about-page').style.display = 'none';
+    if (document.getElementById('contact-page')) document.getElementById('contact-page').style.display = 'none';
+    if (document.getElementById('cart-page')) document.getElementById('cart-page').style.display = 'none';
+    
+    const homePage = document.getElementById('homepage');
+    if (homePage) homePage.style.display = 'block';
+    window.scrollTo(0, 0);
+}
+
+function showAbout() {
+    if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
+    if (document.getElementById('shop-page')) document.getElementById('shop-page').style.display = 'none';
+    if (document.getElementById('contact-page')) document.getElementById('contact-page').style.display = 'none';
+    
+    const aboutPage = document.getElementById('about-page');
+    if (aboutPage) aboutPage.style.display = 'block';
+    window.scrollTo(0, 0);
+}
+
+function showContact() {
+    if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
+    if (document.getElementById('shop-page')) document.getElementById('shop-page').style.display = 'none';
+    if (document.getElementById('about-page')) document.getElementById('about-page').style.display = 'none';
+    
+    const contactPage = document.getElementById('contact-page');
+    if (contactPage) contactPage.style.display = 'block';
+    window.scrollTo(0, 0);
+}
+
+function navigateTo(pageId, bodyClass) {
+    // Hide main pages
+    if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
+    if (document.getElementById('shop-page')) document.getElementById('shop-page').style.display = 'none';
+    if (document.getElementById('about-page')) document.getElementById('about-page').style.display = 'none';
+    if (document.getElementById('contact-page')) document.getElementById('contact-page').style.display = 'none';
+    if (document.getElementById('cart-page')) document.getElementById('cart-page').style.display = 'none';
+    if (document.getElementById('my-orders-page')) document.getElementById('my-orders-page').style.display = 'none';
+
+    // Show target page
+    const target = document.getElementById(pageId);
+    if (target) target.style.display = 'block';
+    
+    window.scrollTo(0, 0);
+}
+
+function showShopWithCategory(category) {
+    showShop();
+    setTimeout(function() { filterCategory(category); }, 50);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+// GLOBAL CLICK LISTENER (For dynamically loaded buttons)
+// ============================================================
+document.addEventListener('click', function(e) {
+    const detailsTrigger = e.target.closest('.details-btn, .image-placeholder');
+    if (detailsTrigger && detailsTrigger.hasAttribute('data-name')) {
+        const watchName = detailsTrigger.getAttribute('data-name');
+        openDetails(watchName);
+        return;
+    }
+
+    const addBtn = e.target.closest('.add-btn');
+    if (addBtn && addBtn.hasAttribute('data-name') && !addBtn.closest('#details-modal')) {
+        const watchName = addBtn.getAttribute('data-name');
+        const watchPrice = parseFloat(addBtn.getAttribute('data-price'));
+        const watchStock = parseInt(addBtn.getAttribute('data-stock'));
+        
+        addToCart(watchName, watchPrice, watchStock);
+        return;
+    }
+});
+
+// ============================================================
+// UI & NOTIFICATION FUNCTIONS
+// ============================================================
+function showNotification(message) {
+    const toast = document.getElementById('toast');
+    if (toast) {
+        toast.innerText = message;
+        toast.className = "toast show";
+        // Hide after 3 seconds
+        setTimeout(function() { 
+            toast.className = toast.className.replace("show", ""); 
+        }, 3000);
+    } else {
+        // Fallback just in case the toast HTML is missing
+        alert(message); 
+    }
+}
+
+function openLoginModal() {
+    const loginModal = document.getElementById('login-modal');
+    if (loginModal) {
+        loginModal.style.display = 'flex'; 
+    }
+}
+
+function closeLogin() {
+    const loginModal = document.getElementById('login-modal');
+    if (loginModal) {
+        loginModal.style.display = 'none';
+    }
 }
