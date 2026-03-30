@@ -2,6 +2,8 @@
 // ==================== stock.php ====================
 // Handles: get stock, update stock
 
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 header('Content-Type: application/json');
 require_once 'db.php';
 

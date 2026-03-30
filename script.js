@@ -4,37 +4,25 @@ let isLoggedIn = false;
 let currentCategory = 'all';
 let releaseTimers = {};
 
-window.onload = async function() {
-    await loadWatchDataFromDB();
-    history.replaceState({ page: 'home' }, null, window.location.href);
-
-    try {
-        const res = await fetch('auth.php?action=check');
-        const data = await res.json();
-
-        if (data.loggedIn) {
-            isLoggedIn = true;
-            document.getElementById('nav-portfolio-link').style.display = 'inline-block';
-            const userDisplay = document.getElementById("user-display");
-            if (userDisplay) userDisplay.innerHTML = `<i class="fa-solid fa-circle-user" style="font-size: 1.2rem; color: #ffffff !important;"></i> <span style="font-weight: 600; letter-spacing: 1px; font-size: 0.85rem;">${data.username}</span>`;
-        } else {
-            isLoggedIn = false;
-            document.getElementById('nav-portfolio-link').style.display = 'none';
-        }
-    } catch (e) {
-        console.error('Session check failed:', e);
-    }
-
-    showHome();
-};
-
 // ============================================================
-// 2. LOAD STOCK FROM DATABASE (replaces localStorage watchStock)
+// ANIMATION FUNCTIONS
 // ============================================================
 async function loadWatchDataFromDB() {
     try {
         const res  = await fetch('get_all_watches.php');
-        const data = await res.json();
+        const responseText = await res.text();
+        
+        // Debug: log the raw response
+        console.log('Raw response from get_all_watches.php:', responseText);
+        
+        // Check if response starts with HTML error tags
+        if (responseText.trim().startsWith('<')) {
+            console.error('Server returned HTML instead of JSON. Response:', responseText);
+            showNotification('Server error: Invalid response format');
+            return;
+        }
+        
+        const data = JSON.parse(responseText);
         if (data.success) {
             Object.keys(data.watches).forEach(name => {
                 watchData[name] = data.watches[name];
@@ -42,6 +30,7 @@ async function loadWatchDataFromDB() {
         }
     } catch (e) {
         console.error('Failed to load watch data:', e);
+        showNotification('Error loading product data. Please refresh the page.');
     }
 }
 // ============================================================
@@ -563,19 +552,21 @@ async function confirmSecureClear() {
             }
         }, 400);
 
-    } catch (e) {
-        showNotification("Server error.");
-    }
-}
 
 function filterCategory(category) {
     currentCategory = category;
 
     const watchGrid = document.querySelector('.content-area');
     if (watchGrid) {
-        watchGrid.classList.remove('category-fade-in');
-        void watchGrid.offsetWidth;
-        watchGrid.classList.add('category-fade-in');
+        // Remove active class first
+        watchGrid.classList.remove('category-fade-in', 'active');
+        
+        // Use requestAnimationFrame for smooth transition
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                watchGrid.classList.add('category-fade-in', 'active');
+            });
+        });
     }
 
     document.querySelectorAll('.nav-item').forEach(function(btn) {
@@ -602,37 +593,64 @@ function searchWatches() {
 }
 
 // ============================================================
-// openDetails() — fetch from DB
+// openDetails() — use data attributes instead of AJAX
 // ============================================================
 function openDetails(watchName) {
-    fetch('get_watch.php?name=' + encodeURIComponent(watchName))
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) { console.error(data.error); return; }
-
-            if (watchData[watchName]) {
-                watchData[watchName].stock = data.stock;
-            } else {
-                watchData[watchName] = {
-                    price:  Number(data.price),
-                    stock:  Number(data.stock), 
-                    images: [data.image_main, data.image_2, data.image_3].filter(Boolean)
-                };
-            }
-
-            document.getElementById('modal-title').innerText = data.name;
-            document.getElementById('modal-desc').innerText = data.description;
-            document.getElementById('modal-price').innerText = '₱' + parseFloat(data.price).toLocaleString('en-US', { minimumFractionDigits: 2 });
-            document.getElementById('modal-main-image').src = data.image_main;
-
-            const addBtn = document.querySelector('#details-modal .add-btn');
-            if (addBtn) {
-                addBtn.onclick = () => addToCart(data.name);
-            }
-
-            document.getElementById('details-modal').style.display = 'flex'; 
-        })
-        .catch(error => console.error('Error:', error));
+    // Find the button with this watch name to get data attributes
+    const button = document.querySelector(`.details-btn[data-name="${watchName}"]`);
+    if (!button) {
+        console.error('Button not found for watch:', watchName);
+        return;
+    }
+    
+    // Get all data attributes from the button
+    const data = {
+        name: button.getAttribute('data-name'),
+        brand: button.getAttribute('data-brand') || 'Unknown',
+        stock: parseInt(button.getAttribute('data-stock')) || 10,
+        price: parseFloat(button.getAttribute('data-price')) || 0,
+        description: button.getAttribute('data-description') || 'Description not available.',
+        image_main: button.getAttribute('data-image-main') || '',
+        image_2: button.getAttribute('data-image-2') || '',
+        image_3: button.getAttribute('data-image-3') || '',
+        image_4: button.getAttribute('data-image-4') || ''
+    };
+    
+    // Update watchData for cart functionality
+    watchData[watchName] = {
+        price: data.price,
+        stock: data.stock,
+        brand: data.brand,
+        images: [data.image_main, data.image_2, data.image_3, data.image_4].filter(Boolean)
+    };
+    
+    // Update modal fields
+    document.getElementById('modal-brand').innerText = data.brand;
+    document.getElementById('modal-title').innerText = data.name;
+    document.getElementById('modal-desc').innerText = data.description;
+    document.getElementById('modal-price').innerText = '₱' + data.price.toLocaleString('en-US', { minimumFractionDigits: 2 });
+    
+    // Setup image slider
+    setupModalSlider(data);
+    
+    // Update stock indicator
+    updateStockIndicator(data.stock);
+    
+    // Set add button onclick
+    const addBtn = document.querySelector('#details-modal .add-btn');
+    if (addBtn) {
+        addBtn.onclick = () => addToCart(data.name);
+    }
+    
+    // Show modal with fade-in
+    const modal = document.getElementById('details-modal');
+    modal.style.display = 'flex';
+    modal.classList.add('modal-fade-in');
+    
+    // Remove fade-in class after animation
+    setTimeout(() => {
+        modal.classList.remove('modal-fade-in');
+    }, 300);
 }
 
 // ============================================================
@@ -671,7 +689,36 @@ function addToCart(watchName, price, stock) {
 }
 
 function closeDetails() {
-    document.getElementById('details-modal').style.display = 'none';
+    const modal = document.getElementById('details-modal');
+    if (modal) {
+        // Start fade-out transition
+        modal.classList.remove('modal-fade-in');
+        modal.classList.add('modal-fade-out');
+        
+        // Wait for transition to complete before hiding
+        const handleTransitionEnd = (e) => {
+            if (e.target === modal && e.propertyName === 'opacity') {
+                modal.style.display = 'none';
+                modal.classList.remove('modal-fade-out');
+                modal.removeEventListener('transitionend', handleTransitionEnd);
+            }
+        };
+        
+        // Fallback timeout in case transitionend doesn't fire
+        const fallbackTimeout = setTimeout(() => {
+            modal.style.display = 'none';
+            modal.classList.remove('modal-fade-out');
+            modal.removeEventListener('transitionend', handleTransitionEnd);
+        }, 300);
+        
+        // Listen for transition end
+        modal.addEventListener('transitionend', handleTransitionEnd);
+        
+        // Clear fallback if transition ends successfully
+        modal.addEventListener('transitionend', () => {
+            clearTimeout(fallbackTimeout);
+        }, { once: true });
+    }
 }
 
 function _showShop() {
@@ -690,6 +737,17 @@ function _showShop() {
     const shopPage = document.getElementById('shop-page');
     if (shopPage) shopPage.style.display = 'block';
     window.scrollTo(0, 0);
+}
+
+function showShop() {
+    _showShop();
+    
+    // Trigger shop fade-in animation
+    setTimeout(() => {
+        if (window.triggerShopFadeIn) {
+            window.triggerShopFadeIn();
+        }
+    }, 100);
 }
 
 function showHome() {
@@ -797,4 +855,91 @@ function closeLogin() {
     if (loginModal) {
         loginModal.style.display = 'none';
     }
+}
+
+// ============================================================
+// FOOTER LINK FUNCTIONS
+// ============================================================
+function showPrivacy() {
+    // Hide all main content
+    const mainContent = document.querySelector('.hero-banner-fade, .content-area');
+    if (mainContent) mainContent.style.display = 'none';
+    
+    // Hide other pages
+    document.getElementById('terms-page').style.display = 'none';
+    document.getElementById('return-page').style.display = 'none';
+    document.getElementById('warranty-page').style.display = 'none';
+    
+    // Show privacy page
+    document.getElementById('privacy-page').style.display = 'block';
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+function showTerms() {
+    // Hide all main content
+    const mainContent = document.querySelector('.hero-banner-fade, .content-area');
+    if (mainContent) mainContent.style.display = 'none';
+    
+    // Hide other pages
+    document.getElementById('privacy-page').style.display = 'none';
+    document.getElementById('return-page').style.display = 'none';
+    document.getElementById('warranty-page').style.display = 'none';
+    
+    // Show terms page
+    document.getElementById('terms-page').style.display = 'block';
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+function showReturn() {
+    // Hide all main content
+    const mainContent = document.querySelector('.hero-banner-fade, .content-area');
+    if (mainContent) mainContent.style.display = 'none';
+    
+    // Hide other pages
+    document.getElementById('privacy-page').style.display = 'none';
+    document.getElementById('terms-page').style.display = 'none';
+    document.getElementById('warranty-page').style.display = 'none';
+    
+    // Show return page
+    document.getElementById('return-page').style.display = 'block';
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+function showWarranty() {
+    // Hide all main content
+    const mainContent = document.querySelector('.hero-banner-fade, .content-area');
+    if (mainContent) mainContent.style.display = 'none';
+    
+    // Hide other pages
+    document.getElementById('privacy-page').style.display = 'none';
+    document.getElementById('terms-page').style.display = 'none';
+    document.getElementById('return-page').style.display = 'none';
+    
+    // Show warranty page
+    document.getElementById('warranty-page').style.display = 'block';
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
+}
+
+// Function to return to main page from any policy page
+function showMainPage() {
+    // Hide all policy pages
+    document.getElementById('privacy-page').style.display = 'none';
+    document.getElementById('terms-page').style.display = 'none';
+    document.getElementById('return-page').style.display = 'none';
+    document.getElementById('warranty-page').style.display = 'none';
+    
+    // Show main content
+    const mainContent = document.querySelector('.hero-banner-fade, .content-area');
+    if (mainContent) mainContent.style.display = 'block';
+    
+    // Scroll to top
+    window.scrollTo(0, 0);
 }

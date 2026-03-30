@@ -231,8 +231,55 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%; 
+    min-height: 500px; /* Ensure consistent card height */
 }
 
+.watch-card .image-container {
+    height: 250px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevent image container from shrinking */
+    transition: background-color 0.3s ease;
+}
+
+.watch-card:hover .image-container {
+    background-color: #e1bee7;
+}
+
+.watch-card .image-placeholder {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: 0;
+    padding: 0;
+    transform: scale(1);
+}
+
+.watch-card:hover .image-placeholder {
+    transform: scale(1.05);
+}
+
+.watch-card > div:last-child {
+    flex-grow: 1;
+    display: flex;
+flex-direction: column;
+    flex-direction: column;
+}
 
 .watch-card:hover {
     transform: translateY(-10px) scale(1.02);
@@ -1135,17 +1182,7 @@ input::-webkit-credentials-auto-fill-button {
 }
 
 .watch-card:hover .image-placeholder {
-    background-color: transparent !important; 
-}
-
-.image-placeholder {
-    width: 100%;
-    height: 220px; 
-    object-fit: contain;
-    margin-bottom: 20px;
-    z-index: 1;
-    position: relative;
-    transition: transform 0.3s ease;
+    transform: scale(1.05);
 }
 .size-sl { transform: scale(0.90); }
 
@@ -1622,7 +1659,25 @@ transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .category-fade-in {
-    animation: receiptSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.category-fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes shopFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 body.on-cart-page .nav-logo {

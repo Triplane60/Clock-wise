@@ -1,7 +1,8 @@
 <?php
 // ==================== get_all_watches.php ====================
 // Called once on page load to populate watchData in JavaScript
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 header('Content-Type: application/json');
 require_once 'db.php';
 

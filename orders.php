@@ -2,6 +2,8 @@
 // ==================== orders.php ====================
 // Handles: place order, get orders, update status, delete order
 
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 session_start();
 header('Content-Type: application/json');
 require_once 'db.php';

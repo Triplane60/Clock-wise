@@ -1,13 +1,11 @@
 <?php
 $servername = "localhost";
-$username = "root"; // Default XAMPP/WAMP username
-$password = "";     // Default XAMPP/WAMP password (leave blank)
+$username = "root"; 
+$password = "";     
 $dbname = "clockwise_db";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
@@ -28,14 +26,12 @@ if ($conn->connect_error) {
                 _showShop();
             } else {
                 console.error("_showShop (from script.js) is NOT defined");
-                // Fallback show shop if the script failed to load properly
                 if (document.getElementById('homepage')) document.getElementById('homepage').style.display = 'none';
                 const shopPage = document.getElementById('shop-page');
                 if (shopPage) shopPage.style.display = 'block';
             }
         }
     </script>
-    <script src="script.js"></script>
 </head>
 <body>
 
@@ -424,17 +420,38 @@ if ($conn->connect_error) {
                     while($row = $result->fetch_assoc()) {
                     $name = htmlspecialchars($row["name"]);
                     $price = isset($row["price"]) ? (float)$row["price"] : 0;
-                    $stock = isset($row["stock"]) ? (int)$row["stock"] : 10;
+                    $stock = isset($row["stock_quantity"]) ? (int)$row["stock_quantity"] : 10;
+                    $brand = isset($row["brand"]) ? htmlspecialchars($row["brand"]) : 'Unknown';
+                    $description = isset($row["description"]) ? htmlspecialchars($row["description"]) : 'Description not available.';
+                    
+                    // Get image scale from database, default to 1.0 if not set
+                    $scale = isset($row["image_scale"]) ? (float)$row["image_scale"] : 1.0;
+                    
+                    // Get additional images
+                    $image_main = isset($row["image_main"]) ? $row["image_main"] : '';
+                    $image_2 = isset($row["image_2"]) ? $row["image_2"] : '';
+                    $image_3 = isset($row["image_3"]) ? $row["image_3"] : '';
+                    $image_4 = isset($row["image_4"]) ? $row["image_4"] : '';
                     
                     $catLabel = "";
                     if ($row["category"] == "men") { $catLabel = "GENTLEMEN'S COLLECTION"; } 
                     elseif ($row["category"] == "ladies") { $catLabel = "LADIES' COLLECTION"; } 
                     else { $catLabel = strtoupper($row["category"]) . " COLLECTION"; }
                 ?>
-                    <div class="watch-card <?= $row["category"] ?>" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 430px; padding-bottom: 20px;">
+                    <div class="watch-card <?= $row["category"] ?>">
                         
-                        <div style="height: 180px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px;">
-                            <img src="<?= $row["image_main"] ?>" class="image-placeholder" data-name="<?= $name ?>" style="cursor: pointer; max-height: 100%; max-width: 100%; object-fit: contain;">
+                        <div class="image-container">
+                            <img src="<?= $image_main ?>" class="image-placeholder" 
+                                 data-name="<?= $name ?>" 
+                                 data-brand="<?= $brand ?>" 
+                                 data-stock="<?= $stock ?>" 
+                                 data-price="<?= $price ?>"
+                                 data-description="<?= $description ?>"
+                                 data-image-main="<?= $image_main ?>"
+                                 data-image-2="<?= $image_2 ?>"
+                                 data-image-3="<?= $image_3 ?>"
+                                 data-image-4="<?= $image_4 ?>"
+                                 alt="<?= $name ?>" style="transform: scale(<?= $scale ?>);">
                         </div>
                         
                         <div style="display: flex; flex-direction: column; flex-grow: 1;">
@@ -443,8 +460,28 @@ if ($conn->connect_error) {
                             
                             <p class="price" style="margin-bottom: 15px;">₱<?= number_format($price, 2) ?></p>
                             
-                            <button class="details-btn" data-name="<?= $name ?>" style="margin-bottom: 8px;">View Details</button>
-                            <button class="add-btn" data-name="<?= $name ?>" data-price="<?= $price ?>" data-stock="<?= $stock ?>">Add to Cart</button>
+                            <button class="details-btn" 
+                                    data-name="<?= $name ?>" 
+                                    data-brand="<?= $brand ?>" 
+                                    data-stock="<?= $stock ?>" 
+                                    data-price="<?= $price ?>"
+                                    data-description="<?= $description ?>"
+                                    data-image-main="<?= $image_main ?>"
+                                    data-image-2="<?= $image_2 ?>"
+                                    data-image-3="<?= $image_3 ?>"
+                                    data-image-4="<?= $image_4 ?>"
+                                    style="margin-bottom: 8px;">View Details</button>
+                            <button class="add-btn" 
+                                    data-name="<?= $name ?>" 
+                                    data-price="<?= $price ?>" 
+                                    data-stock="<?= $stock ?>"
+                                    data-brand="<?= $brand ?>"
+                                    data-description="<?= $description ?>"
+                                    data-image-main="<?= $image_main ?>"
+                                    data-image-2="<?= $image_2 ?>"
+                                    data-image-3="<?= $image_3 ?>"
+                                    data-image-4="<?= $image_4 ?>"
+                                    >Add to Cart</button>
                         </div>
 
                     </div>
@@ -652,12 +689,33 @@ if ($conn->connect_error) {
                     
                     <span class="close-btn" onclick="closeDetails()" style="position: absolute; right: 25px; top: 15px; font-size: 30px; cursor: pointer; color: #333;">&times;</span>
                     
-                    <div style="flex: 1; display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 8px; padding: 20px;">
-                        <img id="modal-main-image" src="" alt="Luxury Watch" style="max-width: 100%; max-height: 400px; object-fit: contain;">
+                    <div style="flex: 1; display: flex; flex-direction: column;">
+                        <!-- Main Image Container -->
+                        <div style="display: flex; align-items: center; justify-content: center; background: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 15px; min-height: 400px; position: relative;">
+                            <img id="modal-main-image" src="" alt="Luxury Watch" style="max-width: 100%; max-height: 400px; object-fit: contain; cursor: pointer;">
+                            
+                            <!-- Image Navigation Arrows (hidden by default) -->
+                            <div id="modal-prev-btn" onclick="changeModalImage(-1)" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 18px;">‹</div>
+                            <div id="modal-next-btn" onclick="changeModalImage(1)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 18px;">›</div>
+                        </div>
+                        
+                        <!-- Thumbnail Gallery -->
+                        <div id="modal-thumbnails" style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+                            <!-- Thumbnails will be dynamically added here -->
+                        </div>
                     </div>
                     
                     <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                        <!-- Brand Name -->
+                        <p id="modal-brand" style="font-size: 1.1rem; color: #666; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">BRAND</p>
+                        
+                        <!-- Watch Title -->
                         <h2 id="modal-title" style="font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 15px; color: #1a1a1a;">Watch Title</h2>
+                        
+                        <!-- Stock Indicator -->
+                        <div id="modal-stock" style="margin-bottom: 15px;">
+                            <span id="stock-badge" style="padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 500;">In Stock</span>
+                        </div>
                         
                         <p id="modal-desc" style="font-size: 1.1rem; color: #555; line-height: 1.8; margin-bottom: 25px;">Description will load here...</p>
                         
@@ -845,6 +903,10 @@ if ($conn->connect_error) {
                 Your privacy is a cornerstone of our business. Your personal information will never be sold, leased, or shared with third-party marketing agencies. We only share necessary data with trusted logistics partners specifically for the secure delivery of your timepiece.
             </p>
 
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showMainPage()" style="padding: 12px 30px; background: #3b0066; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#5a0099';" onmouseout="this.style.backgroundColor='#3b0066';">← Back to Home</button>
+            </div>
+
         </div>
     </div>
 
@@ -887,6 +949,10 @@ if ($conn->connect_error) {
             <p style="color: #555; line-height: 1.8; margin-bottom: 15px;">
                 To protect our high-net-worth clients, all transactions undergo rigorous security checks. We reserve the right to cancel any order flagged by our fraud prevention systems. Clients must provide highly accurate shipping details; Clock-wise holds no liability for lost transit due to incorrect client information.
             </p>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showMainPage()" style="padding: 12px 30px; background: #3b0066; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#5a0099';" onmouseout="this.style.backgroundColor='#3b0066';">← Back to Home</button>
+            </div>
 
         </div>
     </div>
@@ -934,6 +1000,10 @@ if ($conn->connect_error) {
             <p style="color: #555; line-height: 1.8; margin-top: 30px; font-style: italic;">
                 Please contact our Concierge Team to initiate a return. We will arrange fully insured, specialized transit for the safe return of the timepiece.
             </p>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showMainPage()" style="padding: 12px 30px; background: #3b0066; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#5a0099';" onmouseout="this.style.backgroundColor='#3b0066';">← Back to Home</button>
+            </div>
 
         </div>
     </div>
@@ -988,6 +1058,10 @@ if ($conn->connect_error) {
             <p style="color: #555; line-height: 1.8; margin-top: 30px; font-style: italic;">
                 Clock-wise reserves the right to make the final determination on all warranty claims after a thorough inspection by our certified master watchmakers.
             </p>
+
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="showMainPage()" style="padding: 12px 30px; background: #3b0066; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#5a0099';" onmouseout="this.style.backgroundColor='#3b0066';">← Back to Home</button>
+            </div>
 
         </div>
     </div>
@@ -1198,5 +1272,8 @@ if ($conn->connect_error) {
         </div>
 
 
+    <script src="animations.js"></script>
+    <script src="modal-functions.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
