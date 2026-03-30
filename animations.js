@@ -72,11 +72,19 @@ function stopPillAnimation() {
 function triggerShopFadeIn() {
     const watchGrid = document.querySelector('.content-area');
     if (watchGrid) {
-        // Remove and re-add the class to trigger the animation
-        watchGrid.classList.remove('category-fade-in');
+        // Remove active class first, then add it back to trigger fade-in
+        watchGrid.classList.remove('category-fade-in', 'active');
+        
         // Force a reflow
         void watchGrid.offsetWidth;
+        
+        // Add both classes to trigger proper fade-in animation
         watchGrid.classList.add('category-fade-in');
+        
+        // Add active class after a small delay to ensure fade-in works
+        setTimeout(() => {
+            watchGrid.classList.add('active');
+        }, 50);
     }
 }
 

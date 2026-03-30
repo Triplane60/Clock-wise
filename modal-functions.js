@@ -119,3 +119,55 @@ function updateStockIndicator(stock) {
         `;
     }
 }
+
+// ============================================================
+// MODAL CLOSE FUNCTIONS
+// ============================================================
+function closeModalOnOutsideClick(event) {
+    const modal = document.getElementById('details-modal');
+    if (modal && modal.classList.contains('active')) {
+        // Check if click is outside modal content
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent && !modalContent.contains(event.target)) {
+            closeDetails();
+        }
+    }
+}
+
+function setupModalContentClickHandler() {
+    const modalContent = document.querySelector('#details-modal .modal-content');
+    if (modalContent) {
+        // Prevent clicks inside modal content from bubbling up to overlay
+        modalContent.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    }
+}
+
+function closeModalOnXButton() {
+    closeDetails();
+}
+
+// Initialize modal close listeners
+document.addEventListener('click', closeModalOnOutsideClick);
+
+// Also handle escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeDetails();
+    }
+});
+
+// Setup modal content click handler when modal opens
+const originalOpenDetails = window.openDetails;
+window.openDetails = function(watchName) {
+    // Call original function
+    const result = originalOpenDetails.call(this, watchName);
+    
+    // Setup click handler for modal content after it opens
+    setTimeout(() => {
+        setupModalContentClickHandler();
+    }, 100);
+    
+    return result;
+};

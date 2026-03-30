@@ -551,6 +551,10 @@ async function confirmSecureClear() {
                 showNotification("Released allocations have been securely wiped.");
             }
         }, 400);
+    } catch (e) {
+        showNotification("Error clearing allocations.");
+    }
+}
 
 
 function filterCategory(category) {
@@ -644,13 +648,11 @@ function openDetails(watchName) {
     
     // Show modal with fade-in
     const modal = document.getElementById('details-modal');
-    modal.style.display = 'flex';
-    modal.classList.add('modal-fade-in');
+    modal.classList.add('active');
     
-    // Remove fade-in class after animation
-    setTimeout(() => {
-        modal.classList.remove('modal-fade-in');
-    }, 300);
+    // Remove any existing fade classes and add fresh one
+    modal.classList.remove('modal-fade-out');
+    modal.classList.add('modal-fade-in');
 }
 
 // ============================================================
@@ -692,13 +694,16 @@ function closeDetails() {
     const modal = document.getElementById('details-modal');
     if (modal) {
         // Start fade-out transition
-        modal.classList.remove('modal-fade-in');
+        modal.classList.remove('active');
         modal.classList.add('modal-fade-out');
+        
+        // Restore body scroll and remove blur
+        document.body.style.overflow = '';
+        document.body.style.filter = '';
         
         // Wait for transition to complete before hiding
         const handleTransitionEnd = (e) => {
             if (e.target === modal && e.propertyName === 'opacity') {
-                modal.style.display = 'none';
                 modal.classList.remove('modal-fade-out');
                 modal.removeEventListener('transitionend', handleTransitionEnd);
             }
@@ -706,7 +711,6 @@ function closeDetails() {
         
         // Fallback timeout in case transitionend doesn't fire
         const fallbackTimeout = setTimeout(() => {
-            modal.style.display = 'none';
             modal.classList.remove('modal-fade-out');
             modal.removeEventListener('transitionend', handleTransitionEnd);
         }, 300);
@@ -806,7 +810,9 @@ function showShopWithCategory(category) {
 // ============================================================
 // GLOBAL CLICK LISTENER (For dynamically loaded buttons)
 // ============================================================
-document.addEventListener('click', function(e) {
+document.addEventListener('click', handleUserClick);
+
+function handleUserClick(e) {
     const detailsTrigger = e.target.closest('.details-btn, .image-placeholder');
     if (detailsTrigger && detailsTrigger.hasAttribute('data-name')) {
         const watchName = detailsTrigger.getAttribute('data-name');
@@ -823,7 +829,7 @@ document.addEventListener('click', function(e) {
         addToCart(watchName, watchPrice, watchStock);
         return;
     }
-});
+}
 
 // ============================================================
 // UI & NOTIFICATION FUNCTIONS
@@ -832,10 +838,10 @@ function showNotification(message) {
     const toast = document.getElementById('toast');
     if (toast) {
         toast.innerText = message;
-        toast.className = "toast show";
+        toast.classList.add("show");
         // Hide after 3 seconds
         setTimeout(function() { 
-            toast.className = toast.className.replace("show", ""); 
+            toast.classList.remove("show"); 
         }, 3000);
     } else {
         // Fallback just in case the toast HTML is missing
