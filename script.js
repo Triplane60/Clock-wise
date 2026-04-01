@@ -721,7 +721,7 @@ function handleAuth(event) {
         renderCartItems();      
         updateCartDisplay();
         showShop();    
-        showNotification("Welcome back, Admin!");
+        showNotification(`Welcome back, ${user.toUpperCase()}!`);
     } else {
         showNotification("Invalid username or password!");
     }
@@ -1793,6 +1793,12 @@ function placeShopeeOrder(event) {
     const rawName = nameBox.value.trim();
     const rawAddress = addressBox.value.trim();
     const rawContact = contactBox ? contactBox.value.trim() : '';
+    const selectedPayment = document.querySelector('input[name="payment-method"]:checked');
+
+    if (!selectedPayment) {
+        showNotification("Please select a payment method! 💳");
+        return;
+    }
 
     if (rawName === "" || /\d/.test(rawName) || !rawName.includes(' ')) {
         showNotification("Please enter your full First and Last Name.");
@@ -1851,6 +1857,7 @@ function placeShopeeOrder(event) {
                 <p style="margin: 5px 0;"><strong>Customer:</strong> ${rawName}</p>
                 <p style="margin: 5px 0;"><strong>Shipping To:</strong> ${rawAddress}</p>
                 <p style="margin: 5px 0;"><strong>Contact Number:</strong> <span style="color: #3b0066; font-weight: 600;">${rawContact}</span></p>
+                <p style="margin: 5px 0;"><strong>Payment:</strong> ${selectedPayment.value}</p>
                 <p style="margin: 5px 0;"><strong>Amount To Pay:</strong> <span style="color: #4CAF50; font-weight: bold;">${grandTotal}</span></p>
                 <p style="margin: 5px 0;"><strong>Estimated Arrival:</strong> <span style="color: #3b0066;">${formattedArrival}</span></p>
             </div>
@@ -1883,7 +1890,8 @@ function placeShopeeOrder(event) {
         arrivalDate: formattedArrival,
         customer: rawName,
         address: rawAddress,
-        contact: rawContact,  
+        contact: rawContact,
+        paymentMethod: selectedPayment.value,  
         items: cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price })),
         total: grandTotal
     };
@@ -2392,9 +2400,17 @@ function loadAdminDashboard() {
                         ${phoneSVG}
                         <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
                     </div>
+                    <p style="margin: 2px 0; display: flex; align-items: center; gap: 6px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                        <b>Payment:</b> ${order.paymentMethod || 'N/A'}
+                    </p>
                     <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         <span><strong>Date:</strong> <span style="font-weight: 400; color: #888;">${order.date}</span></span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${isReleased ? '#999' : '#3b0066'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"></rect><path d="M16 8h4l3 3v5h-7V8z"></path><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        <span style="color: ${isReleased ? '#999' : '#2e004f'};"><strong>Est. Arrival:</strong> <span style="font-weight: 400; color: ${isReleased ? '#999' : '#2e004f'};">${order.arrivalDate || 'N/A'}</span></span>
                     </div>
                 </div>
                 <div style="margin-top: 15px; background: #fafafa; padding: 10px; border-radius: 5px;">
@@ -2618,6 +2634,12 @@ function showMyOrders() {
                     const isPending = status === 'pending-release';
                     const isDelivered = status === 'delivered';
 
+                    const arrivalDateObj = new Date(finalArrivalDate);
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    arrivalDateObj.setHours(0,0,0,0);
+                    const isArrived = today >= arrivalDateObj;
+
                     const statusBadge = isReleased
                         ? `<span style="background: #fff0f0; color: #c0392b; border: 1px solid #f5c6cb; padding: 4px 14px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-family: 'Montserrat', sans-serif;">✦ Released to Vault</span>`
                         : isDelivered
@@ -2630,7 +2652,7 @@ function showMyOrders() {
                         <div style="margin-top: 20px; padding: 18px 20px; background: linear-gradient(135deg, #f3f0ff, #ede7f6); border-radius: 10px; border: 1px solid #4b0082;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                                 <span style="color: #7e57c2; font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;">Release finalizing in</span>
-                                <span id="release-timer-${order.id}" style="color: #7e57c2; font-weight: 700; font-size: 1rem; font-family: 'Cormorant Garamond', serif;">10s</span>
+                                <span id="release-timer-${order.id}" style="color: #7e57c2; font-weight: 700; font-size: 1rem; font-family: 'Cormorant Garamond', serif;">20s</span>
                             </div>
                             <div style="background: rgba(126, 87, 194, 0.15); border-radius: 50px; height: 4px; overflow: hidden;">
                                 <div id="release-bar-${order.id}" style="height: 100%; background: linear-gradient(90deg, #7e57c2, #b39ddb); border-radius: 50px; width: 100%; transition: width 1s linear;"></div>
@@ -2641,12 +2663,28 @@ function showMyOrders() {
                         </div>
                     ` : '';
 
-                    const receiveBtn = (!isReleased && !isPending && !isDelivered) ? `
-                        <button onclick="markOrderDelivered('${order.id}')" 
-                            style="margin-top: 15px; background: transparent; border: 1px solid #0d47a1; color: #0d47a1; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
-                            onmouseover="this.style.background='#0d47a1'; this.style.color='white';"
-                            onmouseout="this.style.background='transparent'; this.style.color='#0d47a1';">
-                            ✓ Order Received
+                    const receiveBtn = (!isReleased && !isPending && !isDelivered) ? (
+                        isArrived ? `
+                            <button onclick="markOrderDelivered('${order.id}')" 
+                                style="margin-top: 15px; margin-right: 10px; background: transparent; border: 1px solid #0d47a1; color: #0d47a1; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
+                                onmouseover="this.style.background='#0d47a1'; this.style.color='white';"
+                                onmouseout="this.style.background='transparent'; this.style.color='#0d47a1';">
+                                ✓ Confirm Order Received
+                            </button>
+                        ` : `
+                            <button disabled 
+                                style="margin-top: 15px; margin-right: 10px; background: #f9f9f9; border: 1px solid #eaeaea; color: #bbb; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: not-allowed; border-radius: 4px; font-weight: 600;">
+                                ⏳ Arriving on ${finalArrivalDate}
+                            </button>
+                        `
+                    ) : '';
+
+                    const releaseBtn = (!isReleased && !isPending && !isDelivered) ? `
+                        <button onclick="requestRelease('${order.id}')" 
+                            style="margin-top: 15px; background: transparent; border: 1px solid #c0392b; color: #c0392b; padding: 9px 22px; font-family: 'Montserrat', sans-serif; font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: 0.3s; font-weight: 600;"
+                            onmouseover="this.style.background='#c0392b'; this.style.color='white';"
+                            onmouseout="this.style.background='transparent'; this.style.color='#c0392b';">
+                            Release Allocation
                         </button>
                     ` : '';
 
@@ -2681,6 +2719,9 @@ function showMyOrders() {
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     ${phoneSVG}
                                     <span><strong>Contact:</strong> <span style="font-weight: 400; color: #3b0066;">${order.contact || 'N/A'}</span></span>
+                                </div><div style="display: flex; align-items: center; gap: 8px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                                    <span><strong>Payment:</strong> <span style="font-weight: 400;">${order.paymentMethod || 'N/A'}</span></span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 8px; margin-top: 5px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#3b0066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
@@ -2696,7 +2737,10 @@ function showMyOrders() {
                                 <strong style="${isReleased ? 'text-decoration: line-through; color: #bbb;' : ''}">${pesoFormat.format(order.items[0]?.price)}</strong>
                             </div>
                             ${countdownBar}
-                            ${receiveBtn}
+                            <div style="display: flex; flex-wrap: wrap;">
+                                ${receiveBtn}
+                                ${releaseBtn}
+                            </div>
                             ${trashBtn}
                         </div>
                     `;
@@ -2886,19 +2930,39 @@ function undoRelease(orderId) {
 function finalizeRelease(orderId) {
     const customerOrders = JSON.parse(localStorage.getItem('customerHistory') || '[]');
     const orderIndex = customerOrders.findIndex(o => o.id === orderId);
-    if (orderIndex !== + 4) {
-        customerOrders[orderIndex].status = 'released';
+    
+    if (orderIndex !== -1) {
+        const order = customerOrders[orderIndex];
+        order.status = 'released';
         localStorage.setItem('customerHistory', JSON.stringify(customerOrders));
+        
+        if (order.items && order.items.length > 0) {
+            order.items.forEach(item => {
+                if (watchData[item.name]) {
+                    watchData[item.name].stock += item.quantity;
+                }
+            });
+            
+            const updatedStock = Object.fromEntries(
+                Object.keys(watchData).map(name => [name, watchData[name].stock])
+            );
+            localStorage.setItem('watchStock', JSON.stringify(updatedStock));
+        }
     }
  
     const adminOrders = JSON.parse(localStorage.getItem('adminHistory') || '[]');
     const adminIndex = adminOrders.findIndex(o => o.id === orderId);
-    if (adminIndex !== + 4) {
+    if (adminIndex !== -1) {
         adminOrders[adminIndex].status = 'released';
         localStorage.setItem('adminHistory', JSON.stringify(adminOrders));
     }
  
     showMyOrders();
+    
+    if (document.getElementById('admin-page') && document.getElementById('admin-page').style.display !== 'none') {
+        loadAdminDashboard(); 
+    }
+    
     showNotification("Allocation released. The timepiece has returned to the vault.");
 }
 
@@ -2953,4 +3017,14 @@ function markOrderDelivered(orderId) {
 
     showNotification("Order marked as Received!");
     showMyOrders(); 
+}
+
+function selectPayment(label) {
+    document.querySelectorAll('label[onclick="selectPayment(this)"]').forEach(l => {
+        l.style.borderColor = '#ddd';
+        l.style.background = 'white';
+    });
+    label.style.borderColor = '#3b0066';
+    label.style.background = '#f3f0ff';
+    label.querySelector('input[type="radio"]').checked = true;
 }
